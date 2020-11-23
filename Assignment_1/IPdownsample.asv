@@ -1,0 +1,10 @@
+function [downscaledImage] = IPdownsample(image, shrinkFactor)
+% IPdownsample Down-samples an image by a factor of `shrinkFactor`, which
+% must be a (positive) integer, i.e. shrinkFactor >= 1. Function shrinks
+
+
+M = size(image,1);
+N = size(image,2);
+downscaledImage = image;
+end
+
