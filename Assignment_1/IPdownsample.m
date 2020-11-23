@@ -8,14 +8,13 @@ function [downscaledImage] = IPdownsample(I, shrinkFactor)
 assert(~isinteger(shrinkFactor), 'shrinkFactor must be an integer (was %d)', shrinkFactor);
 
 % Cast to integers
-shrinkFactor = uint8(shrinkFactor);
-M = uint8(size(I, 1));
-N = uint8(size(I, 2));
+M = size(I, 1); % height
+N = size(I, 2); % width
 
 % Downsampled (`_ds`) image dimensions
 M_ds = M / shrinkFactor;
 N_ds = N / shrinkFactor;
-I_ds = zeros(M_ds, N_ds);
+I_ds = zeros(round(M_ds), round(N_ds));
 
 
 downscaledImage = I_ds;
