@@ -9,13 +9,13 @@ M = size(f,1);
 N = size(f,2);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Image downsampling
-downsamplingFactor = 4;
-g = IPdownsample(f, downsamplingFactor);
+% Image upsampling
+upsamplingFactor = 4;
+g = IPupsample(f, upsamplingFactor);
 
 
 % Write output to file
-outputfile = [imname, '_downsamplingFactor=' num2str(downsamplingFactor), '.png'];
+outputfile = [imname, '_upsamplingFactor=' num2str(upsamplingFactor), '.png'];
 imwrite(g, outputfile);
 fprintf('\nFiltered image saved in file %s\n', outputfile);
 
@@ -37,10 +37,10 @@ colormap(gray(256));
 imagesc(g);
 axis equal;
 axis tight;
-title('DOWNSAMPLED IMAGE')
+title('UPSAMPLED IMAGE')
 
 % Write current figure to file
-all_file = [imname,'_all','_downsamplingFactor=',num2str(downsamplingFactor),'.png'];
+all_file = [imname,'_all','_upsamplingFactor=',num2str(upsamplingFactor),'.png'];
 saveas(gcf,all_file);
 
 fprintf('\nComplete image has been saved in file %s\n', all_file);

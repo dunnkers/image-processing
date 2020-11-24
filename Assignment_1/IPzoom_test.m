@@ -9,15 +9,22 @@ M = size(f,1);
 N = size(f,2);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Image downsampling
-downsamplingFactor = 4;
-g = IPdownsample(f, downsamplingFactor);
+% Image zooming
+zoomFactor = 4;
+g = IPzoom(f, zoomFactor);
 
+% Downsample, then zoom back again
+g_ds = IPdownsample(f, zoomFactor);
+g_ = IPzoom(g_ds, zoomFactor);
 
 % Write output to file
-outputfile = [imname, '_downsamplingFactor=' num2str(downsamplingFactor), '.png'];
+outputfile = [imname, '_zoomFactor=' num2str(zoomFactor), '.png'];
 imwrite(g, outputfile);
 fprintf('\nFiltered image saved in file %s\n', outputfile);
+
+outputfile = [imname, '_reconstruction=' num2str(zoomFactor), '.png'];
+imwrite(g_, outputfile);
+fprintf('\nReconstructed image saved in file %s\n', outputfile);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Plot images
@@ -37,10 +44,32 @@ colormap(gray(256));
 imagesc(g);
 axis equal;
 axis tight;
-title('DOWNSAMPLED IMAGE')
+title('ZOOMED IMAGE')
 
 % Write current figure to file
-all_file = [imname,'_all','_downsamplingFactor=',num2str(downsamplingFactor),'.png'];
+all_file = [imname,'_all','_zoomFactor=',num2str(zoomFactor),'.png'];
+saveas(gcf,all_file);
+
+%%% Plot reconstructed image
+% Plot the input image
+figure;
+subplot(121);
+colormap(gray(256));
+imagesc(f);
+axis equal;
+axis tight;
+title('INPUT IMAGE')
+
+% Plot the output image
+subplot(122);
+colormap(gray(256));
+imagesc(g_);
+axis equal;
+axis tight;
+title('RECONSTRUCTED IMAGE')
+
+% Write current figure to file
+all_file = [imname,'_all','_reconstruction=',num2str(zoomFactor),'.png'];
 saveas(gcf,all_file);
 
 fprintf('\nComplete image has been saved in file %s\n', all_file);
