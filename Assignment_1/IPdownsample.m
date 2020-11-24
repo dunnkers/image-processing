@@ -27,6 +27,8 @@ for i = 1:M_ds
         I_ds(i, j) = mean(mean(neighborhood));
    end
 end
-downscaledImage = I_ds;
+
+% Return downscaled image in uint8 format
+downscaledImage = uint8(I_ds);
 end
 
