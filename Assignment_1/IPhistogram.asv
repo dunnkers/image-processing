@@ -1,0 +1,20 @@
+function hist = IPhist(I)
+
+
+% Cast to integers
+M = size(I, 1); % height
+N = size(I, 2); % width
+
+% Bins
+bins = zeros(2^8); % 8-bit image
+
+% Find average pixels over neighborhood
+for i = 1:M
+   for j = 1:N
+        bins(i + j0
+   end
+end
+
+
+end
+
