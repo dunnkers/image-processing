@@ -7,7 +7,7 @@ function downsampledImage = IPdownsample(I, factor)
 %   factor: factor to shrink with. Must be an integer.
 assert(~isinteger(factor), 'factor must be an integer (was %d)', factor);
 
-% Cast to integers
+% Image size
 M = size(I, 1); % height
 N = size(I, 2); % width
 

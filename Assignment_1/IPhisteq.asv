@@ -2,7 +2,7 @@ function [I_eq, h_eq] = IPhisteq(I)
 % Histogram equalization algorithm. From (Gonzalez, Woods - Digital Image 
 % Processing) chapter 3.3, Eq. 3-15. Follows book terminology.
 % Arguments:
-%   I: input image to apply histogram-equalization on
+%
 
 % Image size
 M = size(I, 1); % height

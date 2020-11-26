@@ -7,7 +7,7 @@ function upsampledImage = IPupsample(I, factor)
 %   factor: factor to grow with. Must be an integer.
 assert(~isinteger(factor), 'factor must be an integer (was %d)', factor);
 
-% Cast to integers
+% Image size
 M = size(I, 1); % height
 N = size(I, 2); % width
 
@@ -16,7 +16,7 @@ M_us = floor(M * factor);
 N_us = floor(N * factor);
 I_us = zeros(M_us, N_us);
 
-% Find average pixels over neighborhood
+% Replicate pixels according to the scaling factor, `factor`
 for i = 1:M
    for j = 1:N
         pos_i = (i - 1) * factor + 1;

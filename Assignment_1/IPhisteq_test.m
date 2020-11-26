@@ -1,22 +1,43 @@
 clc;                                  % clear the command window
 close all;                            % close open figure windows      
 
-imname = 'blurrymoon';
 
-inputfile = [imname,'.tif'];          
-f=imread(inputfile);                  % read input image
-M = size(f,1);
-N = size(f,2);
+%%%%%%%% Blurry moon example %%%%%%%%
+imname = 'blurrymoon';      
+showcase(imname, '.tif');
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-h = IPhistogram(f);
-h_eq = IPhisteq(h);
+%%%%%%%% Another example image %%%%%%%%
+%%% From: https://en.wikipedia.org/wiki/Histogram_equalization
+imname = 'HawkesBay';
+showcase(imname, '.jpg');
+
+function showcase(imname, imext)
+% Normal image and histogram
+inputfile = [imname, imext];
+I = imread(inputfile);
+h = IPhistogram(I);
+% Compute equalized image and histogram
+[I_eq, h_eq] = IPhisteq(I);
+
+% Make a nice 2x2 plot
 figure;
+subplot(221);
+colormap(gray(256));
+imagesc(I);
+title([imname, ' image']);
+subplot(222);
+colormap(gray(256));
+imagesc(I_eq);
+title(['Histogram-equalized ', imname]);
+subplot(223);
+bar(h);
+title('Histogram');
+subplot(224);
 bar(h_eq);
-title('IPhisteq()')
+title('Equalized histogram');
 
 % Write current figure to file
 all_file = [imname,'_histeq', '.png'];
 saveas(gcf, all_file);
 fprintf('\nComplete image has been saved in file %s\n', all_file);
-
+end
