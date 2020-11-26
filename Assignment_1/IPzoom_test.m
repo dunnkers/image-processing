@@ -3,7 +3,7 @@ close all;                            % close open figure windows
 
 imname = 'cktboard';
 
-inputfile = [imname,'.tif'];          
+inputfile = ['input_images/', imname,'.tif'];          
 f=imread(inputfile);                  % read input image
 M = size(f,1);
 N = size(f,2);
@@ -18,11 +18,13 @@ g_ds = IPdownsample(f, zoomFactor);
 g_ = IPzoom(g_ds, zoomFactor);
 
 % Write output to file
-outputfile = [imname, '_zoomFactor=' num2str(zoomFactor), '.png'];
+outputfile = ['output_plots/', imname, ...
+    '_zoomFactor=' num2str(zoomFactor), '.png'];
 imwrite(g, outputfile);
 fprintf('\nFiltered image saved in file %s\n', outputfile);
 
-outputfile = [imname, '_reconstruction=' num2str(zoomFactor), '.png'];
+outputfile = ['output_plots/', imname, ...
+    '_reconstruction=' num2str(zoomFactor), '.png'];
 imwrite(g_, outputfile);
 fprintf('\nReconstructed image saved in file %s\n', outputfile);
 
@@ -47,7 +49,8 @@ axis tight;
 title('ZOOMED IMAGE')
 
 % Write current figure to file
-all_file = [imname,'_all','_zoomFactor=',num2str(zoomFactor),'.png'];
+all_file = ['output_plots/', imname,'_all', ...
+    '_zoomFactor=',num2str(zoomFactor),'.png'];
 saveas(gcf,all_file);
 
 %%% Plot reconstructed image
@@ -69,7 +72,8 @@ axis tight;
 title('RECONSTRUCTED IMAGE')
 
 % Write current figure to file
-all_file = [imname,'_all','_reconstruction=',num2str(zoomFactor),'.png'];
+all_file = ['output_plots/', imname,'_all',...
+    '_reconstruction=',num2str(zoomFactor),'.png'];
 saveas(gcf,all_file);
 
 fprintf('\nComplete image has been saved in file %s\n', all_file);

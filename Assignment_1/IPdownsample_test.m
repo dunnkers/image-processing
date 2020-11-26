@@ -3,7 +3,7 @@ close all;                            % close open figure windows
 
 imname = 'cktboard';
 
-inputfile = [imname,'.tif'];          
+inputfile = ['input_images/', imname,'.tif'];          
 f=imread(inputfile);                  % read input image
 M = size(f,1);
 N = size(f,2);
@@ -15,7 +15,8 @@ g = IPdownsample(f, downsamplingFactor);
 
 
 % Write output to file
-outputfile = [imname, '_downsamplingFactor=' num2str(downsamplingFactor), '.png'];
+outputfile = ['output_plots/', imname,...
+    '_downsamplingFactor=' num2str(downsamplingFactor), '.png'];
 imwrite(g, outputfile);
 fprintf('\nFiltered image saved in file %s\n', outputfile);
 
@@ -40,7 +41,8 @@ axis tight;
 title('DOWNSAMPLED IMAGE')
 
 % Write current figure to file
-all_file = [imname,'_all','_downsamplingFactor=',num2str(downsamplingFactor),'.png'];
+all_file = ['output_plots/', imname,'_all',...
+    '_downsamplingFactor=', num2str(downsamplingFactor), '.png'];
 saveas(gcf,all_file);
 
 fprintf('\nComplete image has been saved in file %s\n', all_file);

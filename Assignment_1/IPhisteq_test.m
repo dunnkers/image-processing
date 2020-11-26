@@ -13,7 +13,7 @@ showcase(imname, '.jpg');
 
 function showcase(imname, imext)
 % Normal image and histogram
-inputfile = [imname, imext];
+inputfile = ['input_images/', imname, imext];
 I = imread(inputfile);
 h = IPhistogram(I);
 % Compute equalized image and histogram
@@ -37,7 +37,7 @@ bar(h_eq);
 title('Equalized histogram');
 
 % Write current figure to file
-all_file = [imname,'_histeq', '.png'];
+all_file = ['output_plots/', imname, '_histeq', '.png'];
 saveas(gcf, all_file);
 fprintf('\nComplete image has been saved in file %s\n', all_file);
 end

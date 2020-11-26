@@ -3,7 +3,7 @@ close all;                            % close open figure windows
 
 imname = 'cktboard';
 
-inputfile = [imname,'.tif'];          
+inputfile = ['input_images/', imname,'.tif'];          
 f=imread(inputfile);                  % read input image
 M = size(f,1);
 N = size(f,2);
@@ -15,7 +15,8 @@ g = IPupsample(f, upsamplingFactor);
 
 
 % Write output to file
-outputfile = [imname, '_upsamplingFactor=' num2str(upsamplingFactor), '.png'];
+outputfile = ['output_plots/', imname, ...
+    '_upsamplingFactor=' num2str(upsamplingFactor), '.png'];
 imwrite(g, outputfile);
 fprintf('\nFiltered image saved in file %s\n', outputfile);
 
@@ -40,7 +41,8 @@ axis tight;
 title('UPSAMPLED IMAGE')
 
 % Write current figure to file
-all_file = [imname,'_all','_upsamplingFactor=',num2str(upsamplingFactor),'.png'];
+all_file = ['output_plots/', imname,'_all','_upsamplingFactor=', ...
+       num2str(upsamplingFactor),'.png'];
 saveas(gcf,all_file);
 
 fprintf('\nComplete image has been saved in file %s\n', all_file);
