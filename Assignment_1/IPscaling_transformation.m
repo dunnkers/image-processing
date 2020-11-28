@@ -6,7 +6,7 @@ function It = IPscaling_transformation(I, A, interpolation)
 %       A: Affine transformation matrix [3x3] of form 
 %           [cx 0 0; 0 cy 0; 0 0 1;] or a scalar value, then cx=cy.
 %       interpolation: interpolation method. See IPinterpolate.m
-if ~ismatrix(A)
+if isnumeric(A)
     A = [A 0 0; 0 A 0; 0 0 1;];
 end
 if ~exist('interpolation', 'var')
@@ -15,8 +15,7 @@ end
 I = im2double(I);
 
 % Image size
-M = size(I, 1); % height
-N = size(I, 2); % width
+[M, N] = size(I); % height, width
 D = [M, N, 1];  % dimensions
 
 % Transformed dimensions

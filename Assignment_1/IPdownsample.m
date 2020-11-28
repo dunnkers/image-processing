@@ -8,4 +8,3 @@ assert(isinteger(factor), 'factor must be an integer (was %d)', factor);
 It = IPscaling_transformation(I, 1/double(factor), 'nearest');
 downsampledImage = uint8(It * 2^8); % normalize back to 8-bit int image.
 end
-

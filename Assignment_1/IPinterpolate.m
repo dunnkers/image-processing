@@ -2,28 +2,39 @@ function v = IPinterpolate(I, P, interpolation)
 % IPinterpolate Interpolate image pixel for image using given method.
 % Arguments:
 %       I: Input image
+%       P: Coordinates of pixel with unknown intensity value; in original 
+%           (i.e. non-transformed) coordinate space. e.g. coordinates might
+%           have decimals.
 %       interpolation: one of 
 %           ('none' | 'nearest' | 'bilinear')
 %           meaning no interpolation, nearest neighbor interpolation and
 %           bilinear interpolation, respectively.
 switch interpolation
-    case 'nearest' 
+    %% Nearest neighbor interpolation
+    % Finds the nearest pixel in the inverse mapping using `ceil`.
+    case 'nearest'
         P = ceil(P);
         v = I(P(2), P(1));
     case 'bilinear'
     %% Bilinear interpolation
-    % Algorithm from https://en.wikipedia.org/wiki/Bilinear_interpolation
-        x1_y1 = ceil(P-1);
-        x2_y2 = ceil(P+1);
-        x1 = max(x1_y1(1), 1);
-        x2 = min(x2_y2(1), size(I, 2));
-        y1 = max(x1_y1(2), 1);
-        y2 = min(x2_y2(2), size(I, 1));
-        system = [1 x1 y1 x1*y1; 1 x1 y2 x1*y2;...
-                  1 x2 y1 x2*y1; 1 x2 y2 x2*y2;];
-        b = transpose(inv(system))*[1; P(1); P(2); P(1)*P(2);];
-        Q = [I(max(y1, 1), max(x1, 1)); I(y2, max(x1, 1));...
-             I(max(y1, 1), x2); I(y2, x2);]; % neighbors.
+    % See Bilinear interpolation Wikipedia page for used terminology and 
+    % also https://bit.ly/3o3vcxD for parts of implementation.
+        [M, N] = size(I);
+        x = P(1) + 0.5; % offset by 0.5
+        y = P(2) + 0.5; % offset by 0.5
+        % Any values out of acceptable range
+        x(x < 1) = 1;
+        x(x > N - 0.001) = N - 0.001;
+        x1 = floor(x);
+        x2 = x1 + 1;
+        y(y < 1) = 1;
+        y(y > M - 0.001) = M - 0.001;
+        y1 = floor(y);
+        y2 = y1 + 1;
+        % Neighboring Pixels
+        Q = [I(y1,x1); I(y1,x2); I(y2,x1); I(y2,x2);];
+        % Pixels Weights
+        b = [(y2-y)*(x2-x); (y2-y)*(x-x1); (x2-x)*(y-y1); (y-y1)*(x-x1);];
         v = dot(b, Q);
     otherwise % no interpolation, i.e. 'none'
         % if this pixel maps to an original pixel

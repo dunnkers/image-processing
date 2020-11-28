@@ -1,9 +1,6 @@
-% IPscaling_transformation([125 250; 250 75;], 2, 'bilinear');
-
-I = imread('input_images/cktboard.tif');
-% I = [125 250; 200 75;];
-factor = 1/2;
-method = 'nearest';
+I = [125 250 0; 200 75 0; 255 255 255;];
+factor = 80;
+method = 'bilinear';
 It = IPscaling_transformation(I, factor, method);
 
 subplot(131);
@@ -25,3 +22,11 @@ imagesc(imresize(I, factor, method));
 axis equal;
 axis tight;
 title('imresize')
+
+% Write current figure to file
+all_file = ['output_plots/', 'scaling_transformation',...
+    '_method=', method,...
+    '_factor=', num2str(factor), '.svg'];
+saveas(gcf, all_file);
+
+fprintf('\nComplete image has been saved in file %s\n', all_file);
