@@ -1,6 +1,6 @@
 function downsampledImage = IPdownsample(I, factor)
 % IPdownsample Down-samples an image by a factor of `factor`, which
-% must be a (positive) integer, i.e. shrinkFactor >= 1. Function shrinks
+% must be a (positive) integer, i.e. factor >= 1. Function shrinks
 % the image by means of averaging neighbours.
 % Arguments:
 %   I: input image to downsample
