@@ -10,7 +10,7 @@ N = size(f,2);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Image upsampling
-upsamplingFactor = 4;
+upsamplingFactor = uint8(4);
 g = IPupsample(f, upsamplingFactor);
 
 

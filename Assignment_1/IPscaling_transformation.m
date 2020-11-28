@@ -9,6 +9,9 @@ function It = IPscaling_transformation(I, A, interpolation)
 if ~ismatrix(A)
     A = [A 0 0; 0 A 0; 0 0 1;];
 end
+if ~exist('interpolation', 'var')
+   interpolation = 'none';
+end
 I = im2double(I);
 
 % Image size

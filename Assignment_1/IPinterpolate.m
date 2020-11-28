@@ -26,7 +26,8 @@ switch interpolation
              I(max(y1, 1), x2); I(y2, x2);]; % neighbors.
         v = dot(b, Q);
     otherwise % no interpolation, i.e. 'none'
-        if all(mod(P, 1) == 0) % if this pixel maps to an original pixel
+        % if this pixel maps to an original pixel
+        if mod(P(1), 1) == 0 && mod(P(2), 1) == 0
             v = I(P(2), P(1));
         else % otherwise pad with zeros; no interpolation
             v = 0;

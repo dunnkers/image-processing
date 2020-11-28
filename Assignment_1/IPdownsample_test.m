@@ -10,7 +10,7 @@ N = size(f,2);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Image downsampling
-downsamplingFactor = 4;
+downsamplingFactor = uint8(4);
 g = IPdownsample(f, downsamplingFactor);
 
 

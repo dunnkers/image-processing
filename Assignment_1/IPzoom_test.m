@@ -10,7 +10,7 @@ N = size(f,2);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Image zooming
-zoomFactor = 4;
+zoomFactor = uint8(4);
 g = IPzoom(f, zoomFactor);
 
 % Downsample, then zoom back again
