@@ -36,8 +36,14 @@ subplot(224);
 bar(h_eq);
 title('Equalized histogram');
 
+% Write output to file
+outputfile = ['output_images/', imname, ...
+    '_histeq', '.png'];
+imwrite(I_eq, outputfile);
+fprintf('\nFiltered image saved in file %s\n', outputfile);
+
 % Write current figure to file
-all_file = ['output_plots/', imname, '_histeq', '.png'];
+all_file = ['output_plots/', imname, '_all_histeq', '.svg'];
 saveas(gcf, all_file);
 fprintf('\nComplete image has been saved in file %s\n', all_file);
 end

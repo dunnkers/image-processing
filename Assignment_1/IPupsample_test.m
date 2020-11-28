@@ -15,7 +15,7 @@ g = IPupsample(f, upsamplingFactor);
 
 
 % Write output to file
-outputfile = ['output_plots/', imname, ...
+outputfile = ['output_images/', imname, ...
     '_upsamplingFactor=' num2str(upsamplingFactor), '.png'];
 imwrite(g, outputfile);
 fprintf('\nFiltered image saved in file %s\n', outputfile);
@@ -42,7 +42,7 @@ title('UPSAMPLED IMAGE')
 
 % Write current figure to file
 all_file = ['output_plots/', imname,'_all','_upsamplingFactor=', ...
-       num2str(upsamplingFactor),'.png'];
+       num2str(upsamplingFactor),'.svg'];
 saveas(gcf,all_file);
 
 fprintf('\nComplete image has been saved in file %s\n', all_file);

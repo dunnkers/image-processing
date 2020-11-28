@@ -15,7 +15,7 @@ g = IPdownsample(f, downsamplingFactor);
 
 
 % Write output to file
-outputfile = ['output_plots/', imname,...
+outputfile = ['output_images/', imname,...
     '_downsamplingFactor=' num2str(downsamplingFactor), '.png'];
 imwrite(g, outputfile);
 fprintf('\nFiltered image saved in file %s\n', outputfile);
@@ -42,7 +42,7 @@ title('DOWNSAMPLED IMAGE')
 
 % Write current figure to file
 all_file = ['output_plots/', imname,'_all',...
-    '_downsamplingFactor=', num2str(downsamplingFactor), '.png'];
+    '_downsamplingFactor=', num2str(downsamplingFactor), '.svg'];
 saveas(gcf,all_file);
 
 fprintf('\nComplete image has been saved in file %s\n', all_file);

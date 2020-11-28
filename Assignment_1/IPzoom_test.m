@@ -18,12 +18,12 @@ g_ds = IPdownsample(f, zoomFactor);
 g_ = IPzoom(g_ds, zoomFactor);
 
 % Write output to file
-outputfile = ['output_plots/', imname, ...
+outputfile = ['output_images/', imname, ...
     '_zoomFactor=' num2str(zoomFactor), '.png'];
 imwrite(g, outputfile);
 fprintf('\nFiltered image saved in file %s\n', outputfile);
 
-outputfile = ['output_plots/', imname, ...
+outputfile = ['output_images/', imname, ...
     '_reconstruction=' num2str(zoomFactor), '.png'];
 imwrite(g_, outputfile);
 fprintf('\nReconstructed image saved in file %s\n', outputfile);
@@ -50,7 +50,7 @@ title('ZOOMED IMAGE')
 
 % Write current figure to file
 all_file = ['output_plots/', imname,'_all', ...
-    '_zoomFactor=',num2str(zoomFactor),'.png'];
+    '_zoomFactor=',num2str(zoomFactor),'.svg'];
 saveas(gcf,all_file);
 
 %%% Plot reconstructed image
@@ -73,7 +73,7 @@ title('RECONSTRUCTED IMAGE')
 
 % Write current figure to file
 all_file = ['output_plots/', imname,'_all',...
-    '_reconstruction=',num2str(zoomFactor),'.png'];
+    '_reconstruction=',num2str(zoomFactor),'.svg'];
 saveas(gcf,all_file);
 
 fprintf('\nComplete image has been saved in file %s\n', all_file);

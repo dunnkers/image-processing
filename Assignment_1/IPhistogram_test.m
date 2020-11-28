@@ -19,7 +19,7 @@ bar(h);
 title('IPhistogram()')
 
 % Write current figure to file
-all_file = ['output_plots/', imname,'_all','_histograms', '.png'];
+all_file = ['output_plots/', imname,'_all','_histograms', '.svg'];
 saveas(gcf, all_file);
 fprintf('\nComplete image has been saved in file %s\n', all_file);
 
