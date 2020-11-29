@@ -1,6 +1,29 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
-\usepackage{style}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx, amssymb, dsfont}
+\usepackage{listings, color, courier}
+\usepackage{parskip}
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage[nottoc]{tocbibind}
+\usepackage{url}
+\usepackage{natbib}
+
+\usepackage{placeins} % FloatBarrier
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage[margin=1in]{geometry}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{tabu}
+\usepackage{svg}
+
+\setlength{\parindent}{0pt}
+\usepackage{tabularx}
 
 \title{Image Processing\\
     Lab 1}
@@ -12,7 +35,19 @@
 \maketitle
 
 \section*{Exercise 1}
-\subsection*{a} 
+In this exercise, \textbf{downsampling}, \textbf{upsampling} and \textbf{zooming} functions are requested. Although we at first implemented them separately, we realized all three are spatial operations that share the same way of geometrically transforming the original image pixel coordinates, just with different scaling factors and/or interpolation method. For example, we can use a scaling constant, say $factor$, to both shrink- (downsampling) using $factor < 1$ and grow an image (upsample) using $factor > 1$. Given these similarities, what then just differs is the \textit{interpolation} method, which can be passed as an argument.
+
+For this reason, we built a generic transformation function, \textsc{IPscaling\_transformation}. This function takes in an image, an (affine) transformation matrix (must be of a certain form) and a parameter controlling which interpolation method to use. Where possible, we followed the terminology from the book \citep{gonzalez2008digital}. We will explain as we go through the exercises.
+
+(Note that all our 'test' scripts are named just like the functions, but with a suffix '\_test').
+\subsection*{(a)} First of all, down-sampling. The function takes in an image and a scaling factor, $factor$. 
+
+\begin{figure}[ht]
+    \centering
+    \includesvg[width=\textwidth]{output_plots/cktboard_all_downsamplingFactor=4.svg}
+    \caption{Comparison plot of original- and downsampled checkerboard image.}
+    \label{fig:downsampling}
+\end{figure}
 
 \subsection*{b}
 
@@ -42,6 +77,7 @@
 
 \subsection*{c}
 
-
+\bibliographystyle{plain}
+\bibliography{main}
 
 \end{document}
