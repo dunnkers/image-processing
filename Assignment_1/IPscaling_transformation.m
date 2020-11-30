@@ -34,7 +34,7 @@ for y = 1:Mt
     for x = 1:Nt
         Pt = [x, y, 1];
         P = Pt / A; % original coordinate (same as Pt * inv(A)).
-        offset = diag(0.5 * (1 - inv(A)))';
+        offset = diag(0.5 * (1 - inv(A)))'; % inverse mapping centering offset
         It(y, x) = IPinterpolate(I, P, offset, interpolation);
     end
 end
