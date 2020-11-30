@@ -1,6 +1,6 @@
 I = [125 250 0; 200 75 0; 255 255 255;];
 factor = 40;
-method = 'bilinear';
+method = 'nearest';
 It = IPscaling_transformation(I, factor, method);
 
 f = figure;
@@ -27,7 +27,7 @@ title('imresize')
 % Write current figure to file
 all_file = ['output_plots/', 'matrix_all',...
     '_', method,...
-    '_factor=', num2str(factor), '.svg'];
+    '_factor=', num2str(factor), '.png'];
 set(gcf, 'PaperUnits', 'normalized')
 set(gcf, 'PaperPosition', [0 0 0.7 0.15])
 saveas(gcf, all_file);
