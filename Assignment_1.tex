@@ -107,7 +107,9 @@ Thus, the challenge lies in estimating values for pixels with unknown intensity 
     \label{fig:upsampling}
 \end{figure}
 
-\subsection*{(e)} Finally, we implement a zooming function. This is upsampling but with interpolation: 'pixel replication' or better, nearest neighbor interpolation. Again we use our generic function, using $factor > 1$ and 'nearest' interpolation. \ding{118} Implementation: Listing~\ref{code:IPzoom}.
+\subsection*{(e)} Finally, we implement a zooming function. This is upsampling but with interpolation: 'pixel replication' or better, nearest neighbor interpolation. Again we use our generic function, using $factor > 1$ and 'nearest' interpolation.
+
+\ding{118} Implementation: Listing~\ref{code:IPzoom}.
 
 \subsection*{(f)} See Figure~\ref{fig:zoom} for a x4 factor zooming of the cktboard image. The zoomed image is 4 times the size, but looks the same, due to pixel replication.
 \begin{figure}[ht]
@@ -131,26 +133,74 @@ Out of curiosity, we compared our nearest neighbor interpolation with \textbf{Bi
 
 \begin{figure}[ht]
     \centering
-    \includesvg[inkscapelatex=false, width=\textwidth]{Assignment_1/output_plots/matrix_all_bilinear_factor=40.svg}
-    \includesvg[inkscapelatex=false, width=\textwidth]{Assignment_1/output_plots/matrix_all_nearest_factor=40.svg}
-    \caption{Comparison plot of original- and reconstructed cktboard image. The bottom image presents a zoomed-in view of the original and reconstructed image.}
+    \includesvg[width=\textwidth]{Assignment_1/output_plots/matrix_all_bilinear_factor=40.svg}
+    \includesvg[width=\textwidth]{Assignment_1/output_plots/matrix_all_nearest_factor=40.svg}
+    \caption{Interpolation using \textsc{IPinterpolate}. The top row shows a zooming operation of x40 using \textit{Bilinear interpolation}; the bottom row also does a x40 magnification, but using \textit{nearest neighbors interpolation}.}
     \label{fig:bilinear}
 \end{figure}
 
 \section*{Exercise 2}
-\subsection*{a} \ding{118} Implementation: Listing~\ref{code:IPhistogram}.
+\subsection*{(a)} Histogram computation was discussed in the book section 3.3, and was defined as follows. Let $r_k$ denote the image intensities of some L-level digital image, e.g. where $k = 0,1,2,...,L-1$. We define the intensity levels of our digital image with the function $f(x, y)$, that outputs an intensity level given a set of coordinates. Now, we the unnormalized histogram of $f$ is defined as:
 
-\subsection*{b} \ding{118} Implementation: Listing~\ref{code:IPhisteq}.
+\[
+\begin{aligned}
+h(r_k)=n_k & \text{ for $k=0,1,2,...,L-1$}
+\end{aligned}
+\]
 
-\subsection*{c}
+Where $n_k$ denotes the amount of pixels present in the image that are at intensity level $k$. So, what is requested in this exercise is an implementation of the function $h$. Note that one can subdivide the intensity scale in an amount of \textit{histogram bins}, though we left the amount of bins equal to the amount of intensity levels, that is $L$. Specifically, our image is 8-bit, so $L = 2^8 = 256$. Let us compare our implementation of the histogram with the built-in Matlab one, see Figure~\ref{fig:histogram}.
+
+\begin{figure}[ht]
+    \centering
+    \includesvg[width=\textwidth]{Assignment_1/output_plots/blurrymoon_all_histograms.svg}
+    \caption{Example of the result of applying our histogram function, \textsc{IPhistogram} versus Matlab's built-in one.}
+    \label{fig:histogram}
+\end{figure}
+
+We observe that the blurry image has the majority of its pixels in the lower value ranges of $[0, 255]$, i.e. dark or black pixels. This corresponds to what we see in the image.
+
+\ding{118} Implementation: Listing~\ref{code:IPhistogram}.
+
+\subsection*{(b)} Next, we implement histogram equalization. In histogram equalization, we can increase an image's contrast by better distributing intensity values across the histogram value range. We do this by mapping each intensity level to a new value using the \textit{Cumulative Distribution Function} (CDF) of the intensity value and multiplying it by the amount of intensity levels, $L - 1$. This can be expressed as (Eq 3-11):
+
+\[
+s=T(r)=(L-1)\int_{0}^{1} p_r(w)dw
+\]
+
+Where $p$ is the \textit{normalized} histogram, which is defined as $p(r_k)=\frac{h(r_k)}{MN}=\frac{n_k}{MN}$, for which the sum for all values of $k$ should always be 1. We can think of the normalized histogram as expressing the 'probability' of encountering that pixel intensity value - and thus the total probability of encountering any pixel intensity value should be one: $\sum_{k=0}^{L-1}p(r_k)=1$. Now, to compute the integral shown above in a discrete way, we can use the following formula (Eq 3-15):
+
+\[
+\begin{aligned}
+s_k=T(r_k)=(L-1)\sum_{j=0}^{k}p_r(r_j) & \text{ where $k=0,1,2,...,L-1$}
+\end{aligned}
+\]
+
+Where $s_k$ will be the histogram-equalized pixel intensity value at $k$, given an intensity value $r$. Now onto the implementation. See \ding{118} Listing~\ref{code:IPhisteq}. The function uses the previously built \textsc{IPhistogram} to compute the image histogram and normalizes it. Next, we re-compute each intensity value using histogram equalization and saves it in a vector $T$. Now we only have to map all image pixel intensities to their new values in $T$ by looping the image.
+
+\subsection*{(c)} The result of this operation can be seen in Figure~\ref{fig:histeq}. The histogram equalization effect on the blurry moon image did not have much effect, however. It appears that the image histogram already had a fair distribution.
+\begin{figure}[ht]
+    \centering
+    \includesvg[width=\textwidth]{Assignment_1/output_plots/blurrymoon_all_histeq.svg}
+    \caption{Example of the result of applying our histogram function, \textsc{IPhistogram} versus Matlab's built-in one.}
+    \label{fig:histeq}
+\end{figure}
+
+A case where the effects of histogram equalization can be seen more clearly is in Figure~\ref{fig:histeq_2}, which shows histogram equalization applied on a different image, taken from an online article \citep{wiki:Histogram_equalization}. It can be observed that this time around, the histogram equalization technique has a clearly positive effect on enhancing the image contrast.
+
+\begin{figure}[ht]
+    \centering
+    \includesvg[width=\textwidth]{Assignment_1/output_plots/HawkesBay_all_histeq.svg}
+    \caption{Example of the result of applying our histogram function, \textsc{IPhistogram} versus Matlab's built-in one.}
+    \label{fig:histeq_2}
+\end{figure}
 
 
 \section*{Exercise 3}
-\subsection*{a}
+\subsection*{(a)}
 
-\subsection*{b}
+\subsection*{(b)}
 
-\subsection*{c}
+\subsection*{(c)}
 
 \bibliographystyle{plain}
 \bibliography{Assignment_1}
