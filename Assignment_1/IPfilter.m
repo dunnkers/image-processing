@@ -23,5 +23,4 @@ function result = IPfilter(f, kernel)
             end
         end
     end
-%     result = uint8(result);
 end
