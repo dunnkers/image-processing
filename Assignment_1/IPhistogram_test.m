@@ -9,10 +9,10 @@ M = size(f,1);
 N = size(f,2);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-h = IPhistogram(f);
+h = IPhistogram(f, 2^8/4);
 figure;
 subplot(121);
-h_ref = histogram(f, 2^8);
+h_ref = histogram(f, 2^8/4);
 title('histogram()')
 subplot(122);
 bar(h);
