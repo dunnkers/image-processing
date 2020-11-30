@@ -1,6 +1,6 @@
 I = [125 250 0; 200 75 0; 255 255 255;];
 factor = 80;
-method = 'bilinear';
+method = 'nearest';
 It = IPscaling_transformation(I, factor, method);
 
 f = figure;
