@@ -20,8 +20,8 @@ D = [M, N, 1];  % dimensions
 
 % Transformed dimensions
 Dt = D * A;
-Mt = floor(Dt(1));
-Nt = floor(Dt(2));
+Mt = round(Dt(1));
+Nt = round(Dt(2));
 
 % Map coordinates to new values
 It = zeros(Mt, Nt);
@@ -34,7 +34,8 @@ for y = 1:Mt
     for x = 1:Nt
         Pt = [x, y, 1];
         P = Pt / A; % original coordinate (same as Pt * inv(A)).
-        It(y, x) = IPinterpolate(I, P, interpolation);
+        offset = diag(0.5 * (1 - inv(A)))';
+        It(y, x) = IPinterpolate(I, P, offset, interpolation);
     end
 end
 

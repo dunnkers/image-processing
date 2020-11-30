@@ -51,6 +51,8 @@ title('ZOOMED IMAGE')
 % Write current figure to file
 all_file = ['output_plots/', imname,'_all', ...
     '_zoomFactor=',num2str(zoomFactor),'.svg'];
+set(gcf, 'PaperUnits', 'normalized')
+set(gcf, 'PaperPosition', [0 0 0.7 0.15])
 saveas(gcf,all_file);
 
 %%% Plot reconstructed image
@@ -74,6 +76,8 @@ title('RECONSTRUCTED IMAGE')
 % Write current figure to file
 all_file = ['output_plots/', imname,'_all',...
     '_reconstruction=',num2str(zoomFactor),'.svg'];
+set(gcf, 'PaperUnits', 'normalized')
+set(gcf, 'PaperPosition', [0 0 0.7 0.15])
 saveas(gcf,all_file);
 
 fprintf('\nComplete image has been saved in file %s\n', all_file);

@@ -1,4 +1,4 @@
-function v = IPinterpolate(I, P, interpolation)
+function v = IPinterpolate(I, P, offset, interpolation)
 % IPinterpolate Interpolate image pixel for image using given method.
 % Arguments:
 %       I: Input image
@@ -9,19 +9,23 @@ function v = IPinterpolate(I, P, interpolation)
 %           ('none' | 'nearest' | 'bilinear')
 %           meaning no interpolation, nearest neighbor interpolation and
 %           bilinear interpolation, respectively.
+[M, N] = size(I);
 switch interpolation
     %% Nearest neighbor interpolation
     % Finds the nearest pixel in the inverse mapping using `ceil`.
     case 'nearest'
-        P = ceil(P);
-        v = I(P(2), P(1));
+        % Make sure within bounds
+        Po = P + offset;
+        x = min(max(1, Po(1)), N);
+        y = min(max(1, Po(2)), M);
+        v = I(round(y), round(x));
     case 'bilinear'
     %% Bilinear interpolation
     % See Bilinear interpolation Wikipedia page for used terminology and 
     % also https://bit.ly/3o3vcxD for parts of implementation.
-        [M, N] = size(I);
-        x = P(1) + 0.5; % offset by 0.5
-        y = P(2) + 0.5; % offset by 0.5
+        Po = P + offset;
+        x = Po(1);
+        y = Po(2);
         % Any values out of acceptable range
         x(x < 1) = 1;
         x(x > N - 0.001) = N - 0.001;

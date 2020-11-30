@@ -43,6 +43,8 @@ title('DOWNSAMPLED IMAGE')
 % Write current figure to file
 all_file = ['output_plots/', imname,'_all',...
     '_downsamplingFactor=', num2str(downsamplingFactor), '.svg'];
+set(gcf, 'PaperUnits', 'normalized')
+set(gcf, 'PaperPosition', [0 0 0.7 0.15])
 saveas(gcf,all_file);
 
 fprintf('\nComplete image has been saved in file %s\n', all_file);
