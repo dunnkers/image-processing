@@ -13,6 +13,8 @@ N = size(f,2);
 downsamplingFactor = uint8(4);
 g = IPdownsample(f, downsamplingFactor);
 
+downsamplingFactor2 = uint8(15);
+g2 = IPdownsample(f, downsamplingFactor2);
 
 % Write output to file
 outputfile = ['output_images/', imname,...
@@ -25,7 +27,7 @@ fprintf('\nFiltered image saved in file %s\n', outputfile);
 
 % Plot the input image
 figure;
-subplot(121);
+subplot(131);
 colormap(gray(256));
 imagesc(f);
 axis equal;
@@ -33,12 +35,20 @@ axis tight;
 title('INPUT IMAGE')
 
 % Plot the output image
-subplot(122);
+subplot(132);
 colormap(gray(256));
 imagesc(g);
 axis equal;
 axis tight;
-title('DOWNSAMPLED IMAGE')
+title('DOWNSAMPLED (x4)')
+
+% Plot the output image
+subplot(133);
+colormap(gray(256));
+imagesc(g2);
+axis equal;
+axis tight;
+title('DOWNSAMPLED (x15)')
 
 % Write current figure to file
 all_file = ['output_plots/', imname,'_all',...
