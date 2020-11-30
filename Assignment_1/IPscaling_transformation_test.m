@@ -1,6 +1,6 @@
 I = [125 250 0; 200 75 0; 255 255 255;];
 factor = 40;
-method = 'bilinear';
+method = 'nearest';
 It = IPscaling_transformation(I, factor, method);
 
 f = figure;
@@ -15,7 +15,7 @@ colormap(gray(256));
 imagesc(It);
 axis equal;
 axis tight;
-title('IPscaling\_transformation')
+title('IPscaling\\\_transformation') % extra '\' to make LaTeX happy.
 
 subplot(133);
 colormap(gray(256));
