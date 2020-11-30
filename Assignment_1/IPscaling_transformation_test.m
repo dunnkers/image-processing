@@ -1,5 +1,5 @@
 I = [125 250 0; 200 75 0; 255 255 255;];
-factor = 80;
+factor = 40;
 method = 'bilinear';
 It = IPscaling_transformation(I, factor, method);
 
