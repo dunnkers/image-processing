@@ -1,53 +1,5 @@
 \documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[utf8]{inputenc}
-\usepackage{mathptmx, amssymb, dsfont}
-\usepackage{listings, color, courier}
-\usepackage{parskip}
-\usepackage{amsmath}
-\usepackage{tcolorbox}
-\usepackage[nottoc]{tocbibind}
-\usepackage{url}
-\usepackage{natbib}
-\usepackage{xfrac}
-
-\usepackage{placeins} % FloatBarrier
-\usepackage{float}
-\usepackage{graphicx}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{tikz}
-\usepackage[margin=1in]{geometry}
-\usepackage{multicol}
-\usepackage{multirow}
-\usepackage{tabu}
-\usepackage{svg}
-\usepackage{listings}
-\usepackage{hyperref}
-\captionsetup[lstlisting]{font={small,tt}}
-\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
-\definecolor{mylilas}{RGB}{170,55,241}
-\usepackage{pifont}
-
-\setlength{\parindent}{0pt}
-\usepackage{tabularx}
-
-\lstset{language=Matlab,%
-    %basicstyle=\color{red},
-    breaklines=true,%
-    morekeywords={matlab2tikz},
-    keywordstyle=\color{blue},%
-    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
-    identifierstyle=\color{black},%
-    stringstyle=\color{mylilas},
-    commentstyle=\color{mygreen},%
-    showstringspaces=false,%without this there will be a symbol in the places where there is a space
-    numbers=left,%
-    numberstyle={\tiny \color{black}},% size of the numbers
-    numbersep=9pt, % this defines how far the numbers are from the text
-    emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
-    %emph=[2]{word1,word2}, emphstyle=[2]{style},    
-}
+\usepackage{styles}
 
 \title{Image Processing\\
     Lab 1}
@@ -179,9 +131,8 @@ Out of curiosity, we compared our nearest neighbor interpolation with \textbf{Bi
 
 \begin{figure}[ht]
     \centering
-    \includesvg[width=\textwidth]{Assignment_1/output_plots/cktboard_all_zoomed_reconstruction=4.svg}
-    % \includesvg[width=\textwidth]{Assignment_1/output_plots/matrix_all_bilinear_factor=40.svg}
-    % \includesvg[width=\textwidth]{Assignment_1/output_plots/matrix_all_nearest_factor=80.svg}
+    \includegraphics[width=\textwidth]{Assignment_1/output_plots/matrix_all_bilinear_factor=40.png}
+    \includegraphics[width=\textwidth]{Assignment_1/output_plots/matrix_all_nearest_factor=80.png}
     \caption{Comparison plot of original- and reconstructed cktboard image. The bottom image presents a zoomed-in view of the original and reconstructed image.}
     \label{fig:bilinear}
 \end{figure}
