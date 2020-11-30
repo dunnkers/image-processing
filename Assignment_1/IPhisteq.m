@@ -20,11 +20,7 @@ T = zeros(1, 2^8); % 8-bit image
 % Map each intensity level
 for k = 1:L
     % Cumulative probabilities (normalized intensity levels) up to k
-    cdf_k = 0;
-    for j = 1:k
-        cdf_k = cdf_k + p_r(j);
-    end
-    
+    cdf_k = sum(p_r(1:k));
     T(k) = (L - 1) * cdf_k;
 end
 
