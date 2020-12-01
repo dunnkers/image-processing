@@ -229,34 +229,35 @@ Important to note is that the kernel its center is placed on the pixel we are mo
 
 \begin{figure}[H]
     \centering
-    \caption{TODO}
+    \caption{Results of testing \textit{IPfilter()}}
     \label{fig:filterResults}
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{inp}
-        \caption{}
+        \includegraphics[width=\textwidth]{Assignment_1/input_images/bubbles.png}
+        \caption{Input image \textit{"bubbles"}}
         \label{fig:orginalBubbles}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{}
-        \caption{}
+        \includegraphics[width=\textwidth]{Assignment_1/output_images/filter_kevin.png}
+        \caption{The output image using out own function \textit{IPfilter()}.}
         \label{fig:filterKevin}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{}
-        \caption{}
+        \includegraphics[width=\textwidth]{Assignment_1/output_images/filter_matlab.png}
+        \caption{The output image using matlab's function \textit{filter2()}.}
         \label{fig:filterMatlab}
     \end{subfigure}
 \end{figure}
 
-To see if our implementation is working correctly we compared it to the matlab function \textit{filter2}, as can be seen in Figure \ref{fig:filterResult}.
-
+To see if our implementation is working correctly we used the provided image \textit{"bubbles.tif"} and compared the result of using our function \textit{IPfilter} to the results of using the matlab function \textit{filter2}, as can be seen in Figure \ref{fig:filterResults}. Both Figure \ref{fig:filterKevin} and \ref{fig:filterMatlab} are exactly the same, thus showing our implementation is correct.
 
 \subsection*{(b)}
+For this part of the exercise we needed to implement the Laplacian (image) enhancement technique. This technique involves creating a Laplacian filter and then using the filter to enhance the original image. The Laplacian filter is the second derivative of the image, using a kernel. Formula \ref{eq:laplacian_filter} shows how this can be calculated for each pixel. It is easy to deduce here that the laplacian filter is simply a regular filter with a specific kernel applied. The book provides 4 different kernels that can be used. These are: 
+
 
 \ding{118} Implementation: Listing~\ref{code:IPlaplacian}.
 
