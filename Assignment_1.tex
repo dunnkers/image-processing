@@ -227,24 +227,31 @@ While the exercise requires us to implement it for a $3x3$ kernel, we decided to
 
 Important to note is that the kernel its center is placed on the pixel we are modifying. So the center of the kernel is indexed with $(0,0)$, due to how the indexing in matlab works we had to compensate for this using the variables \textit{kernelCenterX} and \textit{kernelCenterY}. The implementation can be found in \ding{118} Listing~\ref{code:IPfilter} and is very self explanatory.
 
-% \begin{figure}[H]
-%     \centering
-%     \caption{TODO}
-%     \label{fig:quiver}
-%     \begin{subfigure}[t]{0.49\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{}
-%         \caption{}
-%         \label{}
-%     \end{subfigure}
-%     \hfill
-%     \begin{subfigure}[t]{0.49\textwidth}
-%         \centering
-%         \includegraphics[width=\textwidth]{}
-%         \caption{}
-%         \label{}
-%     \end{subfigure}
-% \end{figure}
+\begin{figure}[H]
+    \centering
+    \caption{TODO}
+    \label{fig:filterResults}
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{inp}
+        \caption{}
+        \label{fig:orginalBubbles}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{}
+        \caption{}
+        \label{fig:filterKevin}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{}
+        \caption{}
+        \label{fig:filterMatlab}
+    \end{subfigure}
+\end{figure}
 
 To see if our implementation is working correctly we compared it to the matlab function \textit{filter2}, as can be seen in Figure \ref{fig:filterResult}.
 
