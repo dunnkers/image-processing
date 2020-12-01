@@ -1,15 +1,18 @@
-% Do not use filter, filter2, conv, or conv2
-% Spacial filtering of an image
+% Function that performs a general image filter
+% It takes the orginal image and a chosen kernel as input
+% It outputs the enhanced image
 function result = IPfilter(f, kernel)
-    [M, N] = size(f); %M = height/#rows, N = width/#columns
+    [M, N] = size(f); %M = height, N = width
     result = zeros(M,N);
     [kernelHeight, kernelWidth] = size(kernel);
     a = (kernelHeight-1)/2;
     b = (kernelWidth-1)/2;
     kernelCenterX = (kernelHeight+1) / 2;
     kernelCenterY = (kernelWidth+1) / 2;
+    % loop over all the pixels in the image
     for x=1:M
         for y=1:N
+            % loop over the kernel size
             for s=-a:a
                 for t=-b:b
                     if (x+s < 1 || y+t < 1 || x+s > M || y+t > N)

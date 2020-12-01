@@ -1,5 +1,8 @@
+% Function that performs the laplacian enhancement technique
+% It takes the orginal image and a chosen kernel as input
+% It outputs the enhanced image
 function result = IPlaplacian(f, kernel)
-    [M, N] = size(f); %M = height/#rows, N = width/#columns
+    [M, N] = size(f); %M = height, N = width
     laplacian = IPfilter(f, kernel); % create laplacian image
 
     % substract laplacian image from orginal image
