@@ -196,9 +196,62 @@ A case where the effects of histogram equalization can be seen more clearly is i
 
 
 \section*{Exercise 3}
+
+introduce the problem theoretically, with formulas, explain why the formulas make sense if
+that seems applicable;
+2. refer to the implementation, in the following terms: “Listing x presents IP....(image, x, y) that
+implements the process discussed above”, or something similar;
+3. explain the implementation if it is non trivial; for example, if you literally implemented the
+formulas you presented earlier then that is sufficient; however, if you are performing convolution by shifting the image under your filter explain what you are doing;
+4. refer to the results, like: “Applying IP..... on Figure q with x = ? and y = ? we find Figure z”;
+5. discuss your results and explain them if applicable: “In Figure 6 we see that .... this is caused
+by ....”.
+
 \subsection*{(a)}
+For this exercise we are tasked to implement a function that performs spacial filtering of an image using a $3x3$ mask (or kernel). We are not allowed to use the matlab functions \textit{filter, filter2, conv} or \textit{conv2}, seeing as those already do this or part of it.
+
+While there are different types of filtering techniques for images, but for this exercise we only focus on spacial filtering. A spacial filtering of an image is done by moving the center of a kernel over the image and computing the sum of products at each pixel. This process follows Formula \ref{eq:filter3x3} (Eq $3-30$ in the book) for each individual pixel when using a $3x3$ mask.
+
+\begin{equation}\label{eq:filter3x3}
+\begin{split}
+    g(x,y) &= w(-1,-1)\cdot f(x-1, y-1) + w(-1,0)\cdot f(x-1,y) + ...\\
+            &+ w(0,0)\cdot f(x,y) + ... + w(1,1) \cdot f(x+1,y+1) 
+\end{split}
+\end{equation}
+
+While the exercise requires us to implement it for a $3x3$ kernel, we decided to use the more general formula that is able to handle an arbitrary sized kernel. We did this in view of future exercises and to make it more robust. This formula uses the the dimensions of the kernel by looping from $-a$ to $a$ and looping from $-b$ to $b$. For a kernel of size $m \times n$ the value of $a$ and $b$ is determined by $m = 2a + 1$ and $n = 2b + 1$. We will use Formula \ref{eq:filter} (Eq $3-31$ in the book) for our function.
+
+\begin{equation}\label{eq:filter}
+    g(x, y)=\sum_{s=-a}^{a} \sum_{t=-b}^{b} w(s, t) f(x+s, y+t)
+\end{equation}
+
+Important to note is that the kernel its center is placed on the pixel we are modifying. So the center of the kernel is indexed with $(0,0)$, due to how the indexing in matlab works we had to compensate for this using the variables \textit{kernelCenterX} and \textit{kernelCenterY}. The implementation can be found in \ding{118} Listing~\ref{code:IPfilter} and is very self explanatory.
+
+% \begin{figure}[H]
+%     \centering
+%     \caption{TODO}
+%     \label{fig:quiver}
+%     \begin{subfigure}[t]{0.49\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{}
+%         \caption{}
+%         \label{}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[t]{0.49\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{}
+%         \caption{}
+%         \label{}
+%     \end{subfigure}
+% \end{figure}
+
+To see if our implementation is working correctly we compared it to the matlab function \textit{filter2}, as can be seen in Figure \ref{fig:filterResult}.
+
 
 \subsection*{(b)}
+
+\ding{118} Implementation: Listing~\ref{code:IPlaplacian}.
 
 \subsection*{(c)}
 
@@ -221,5 +274,9 @@ A case where the effects of histogram equalization can be seen more clearly is i
 \lstinputlisting[caption={IPhistogram.m: construct an image's histogram.}, label={code:IPhistogram}]{Assignment_1/IPhistogram.m}
 \subsubsection{Exercise 2 (b)}
 \lstinputlisting[caption={IPhisteq.m: histogram equalization.}, label={code:IPhisteq}]{Assignment_1/IPhisteq.m}
-
+\subsection{Exercise 3}
+\subsubsection{Exercise 3 (a)}
+\lstinputlisting[caption={IPfilter.m: image filter.}, label={code:IPfilter}]{Assignment_1/IPfilter.m}
+\subsubsection{Exercise 3 (b)}
+\lstinputlisting[caption={IPlaplacian.m: Laplacian enhancement technique.}, label={code:IPlaplacian}]{Assignment_1/IPlaplacian.m}
 \end{document}
