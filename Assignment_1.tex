@@ -10,15 +10,15 @@
 
 \maketitle
 
-Note, that all used source code can be found attached next to this report pdf file. Its structure should be self-explanatory; all requested functions are named accordingly and any extra functions are explained in the report. Note that (almost) every function has a corresponding test script, which is named just like its function, but with a suffix '\_test'. Where possible, we followed the terminology from the book \citep{gonzalez2008digital} for variable naming.
+Note, that all used source code can be found attached next to this report's pdf file. Its structure should be self-explanatory; all requested functions are named accordingly and any extra functions are explained in the report. Note that (almost) every function has a corresponding test script, which is named just like its function, but with a suffix '\_test'. Where possible, we followed the terminology from the book \citep{gonzalez2008digital} for variable naming.
 
 \section*{Exercise 1}
 In this exercise, \textbf{downsampling}, \textbf{upsampling} and \textbf{zooming} functions are requested. Although we at first implemented them separately, we realized all three are spatial operations that share the same way of geometrically transforming the original image pixel coordinates, just with different scaling factors and/or interpolation method. For example, we can use a scaling constant, say $factor$, to both shrink- (downsampling) using $factor < 1$ and grow an image (upsample) using $factor > 1$. Given these similarities, what then just differs is the \textit{interpolation} method, which can be passed as an argument.
 
-For this reason, we built a generic transformation function, \textsc{IPscaling\_transformation}. This function takes in an image, an (affine) transformation matrix (must be of a certain form) and a parameter controlling which interpolation method to use. Because our requested scaling implementations use this function, we explain this function first.
+For this reason, we built a generic transformation function, \textsc{IPscaling\_transformation}. This function takes in an image, an (affine) transformation matrix (must be of a certain form), and a parameter controlling which interpolation method to use. Because our requested scaling implementations use this function, we explain this function first.
 
 \subsection*{\textsc{IPscaling\_transformation}}
-Like described in the book \citep{gonzalez2008digital} section 2.6 'Geometric Transformations', it is possible to compute new coordinates of some various geometric transformations using just a matrix. Multiplying a coordinate vector by this matrix then produces its new mapped location. Like said in the text, what can be particularly useful of this method is that one can 'stack' various transformations in one matrix, by multiplying various transformation matrices. Even though we do not need this feature in our implementation, we still thought of this mapping step as an elegant way to approach the problem. The scaling transformation matrix $A$ is defined as:
+As described in the book \citep{gonzalez2008digital} section 2.6 \textit{'Geometric Transformations'}, it is possible to compute new coordinates of some various geometric transformations using just a matrix. Multiplying a coordinate vector by this matrix then produces its new mapped location. Like said in the text, what can be particularly useful of this method is that one can 'stack' various transformations in one matrix, by multiplying various transformation matrices. Even though we do not need this feature in our implementation, we still thought of this mapping step as an elegant way to approach the problem. The scaling transformation matrix $A$ is defined as:
 
 \begin{figure}[ht]
 \[A = 
@@ -48,16 +48,16 @@ y\\
  \]
 \end{figure}
 
-Even though we can now map from the original image space to the transformed space, it is not trivial how now to determine intensity levels for the unknown pixel values in the transformed space; i.e. interpolation. To make this interpolation process easier later on, we chose to use an \textit{inverse mapping} approach. In inverse mapping, we do not map coordinates from the original space, but rather, we take the transformed coordinates directly and compute the original image position to compute its new intensity value. Given a coordinate in the transformed space, we can obtain its original coordinates using the inverse transformation matrix $A^{-1}$: hence 'inverse' mapping.
+Even though we can now map from the original image space to the transformed space, it is not trivial how now to determine intensity levels for the unknown pixel values in the transformed space; i.e. interpolation. To make this interpolation process easier later on, we chose to use an \textit{inverse mapping} approach. With inverse mapping, we do not map coordinates from the original space, but rather, we take the transformed coordinates directly and compute the original image position to compute its new intensity value. Given a coordinate in the transformed space, we can obtain its original coordinates using the inverse transformation matrix $A^{-1}$: hence 'inverse' mapping.
 
-\ding{118} For the implementation of \textsc{IPscaling\_transformation}, see Listing~\ref{code:IPscaling_transformation}. We determine the scaled image dimensions by forward mapping the bottom-right coordinate, which is equal to the original image dimensions vector. This indeed returns the scaled image dimensions; but assumes the image only scales, but does not rotate or sheer. This is an assumption we can make, however, because we only perform image scaling indeed.
+\ding{118} For the implementation of \textsc{IPscaling\_transformation}, see Listing~\ref{code:IPscaling_transformation}. We determine the scaled image dimensions by forward mapping the bottom-right coordinate, which is equal to the original image dimensions vector. This indeed returns the scaled image dimensions, but assumes the image only scales, but does not rotate or sheer. This is an assumption we can make, however, because we only perform image scaling indeed.
 
 Now that we have the scaled image dimensions, each output pixel's corresponding original coordinates are computed. Note that we offset the original coordinates by some amount $\sfrac{1}{2}(1 - A^{-1})$ in order to let the original pixels point to the \textbf{centers} of their respective output location.
 % [TODO]: explain offset
-Given these coordinates we can estimate its new intensity value: using \textbf{interpolation}. We created the \textsc{IPinterpolate} function for this.
+Given these coordinates, we can estimate its new intensity value: using \textbf{interpolation}. We created the \textsc{IPinterpolate} function for this.
 
 \subsection*{\textsc{IPinterpolate}}
-The interpolation function has the job of estimating unknown pixel coordinate intensity levels. Having inverse mapped the transformed coordinates, we obtain their position in the original space. Because a scaling operation took place, these probably have decimals: e.g. when growing an 2x2 image to 4x4 size, a pixel in transformed space at $(3, 3)$ would be mapped to $(\sfrac{3}{2}, \sfrac{3}{2})$ like so:
+The interpolation function has the job of estimating unknown pixel coordinate intensity levels. Having inverse mapped the transformed coordinates, we obtain their position in the original space. Because a scaling operation took place, these probably have decimals: e.g. when growing a 2x2 image to 4x4 size, a pixel in transformed space at $(3, 3)$ would be mapped to $(\sfrac{3}{2}, \sfrac{3}{2})$ like so:
 
 \begin{figure}[ht]
 \[ 
@@ -80,7 +80,7 @@ x' \\ y' \\ 1
  \]
 \end{figure}
 
-Thus, the challenge lies in estimating values for pixels with unknown intensity values, like $(\sfrac{3}{2}, \sfrac{3}{2})$. We can do this by several means: \textit{Nearest Neighbor interpolation}, \textit{Bilinear interpolation} or \textit{Bicubic interpolation}, among others. Applying no interpolation at all would yield in zero-valued pixels in the output image. Even though the assignment only asked for Nearest Neighbor interpolation and zero-padding, we also implemented Bilinear interpolation out of curiosity.
+Thus, the challenge lies in estimating values for pixels with unknown intensity values, like $(\sfrac{3}{2}, \sfrac{3}{2})$. We can do this by several means: \textit{Nearest Neighbor interpolation}, \textit{Bilinear interpolation} or \textit{Bicubic interpolation}, among others. Applying no interpolation at all would yield zero-valued pixels in the output image. Even though the assignment only asked for Nearest Neighbor interpolation and zero-padding, we also implemented Bilinear interpolation out of curiosity.
 
 \ding{118} See Listing~\ref{code:IPinterpolate} for interpolation implementation. Most notably, \textbf{nearest neighbors} works by finding the first available pixel value below the transformed coordinate by using \textsc{round}. Remember that the inverse mapped original coordinates probably have decimals; the rounding operation rounds these coordinates to the nearest pixel in the original space. Note that we are handling images and we can assume we are operating in a \textit{rectilinear grid} with all spacing equal. Using the \textbf{no interpolation} setting just returns a zero-intensity value unless the output pixel can be \textbf{exactly mapped} to an original pixel.
 
@@ -98,7 +98,7 @@ Thus, the challenge lies in estimating values for pixels with unknown intensity 
 
 \subsection*{(c)} Up-sampling is done easily too, using a value of $factor > 1$. Note that it is requested to interpolate by 'introducing zeros'. In our implementation, this corresponds to using \textsc{IPinterpolate} using $interpolation = 'none'$, meaning an output pixel is only assigned an intensity value if its original pixel value could be linearly mapped. This results in unknown pixels having no intensity value, i.e. black pixels. \ding{118} Implementation: Listing~\ref{code:IPupsample}.
 
-\subsection*{(d)} See Figure~\ref{fig:upsampling}. It can be observed that the image is very dark, since a lot of pixels did not get assigned an (interpolated) intensity value.
+\subsection*{(d)} See Figure~\ref{fig:upsampling}. It can be observed that the image is very dark since a lot of pixels did not get assigned an (interpolated) intensity value.
 
 \begin{figure}[ht]
     \centering
@@ -107,11 +107,11 @@ Thus, the challenge lies in estimating values for pixels with unknown intensity 
     \label{fig:upsampling}
 \end{figure}
 
-\subsection*{(e)} Finally, we implement a zooming function. This is upsampling but with interpolation: 'pixel replication' or better, nearest neighbor interpolation. Again we use our generic function, using $factor > 1$ and 'nearest' interpolation.
+\subsection*{(e)} Finally, we implement a zooming function. This is upsampling but with interpolation: 'pixel replication' or better, nearest-neighbor interpolation. Again we use our generic function, using $factor > 1$ and 'nearest' interpolation.
 
 \ding{118} Implementation: Listing~\ref{code:IPzoom}.
 
-\subsection*{(f)} See Figure~\ref{fig:zoom} for a x4 factor zooming of the cktboard image. The zoomed image is 4 times the size, but looks the same, due to pixel replication.
+\subsection*{(f)} See Figure~\ref{fig:zoom} for a x4 factor zooming of the cktboard image. The zoomed image is 4 times the size, but looks the same, due to pixel replication. In comparison to (d), this image looks properly like the original. The image in (d) was distorted by the introduced zeros.
 \begin{figure}[ht]
     \centering
     \includesvg[width=\textwidth]{Assignment_1/output_plots/cktboard_all_zoomFactor=4.svg}
@@ -129,7 +129,7 @@ Thus, the challenge lies in estimating values for pixels with unknown intensity 
 \end{figure}
 
 \subsection*{Bilinear interpolation extra}
-Out of curiosity, we compared our nearest neighbor interpolation with \textbf{Bilinear interpolation}. It is a bit more complicated, but still relatively easy. It uses the 4 nearest neighbors to compute a weighting each pixel has on the estimated intensity value. It can be expressed as $v(x, y) = ax + by + cxy + d$. Since we are estimating intermediate pixel values, we get a much smoother output image. See Figure~\ref{fig:bilinear}. It can be observed that our method performs very similarly using both interpolation methods to Matlab's built-in function.
+Out of curiosity, we compared our nearest neighbor interpolation with \textbf{Bilinear interpolation}. It is a bit more complicated but still relatively easy. It uses the 4 nearest-neighbors to compute the weighting each pixel has on the estimated intensity value. It can be expressed as $v(x, y) = ax + by + cxy + d$. Since we are estimating intermediate pixel values, we get a much smoother output image. See Figure~\ref{fig:bilinear}. It can be observed that our method performs very similarly using both interpolation methods to Matlab's built-in function.
 
 \begin{figure}[ht]
     \centering
@@ -148,7 +148,7 @@ h(r_k)=n_k & \text{ for $k=0,1,2,...,L-1$}
 \end{aligned}
 \]
 
-Where $n_k$ denotes the amount of pixels present in the image that are at intensity level $k$. So, what is requested in this exercise is an implementation of the function $h$. Note that one can subdivide the intensity scale in an amount of \textit{histogram bins}, though we left the amount of bins equal to the amount of intensity levels, that is $L$. Specifically, our image is 8-bit, so $L = 2^8 = 256$. Let us compare our implementation of the histogram with the built-in Matlab one, see Figure~\ref{fig:histogram}.
+Where $n_k$ denotes the number of pixels present in the image that are at intensity level $k$. So, what is requested in this exercise is an implementation of the function $h$. Note that one can subdivide the intensity scale in an amount of \textit{histogram bins}, though we left the number of bins equal to the number of intensity levels, that is $L$. Specifically, our image is 8-bit, so $L = 2^8 = 256$. Let us compare our implementation of the histogram with the built-in Matlab one, see Figure~\ref{fig:histogram}.
 
 \begin{figure}[ht]
     \centering
@@ -161,7 +161,7 @@ We observe that the blurry image has the majority of its pixels in the lower val
 
 \ding{118} Implementation: Listing~\ref{code:IPhistogram}.
 
-\subsection*{(b)} Next, we implement histogram equalization. In histogram equalization, we can increase an image's contrast by better distributing intensity values across the histogram value range. We do this by mapping each intensity level to a new value using the \textit{Cumulative Distribution Function} (CDF) of the intensity value and multiplying it by the amount of intensity levels, $L - 1$. This can be expressed as (Eq 3-11):
+\subsection*{(b)} Next, we implement histogram equalization. In histogram equalization, we can increase an image's contrast by distributing intensity values better across the histogram value range. We do this by mapping each intensity level to a new value using the \textit{Cumulative Distribution Function} (CDF) of the intensity value and multiplying it by the number of intensity levels, $L - 1$. This can be expressed as (Eq 3-11):
 
 \[
 s=T(r)=(L-1)\int_{0}^{1} p_r(w)dw
@@ -177,7 +177,7 @@ s_k=T(r_k)=(L-1)\sum_{j=0}^{k}p_r(r_j) & \text{ where $k=0,1,2,...,L-1$}
 
 Where $s_k$ will be the histogram-equalized pixel intensity value at $k$, given an intensity value $r$. Now onto the implementation. See \ding{118} Listing~\ref{code:IPhisteq}. The function uses the previously built \textsc{IPhistogram} to compute the image histogram and normalizes it. Next, we re-compute each intensity value using histogram equalization and saves it in a vector $T$. Now we only have to map all image pixel intensities to their new values in $T$ by looping the image.
 
-\subsection*{(c)} The result of this operation can be seen in Figure~\ref{fig:histeq}. The histogram equalization effect on the blurry moon image did not have much effect, however. It appears that the image histogram already had a fair distribution.
+\subsection*{(c)} The result of this operation can be seen in Figure~\ref{fig:histeq}. The histogram equalization effect on the blurry moon image did not have much effect, however. It appears that the image histogram already had a fair distribution, and was not significantly enhanced by our equalization technique.
 \begin{figure}[ht]
     \centering
     \includesvg[width=\textwidth]{Assignment_1/output_plots/blurrymoon_all_histeq.svg}
@@ -194,23 +194,12 @@ A case where the effects of histogram equalization can be seen more clearly is i
     \label{fig:histeq_2}
 \end{figure}
 
-
+\newpage
 \section*{Exercise 3}
-
-introduce the problem theoretically, with formulas, explain why the formulas make sense if
-that seems applicable;
-2. refer to the implementation, in the following terms: “Listing x presents IP....(image, x, y) that
-implements the process discussed above”, or something similar;
-3. explain the implementation if it is non trivial; for example, if you literally implemented the
-formulas you presented earlier then that is sufficient; however, if you are performing convolution by shifting the image under your filter explain what you are doing;
-4. refer to the results, like: “Applying IP..... on Figure q with x = ? and y = ? we find Figure z”;
-5. discuss your results and explain them if applicable: “In Figure 6 we see that .... this is caused
-by ....”.
-
 \subsection*{(a)}
-For this exercise we are tasked to implement a function that performs spacial filtering of an image using a $3x3$ mask (or kernel). We are not allowed to use the matlab functions \textit{filter, filter2, conv} or \textit{conv2}, seeing as those already do this or part of it.
+For this exercise, we are tasked to implement a function that performs spatial filtering of an image using a $3x3$ mask (or kernel). We are not allowed to use the Matlab functions \texttt{filter}, \texttt{filter2}, \texttt{conv} or \texttt{conv2}, seeing as those already do this or part of it.
 
-While there are different types of filtering techniques for images, but for this exercise we only focus on spacial filtering. A spacial filtering of an image is done by moving the center of a kernel over the image and computing the sum of products at each pixel. This process follows Formula \ref{eq:filter3x3} (Eq $3-30$ in the book) for each individual pixel when using a $3x3$ mask.
+While there are different types of filtering techniques for images, but for this exercise, we only focus on spatial filtering. Spatial filtering of an image is done by moving the center of a kernel over the image and computing the sum of products at each pixel. This process follows Formula \ref{eq:filter3x3} (Eq $3-30$ in the book) for each individual pixel when using a $3x3$ mask.
 
 \begin{equation}\label{eq:filter3x3}
 \begin{split}
@@ -219,17 +208,17 @@ While there are different types of filtering techniques for images, but for this
 \end{split}
 \end{equation}
 
-While the exercise requires us to implement it for a $3x3$ kernel, we decided to use the more general formula that is able to handle an arbitrary sized kernel. We did this in view of future exercises and to make it more robust. This formula uses the the dimensions of the kernel by looping from $-a$ to $a$ and looping from $-b$ to $b$. For a kernel of size $m \times n$ the value of $a$ and $b$ is determined by $m = 2a + 1$ and $n = 2b + 1$. We will use Formula \ref{eq:filter} (Eq $3-31$ in the book) for our function.
+While the exercise requires us to implement it for a $3x3$ kernel, we decided to use the more general formula that is able to handle an arbitrary sized kernel. We did this in view of future exercises and to make it more robust. This formula uses the dimensions of the kernel by looping from $-a$ to $a$ and looping from $-b$ to $b$. For a kernel of size $m \times n$ the value of $a$ and $b$ is determined by $m = 2a + 1$ and $n = 2b + 1$. We will use Formula \ref{eq:filter} (Eq $3-31$ in the book) for our function.
 
 \begin{equation}\label{eq:filter}
     g(x, y)=\sum_{s=-a}^{a} \sum_{t=-b}^{b} w(s, t) f(x+s, y+t)
 \end{equation}
 
-Important to note is that the kernel its center is placed on the pixel we are modifying. So the center of the kernel is indexed with $(0,0)$, due to how the indexing in matlab works we had to compensate for this using the variables \textit{kernelCenterX} and \textit{kernelCenterY}. The implementation can be found in \ding{118} Listing~\ref{code:IPfilter} and is very self explanatory.
+Important to note is that the kernel its center is placed on the pixel we are modifying. So the center of the kernel is indexed with $(0,0)$, due to how the indexing in Matlab works we had to compensate for this using the variables \texttt{kernelCenterX} and \texttt{kernelCenterY}. The implementation can be found in \ding{118} Listing~\ref{code:IPfilter} and is very self-explanatory.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
-    \caption{Results of testing \textit{IPfilter()}}
+    \caption{Results of testing \textsc{IPfilter}}
     \label{fig:filterResults}
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
@@ -241,27 +230,79 @@ Important to note is that the kernel its center is placed on the pixel we are mo
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{Assignment_1/output_images/filter_kevin.png}
-        \caption{The output image using out own function \textit{IPfilter()}.}
+        \caption{The output image using out own function \textsc{IPfilter}.}
         \label{fig:filterKevin}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[width=\textwidth]{Assignment_1/output_images/filter_matlab.png}
-        \caption{The output image using matlab's function \textit{filter2()}.}
+        \caption{The output image using matlab's function \texttt{filter2}.}
         \label{fig:filterMatlab}
     \end{subfigure}
 \end{figure}
 
-To see if our implementation is working correctly we used the provided image \textit{"bubbles.tif"} and compared the result of using our function \textit{IPfilter} to the results of using the matlab function \textit{filter2}, as can be seen in Figure \ref{fig:filterResults}. Both Figure \ref{fig:filterKevin} and \ref{fig:filterMatlab} are exactly the same, thus showing our implementation is correct.
+To see if our implementation is working correctly we used the provided image \textit{"bubbles.tif"} and compared the result of using our function \textsc{IPfilter} to the results of using the matlab function \texttt{filter2}, as can be seen in Figure \ref{fig:filterResults}. Both Figure \ref{fig:filterKevin} and \ref{fig:filterMatlab} are exactly the same, thus showing our implementation is correct.
 
 \subsection*{(b)}
-For this part of the exercise we needed to implement the Laplacian (image) enhancement technique. This technique involves creating a Laplacian filter and then using the filter to enhance the original image. The Laplacian filter is the second derivative of the image, using a kernel. Formula \ref{eq:laplacian_filter} shows how this can be calculated for each pixel. It is easy to deduce here that the laplacian filter is simply a regular filter with a specific kernel applied. The book provides 4 different kernels that can be used. These are: 
+For this part of the exercise, we needed to implement the Laplacian (image) enhancement technique. This technique involves creating a Laplacian filter and then using the filter to enhance the original image. The Laplacian filter is the second derivative of the image, using a kernel. Formula \ref{eq:laplacian_filter} (Eq $3-53$ in the book) shows how this can be calculated for each pixel. It is easy to deduce here that the Laplacian filter is simply a regular filter with a specific kernel applied. The book provides 4 different kernels that can be used, which can be seen in Figure \ref{fig:kernels}.
 
+\begin{equation}\label{eq:laplacian_filter}
+    \nabla^{2} f(x, y)=f(x+1, y)+f(x-1, y)+f(x, y+1)+f(x, y-1)-4 f(x, y)
+\end{equation}
 
-\ding{118} Implementation: Listing~\ref{code:IPlaplacian}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{Assignment_1/input_images/kernels.png}
+    \caption{Kernels that can be used for Laplacian filters \cite{gonzalez2008digital}}
+    \label{fig:kernels}
+\end{figure}
+
+Once the Laplacian filter is made the filter needs to be subtracted or added to the original image, depending on which kernel was used. This is done by adding a variable $c$ to the equation, where $c$ is set to $-1$ for the left 2 kernels from Figure \ref{fig:kernels} and $c$ is set to $1$ for the right 2 kernels from Figure \ref{fig:kernels}. Formula \ref{eq:laplacian_enhancement} (Eq $3-54$ in the book) shows the now complete formula for the Laplacian enhancement technique.
+
+\begin{equation}\label{eq:laplacian_enhancement}
+    g(x, y)=f(x, y)+c\left[\begin{array}{c} \nabla^{2} f(x, y)\end{array}\right]
+\end{equation}
+
+The implementation of this function can be found in \ding{118} Listing~\ref{code:IPlaplacian}.
 
 \subsection*{(c)}
+For this last part we had to apply our function \textsc{IPlaplacian} to "\textit{bubbles.tif}" and discuss the results. We used the 2 left-most kernels from Figure \ref{fig:kernels} and in Figure \ref{fig:IPlaplacianResults} the Laplacian filter and the enhanced image can be seen for both.
+
+\begin{figure}[H]
+    \centering
+    \caption{Results of testing \textsc{IPlaplacian}}
+    \label{fig:IPlaplacianResults}
+    \begin{subfigure}[t]{0.40\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Assignment_1/output_images/laplacian_result_kernelA.png}
+        \caption{The enhanced image using the left-most kernel from Figure \ref{fig:kernels}.}
+        \label{fig:laplacianResultKernelA}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.40\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Assignment_1/output_images/laplacian_result_kernelB.png}
+        \caption{The enhanced image using second from the left kernel from Figure \ref{fig:kernels}.}
+        \label{fig:laplacianResultKernelB}
+    \end{subfigure}
+    \vskip\baselineskip
+    \begin{subfigure}[t]{0.40\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Assignment_1/output_images/laplacian_filter_kernelA.png}
+        \caption{The Laplacian filter used in creating the enhanced image using the left-most kernel from Figure \ref{fig:kernels}.}
+        \label{fig:laplacianFilterKernelA}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.40\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Assignment_1/output_images/laplacian_filter_kernelB.png}
+        \caption{The Laplacian filter used in creating the enhanced image using the second from the left kernel from Figure \ref{fig:kernels}.}
+        \label{fig:laplacianFilterKernelB}
+    \end{subfigure}
+\end{figure}
+
+In the filter images (Figure \ref{fig:laplacianFilterKernelA} and \ref{fig:laplacianFilterKernelB}) it clearly shows the edges from the bubbles. Since we use the left 2 kernels from Figure \ref{fig:kernels} they are subtracted from the original image and thus make the resulting images sharper. In Figure \ref{fig:laplacianResultKernelA} and \ref{fig:laplacianResultKernelB} it is clear that the edges are more defined compared to the original image (Figure \ref{fig:orginalBubbles}). The difference between the resulting images of the two kernels is also quite clear. Especially in the Laplacian filter images, the edges are much clearer as can be seen in Figure \ref{fig:laplacianFilterKernelB}. This does bring along more background noise from the initial image, which does not look as nice in the enhanced image. This shows us that it is important to select the right kernel for the image you are trying to enhance.
 
 \bibliographystyle{plain}
 \bibliography{Assignment_1}
