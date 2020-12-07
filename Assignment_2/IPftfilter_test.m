@@ -11,6 +11,8 @@ imshow(f);
 D0 = 60;
 n = 2;
 H = IPbhpf(D0, n, M, N);
+figure;
+imshow(H);
 I = IPftfilter(f, H);
 figure;
 imshow(I);
@@ -24,7 +26,9 @@ imshow(I);
 
 
 function g = IPftfilter(x, H)
-% IPftfilter Perform convolution filtering.
+% IPftfilter Perform convolution filtering. Following Eq (4-104) and steps
+% as defined in Section 4.7 'Summary of steps for filtering in the
+% frequency domain'.
 %   Arguments:
 %       x = input image
 %       H = transfer function
@@ -39,19 +43,18 @@ f_p = zeros(P, Q);
 f_p(1:M, 1:N) = im2double(x); % copy over original image
 
 % Center the Fourier Transform (3)
-[X, Y] = meshgrid(1:P, 1:Q); % TODO: should swap P AND Q??
-c = -1^(X + Y); % centering term
+[X, Y] = meshgrid(1:P, 1:Q);
+c = -1^(X + Y); % centering term, Eq (4-76)
 f_c = f_p * c;  % multiply by $-1^(x + y)$
 
-% Compute DFT (4)
-F = fftshift(fft2(f_c));
+% Compute DFT (4). 
+F = fftshift(fft2(f_c)); % Eq (4-67)
 
 % Form the product G(u, v) (6)
-G = F;
-G(1:M, 1:N) = F(1:M, 1:N) .* H;
+G = F .* H; % Eq (4-104)
 
-% Obtain filtered image
-g_p = real(ifft2(ifftshift(G))) * c; % Compute inverse DFT of G(u, v)
+% Obtain filtered image, compute inverse DFT of G(u, v)
+g_p = real(ifft2(ifftshift(G))) * c; % among others, IDFT from Eq (4-68)
 g = g_p(1:M, 1:N);
 end
 
@@ -64,26 +67,23 @@ function H = IPbhpf(D0, n, M, N)
 %   Output arguments:
 %       H = transfer function
 
-% P = 2*M; % Eq (4-102)
-% Q = 2*N; % Eq (4-103)
-% u = 0:(P - 1) - P/2; 
-% v = 0:(Q - 1) - Q/2;
-
-u = 0:(M - 1); 
-v = 0:(N - 1);
-idx = find(u > M/2);
-u(idx) = u(idx) - M;
-idy = find(v > N/2);
-v(idy) = v(idy) - N;
+P = 2*M; % Eq (4-102)
+Q = 2*N; % Eq (4-103)
+u = 0:(P - 1); 
+v = 0:(Q - 1);
 
 % Make coordinate grid
-[V, U] = meshgrid(v, u); 
+[U, V] = meshgrid(u, v); 
   
 % Distance between a point (u, v) in the frequency domain and the center
-% of the P x Q frequency rectangle (Eq 4-112)
-D = sqrt(U.^2 + V.^2); 
-  
-% Transfer function of Butterworth highpass filter (BHPF) (Eq 4-121)
+% of the P x Q frequency rectangle Eq (4-112)
+D = sqrt((U - P/2).^2 + (V - Q/2).^2);
+
+% Transfer function of Butterworth highpass filter (BHPF) Eq (4-121)
 H = 1 ./ (1 + (D0 ./ D) .^ (2 * n));
 end
 
+% Ideal lowpass filter (ILPF): Eq (4-111)
+% H = zeros(P, Q);
+% H(D <= D0) = 1;
+% H(D > D0) = 0;
