@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage{styles}
+
+\title{Image Processing\\
+    Lab 2}
+\author{Kevin Gevers (s25595987) \\ Jeroen Overschie (s2995697)}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+Note, that all used source code can be found attached next to this report's pdf file. Its structure should be self-explanatory; all requested functions are named accordingly and any extra functions are explained in the report. Note that (almost) every function has a corresponding test script, which is named just like its function, but with a suffix '\texttt{\_test}'. Where possible, we followed the terminology from the book \citep{gonzalez2008digital} for variable naming.
+
+\section*{Exercise 1}
+
+\section*{Exercise 2}
+\subsection*{(a)} sdsd:
+
+\[
+\begin{aligned}
+h(r_k)=n_k & \text{ for $k=0,1,2,...,L-1$}
+\end{aligned}
+\]
+d
+\[
+s=T(r)=(L-1)\int_{0}^{1} p_r(w)dw
+\]
+\begin{figure}[ht]
+    \centering
+    \includesvg[width=\textwidth]{Assignment_2/output_plots/bhpf_500x500.svg}
+    \caption{.}
+    \label{fig:bhpf}
+\end{figure}
+\begin{figure}[ht]
+    \centering
+    \includesvg[width=\textwidth]{Assignment_2/output_plots/ihpf_500x500.svg}
+    \caption{.}
+    \label{fig:ihpf}
+\end{figure}
+\begin{figure}[ht]
+    \centering
+    \includesvg[width=\textwidth]{Assignment_2/output_plots/characters_all_bhpf.svg}
+    \caption{.}
+    \label{fig:characters_all_bhpf}
+\end{figure}
+
+\ding{118} Implementation: Listing~\ref{code:IPbhpf}.
+\subsection*{(b)} sdsd:
+
+\ding{118} Implementation: Listing~\ref{code:IPftfilter}.
+\subsection*{(c)} sdsd:
+
+\bibliographystyle{plain}
+\typeout{}
+\bibliography{Assignment_2}
+
+\appendix
+\section{Code}
+\subsection{Exercise 1}
+\subsection{Exercise 2}
+\subsubsection{Exercise 2 (a)}
+\lstinputlisting[caption={IPfreqrectdists.m: Compute distances to center of PxQ frequency rectangle.}, label={code:IPfreqrectdists}]{Assignment_2/IPfreqrectdists.m}
+\lstinputlisting[caption={IPbhpf.m: Butterworth High-Pass Filter (BHPF).}, label={code:IPbhpf}]{Assignment_2/IPbhpf.m}
+\subsubsection{Exercise 2 (b)}
+\lstinputlisting[caption={IPftfilter.m: Convolute a filter in the frequency domain.}, label={code:IPftfilter}]{Assignment_2/IPftfilter.m}
+\subsection{Exercise 3}
+\end{document}
