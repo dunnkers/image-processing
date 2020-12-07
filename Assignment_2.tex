@@ -15,42 +15,67 @@ Note, that all used source code can be found attached next to this report's pdf 
 \section*{Exercise 1}
 
 \section*{Exercise 2}
-\subsection*{(a)} sdsd:
+\subsection*{(a)} In this exercise we are asked to implement a \textit{Butterworth Highpass Filter} (BHPF) transfer function. To do this, we first built a distance function $D$ as according to Eq (4-112):
 
 \[
-\begin{aligned}
-h(r_k)=n_k & \text{ for $k=0,1,2,...,L-1$}
-\end{aligned}
+D(u,v)=[(u-P/2)^2+(v-Q/2)^2]^{1/2}
 \]
-d
+
+This function computes the distance for some given coordinate $(u, v)$ to the centre of the $P \times Q$ frequency rectangle (note the sizes of $P$ and $Q$ in Eqs. (4-100) and (4-101): $2M$ and $2N$, respectively), which can be intuitively understood as the Euclidean distance in two-dimensional u/v space. The distance function is implemented in \ding{118} Listing~\ref{code:IPfreqrectdists}. Once we have our distance function, we can define our Butterworth highpass filter transfer function, Eq (4-121):
+
 \[
-s=T(r)=(L-1)\int_{0}^{1} p_r(w)dw
+H(u, v) = \frac{1}{1+[D_0 / D(u, v)]^{1/2}}
 \]
+
+Where $D_0$ is the cutoff frequency and the order is given by $n$. For the implementation of this transfer function, see \ding{118} Listing~\ref{code:IPbhpf}. We are now able to create and visualize the filter we just built. If we take some appropriately-sized matrix, e.g. of 500x500 size, we can visualize what the transfer function looks like. We iterate the function over (1) a 3D $u$/$v$ space with the z-coordinate set as the function value $H(u, v)$, (2) a 2D $u$/$v$ with the function value $H(u, v)$ set as the grayscale color intensity and finally (3) a cross-section of the transfer function, made over the constant value $v = 500$ and letting $u$ range from 500 to 1000, i.e. $u = [500, 501, ..., 1000]$. We set the x axis as the distance function value, $D(u, v)$, indicating how far off the given point is from the center. See Figure~\ref{fig:bhpf}.
+
 \begin{figure}[ht]
     \centering
     \includesvg[width=\textwidth]{Assignment_2/output_plots/bhpf_500x500.svg}
-    \caption{.}
+    \caption{Visualization of the BHPF transfer function $H(u, v)$. (1) H in 3D space, (2) H as a grayscale intensity value in a 2D space and (3) a cross-section of H versus the distance function D.}
     \label{fig:bhpf}
 \end{figure}
+
+Due to a high amount of curiosity, we were wondering whether we could also recreate an \textit{Ideal Highpass Filter} (IHPF). This only required a new transfer function; due to our modular code structure we were able to re-use the distance function. See Figure~\ref{fig:ihpf} for the IHPF transfer function, similar to Figure 4.51 in the book.
+
 \begin{figure}[ht]
     \centering
     \includesvg[width=\textwidth]{Assignment_2/output_plots/ihpf_500x500.svg}
-    \caption{.}
+    \caption{Visualization of a IHPF 'Ideal' highpass filter - built and included out of curiosity. Visualized in 3 ways: a 3D- and 2D plot, as well as a cross-section of $H(u, v)$ over the distance function $D$.}
     \label{fig:ihpf}
 \end{figure}
+
+\subsection*{(b)} In this next assignment, we perform convolution filtering of some input image, $x$, given some transfer function $H$ that operates in the frequency domain. Our implementation closely follows Eq (4-104) from the book:
+
+\[
+g(x, y) = Real\{\Im^{-1}[H(u,v)F(u, v)]\}
+\]
+
+Where F is the \textit{Discrete Fourier Transform} from the input image (DFT) and $\Im^{-1}$ is the inverse Discrete Fourier Transform. See Eqs. (6-67) and (6-68), respectively. Also, $H(u, v)$ is some transfer function, e.g. the BHPF we just built in (a). Furthermore, for the entire operation, the summary in section 4.7 of the book was closely followed. Disregarding irony, the summary can be summarized as follows:
+
+\begin{enumerate}
+    \item Obtain padding sizes as $P = 2M$ and $Q = 2N$.
+    \item Form padded image $P \times Q$.
+    \item Multiply padded image by $(-1)^{x+y}$ to center Fourier Transform. In our implementation we use \texttt{meshgrid} to perform this operation at once.
+    \item Compute the DFT, $F(u, v)$.
+    \item Construct filter transfer function, $H(u, v)$.
+    \item Compute element-wise product $G = F * H$.
+    \item Obtain filtered image by using inverse DFT.
+    \item Obtain final result by extracting part of the padded image.
+\end{enumerate}
+
+After having applied these steps, a filtered image, $g$, will be obtained from the input image $f$, given some transfer function $H$. See \ding{118} Listing~\ref{code:IPftfilter} for the implementation in Matlab.
+
+\subsection*{(c)} Finally, we apply the filter using our built transfer function on some image file, \texttt{characters.tif}. See Figure~\ref{fig:characters_all_bhpf}.
+
 \begin{figure}[ht]
     \centering
     \includesvg[width=\textwidth]{Assignment_2/output_plots/characters_all_bhpf.svg}
-    \caption{.}
+    \caption{BHPF filter applied to \texttt{characters.tif} image. Left shows original, middle shows BHPF filter applied using $D_0 = 60$ and $n = 2$ and right-most shows filter applied using $D_0 = 160$ and $n = 2$.}
     \label{fig:characters_all_bhpf}
 \end{figure}
 
-\ding{118} Implementation: Listing~\ref{code:IPbhpf}.
-\subsection*{(b)} sdsd:
-
-\ding{118} Implementation: Listing~\ref{code:IPftfilter}.
-\subsection*{(c)} sdsd:
-
+We can observe in the figure that the images look exactly alike the examples in the book. The difference between having varied the $D_0$ parameter also match up. We can see that edges and other 'abrupt changes' in intensity levels have been highlighted by the highpass filter, which is like expected; high-frequency components are highlighted.
 \bibliographystyle{plain}
 \typeout{}
 \bibliography{Assignment_2}
@@ -60,7 +85,7 @@ s=T(r)=(L-1)\int_{0}^{1} p_r(w)dw
 \subsection{Exercise 1}
 \subsection{Exercise 2}
 \subsubsection{Exercise 2 (a)}
-\lstinputlisting[caption={IPfreqrectdists.m: Compute distances to center of PxQ frequency rectangle.}, label={code:IPfreqrectdists}]{Assignment_2/IPfreqrectdists.m}
+\lstinputlisting[caption={IPfreqrectdists.m: Compute distances to center of $P \times Q$ frequency rectangle.}, label={code:IPfreqrectdists}]{Assignment_2/IPfreqrectdists.m}
 \lstinputlisting[caption={IPbhpf.m: Butterworth High-Pass Filter (BHPF).}, label={code:IPbhpf}]{Assignment_2/IPbhpf.m}
 \subsubsection{Exercise 2 (b)}
 \lstinputlisting[caption={IPftfilter.m: Convolute a filter in the frequency domain.}, label={code:IPftfilter}]{Assignment_2/IPftfilter.m}
