@@ -19,7 +19,7 @@ n = 2;
 H = IPbhpf(D0, n, M, N);
 I = IPftfilter(f, H);
 imshow(I);
-title('BHPF filtered image (D\_0 = 60, n = 2)');
+title('BHPF filtered image ($D\_0 = 60$, $n = 2$)');
 
 % Butterworth filter using D0 = 60
 subplot(133);
@@ -27,7 +27,7 @@ D0 = 160;
 H = IPbhpf(D0, n, M, N);
 I = IPftfilter(f, H);
 imshow(I);
-title('BHPF filtered image (D\_0 = 60, n = 2)');
+title('BHPF filtered image ($D\_0 = 60$, $n = 2$)');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
