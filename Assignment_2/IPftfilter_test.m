@@ -9,6 +9,8 @@ figure;
 % Original image
 subplot(131);
 imshow(f);
+axis equal;
+axis tight;
 title({'Original `characters` image', ' '});
 
 % Butterworth filter using D0 = 60
@@ -19,6 +21,8 @@ n = 2;
 H = IPbhpf(D0, n, M, N);
 I = IPftfilter(f, H);
 imshow(I);
+axis equal;
+axis tight;
 title({'BHPF filtered image', '(D0=60, n=2)'});
 
 % Butterworth filter using D0 = 160
@@ -27,6 +31,8 @@ D0 = 160;
 H = IPbhpf(D0, n, M, N);
 I = IPftfilter(f, H);
 imshow(I);
+axis equal;
+axis tight;
 title({'BHPF filtered image', '(D0=160, n=2)'});
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
