@@ -1,1 +1,3 @@
 /run_matlab.sh
+*.asv
+.DS_Store
