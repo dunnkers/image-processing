@@ -86,13 +86,19 @@ For this exercise we are tasked to create a function, \textit{IPmedian}, that pe
 \end{equation}
 
 \subsection*{(b)}
-For the next part we had to load the image \textit{circuitboard.tif} and add salt-and-pepper noise to it, with $P_s = P_p = 0.2$. As suggested by the assignment we used the Matlab function \textit{imnoise} for this. The resulting image can be seen in Figure TODO
+For the next part we had to load the image \textit{circuitboard.tif} and add salt-and-pepper noise to it, with $P_s = P_p = 0.2$. As suggested by the assignment we used the Matlab function \textit{imnoise} for this. The resulting image can be seen in Figure \ref{fig:IPmedian}b.
 
+\begin{figure}[ht]
+    \centering
+    \includesvg[width=\textwidth]{Assignment_2/output_plots/IPmedian_all.svg}
+    \caption{(a) original input image. (b) salt-and-pepper noisy image. (c) \textit{IPmedian} function applied to b with a $3 \times 3$ mask and (incorrect) zero-padding. (d) \textit{Ipmedian} function applied to b with a $3 \times 3$ mask and (correct) one-padding.}
+    \label{fig:IPmedian}
+\end{figure}
 
 \subsection*{(c)}
-For the last part we had to apply a $3 \times 3$ filter to the image we created in (b). The result of our function can be seen in Figure TODO. The main difference between our image and Fig.5.10(b) of the book is the amount of dark pixels at the edges of the image. This turned out to be caused by the zero-padding we used and changing that into one-padding (because we use the image in double format in Matlab) this was solved and can be seen in Figure TODO. With this improved image the only real difference withh Fig.5.10(b) of the book is the amount of noise that is left. Seeing as we used $P_s = P_p = 0.2$ and the book used $P_s = P_p = 0.1$ we started out with about twice as much noise. This can also be seen when comparing Figure TODO and Fig.5.10(a) of the book. Because of this there is slightly more noise left in our image after a single pass. All the shapes of the original image are still in tact, so making two more passes results in almost exactly the same image as Fig.5.10(d) of the book, as can be seen in Figure TODO
+For the last part we had to apply a $3 \times 3$ filter to the image we created in (b). The result of our function can be seen in Figure \ref{fig:IPmedian}c. The main difference between our image and Fig.5.10(b) of the book is the amount of dark pixels at the edges of the image. This turned out to be caused by the zero-padding we used and changing that into one-padding (because we use the image in double format in Matlab) this was solved and can be seen in Figure \ref{fig:IPmedian}d. With this improved image the only real difference with Fig.5.10(b) of the book is the amount of noise that is left. Seeing as we used $P_s = P_p = 0.2$ and the book used $P_s = P_p = 0.1$ we started out with about twice as much noise. This can also be seen when comparing Figure TODO and Fig.5.10(a) of the book. Because of this there is slightly more noise left in our image after a single pass. All the shapes of the original image are still in tact, so making two more passes results in almost exactly the same image as Fig.5.10(d) of the book, as can be seen in Figure TODO
 
-Note that some of the images are hard to make out in PDF format, so please run \textit{IPmedian_test.m} to get the high resolution images.
+Note that some of the images are hard to make out in PDF format, so please run \textit{IPmedian\_test.m} to get the high resolution images.
 
 \bibliographystyle{plain}
 \typeout{}
