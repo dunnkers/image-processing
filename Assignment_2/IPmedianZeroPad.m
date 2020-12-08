@@ -1,4 +1,6 @@
-function result = IPmedian(f, k)
+% This function incorrectly uses zero-padding to show the difference with
+% the correct one-padding used in IPmedian
+function result = IPmedianZeroPad(f, k)
     [M, N] = size(f); %M = height, N = width
     windowSize = 2*k+1;
     result = zeros(M,N);
@@ -10,8 +12,8 @@ function result = IPmedian(f, k)
             for s=-k:k
                 for t=-k:k
                     if (x+s < 1 || y+t < 1 || x+s > M || y+t > N)
-                        % fixed one padding
-                        set(k+1+s, k+1+t) = double(1);
+                        % initial zero padding
+                        set(k+1+s, k+1+t) = double(0);
                         continue;
                     end
                     set(k+1+s, k+1+t) = f(x+s, y+t);
