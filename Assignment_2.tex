@@ -76,6 +76,24 @@ After having applied these steps, a filtered image, $g$, will be obtained from t
 \end{figure}
 
 We can observe in the figure that the images look exactly alike the examples in the book. The difference between having varied the $D_0$ parameter also match up. We can see that edges and other 'abrupt changes' in intensity levels have been highlighted by the highpass filter, which is like expected; high-frequency components are highlighted.
+
+\section*{Exercise 3}
+\subsection*{(a)}
+For this exercise we are tasked to create a function, \textit{IPmedian}, that performs median filtering in a $(2k + 1) \times (2k + 1)$ window, with a variable $k$. A median filter uses Formula \ref{eq:median} (Eq. 5-27 in the book). This comes down to taking the median of the pixel values that fall into the region of the mask. So for a $3 \times 3$ mask, the center of the mask will be placed over the pixel and the values of all the pixels in the mask will be placed into a set of which the median is taken. The resulting value is the output value. This is repeated for all pixels of the image. For our implementation see \ding{118} Listing \ref{code:IPmedian}
+
+\begin{equation}\label{eq:median}
+    \widehat{f}(x, y)=\operatorname{median}_{(s, t) \in S_{x y}} g(s, t)
+\end{equation}
+
+\subsection*{(b)}
+For the next part we had to load the image \textit{circuitboard.tif} and add salt-and-pepper noise to it, with $P_s = P_p = 0.2$. As suggested by the assignment we used the Matlab function \textit{imnoise} for this. The resulting image can be seen in Figure TODO
+
+
+\subsection*{(c)}
+For the last part we had to apply a $3 \times 3$ filter to the image we created in (b). The result of our function can be seen in Figure TODO. The main difference between our image and Fig.5.10(b) of the book is the amount of dark pixels at the edges of the image. This turned out to be caused by the zero-padding we used and changing that into one-padding (because we use the image in double format in Matlab) this was solved and can be seen in Figure TODO. With this improved image the only real difference withh Fig.5.10(b) of the book is the amount of noise that is left. Seeing as we used $P_s = P_p = 0.2$ and the book used $P_s = P_p = 0.1$ we started out with about twice as much noise. This can also be seen when comparing Figure TODO and Fig.5.10(a) of the book. Because of this there is slightly more noise left in our image after a single pass. All the shapes of the original image are still in tact, so making two more passes results in almost exactly the same image as Fig.5.10(d) of the book, as can be seen in Figure TODO
+
+Note that some of the images are hard to make out in PDF format, so please run \textit{IPmedian_test.m} to get the high resolution images.
+
 \bibliographystyle{plain}
 \typeout{}
 \bibliography{Assignment_2}
@@ -90,4 +108,5 @@ We can observe in the figure that the images look exactly alike the examples in 
 \subsubsection{Exercise 2 (b)}
 \lstinputlisting[caption={IPftfilter.m: Convolute a filter in the frequency domain.}, label={code:IPftfilter}]{Assignment_2/IPftfilter.m}
 \subsection{Exercise 3}
+\lstinputlisting[caption={IPmedian.m: Median filter.}, label={code:IPmedian}]{Assignment_2/IPmedian.m}
 \end{document}
