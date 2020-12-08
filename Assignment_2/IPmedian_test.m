@@ -11,7 +11,7 @@ noisyImage = imnoise(f, 'salt & pepper', d);
 % apply 3x3 mask in IPmedian filter
 k = 1;
 filteredImageZeroPad = IPmedianZeroPad(noisyImage, k);
-filteredIamge = IPmedian(noisyImage, k);
+filteredImage = IPmedian(noisyImage, k);
 
 % verify the result against Matlab's own function
 matlabImage = medfilt2(noisyImage, 'indexed');
@@ -25,7 +25,7 @@ imshow(filteredImageZeroPad);
 figure;
 subplot(221);
 imshow(f)
-title('orginal image')
+title('original image')
 
 subplot(222);
 imshow(noisyImage)
