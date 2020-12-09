@@ -2,7 +2,7 @@ clc;
 imname = 'characters';
 inputfile = ['input_images/', imname,'.tif'];          
 f = imread(inputfile);
-f = im2double(f);
+% f = im2double(f);
 x = f;
 
 % compute its centered Fourier spectrum
@@ -18,11 +18,11 @@ f_p(1:M, 1:N) = im2double(x); % copy over original image
 
 % Center the Fourier Transform (3)
 [X, Y] = meshgrid(1:P, 1:Q);
-c = -1^(X + Y); % centering term, Eq (4-76)
+% % c = -1^(X + Y); % centering term, Eq (4-76)
 f_c = f_p * c;  % multiply by $-1^(x + y)$
 
 % Compute DFT (4). 
-F = fftshift(fft2(f_c)); % Eq (4-67)
+F = fftshift(fft2(f_p)); % Eq (4-67)
 
 
 % 
@@ -43,7 +43,12 @@ F = fftshift(fft2(f_c)); % Eq (4-67)
 % F = fftshift(fft2(f_c)); % Eq (4-67)
 
 figure;
-imagesc(real(F))
+imshow(abs(fft2(f)),[])
+figure;
+imshow(log(abs(fft2(f))),[])
+figure;
+imshow(log(abs(fftshift(fft2(f)))),[])
+
 
 % % Center the Fourier Transform (3)
 % [M, N] = size(f);
