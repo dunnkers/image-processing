@@ -2,27 +2,36 @@ clc;
 imname = 'characters';
 inputfile = ['input_images/', imname,'.tif'];          
 f = imread(inputfile);
-% f = im2double(f);
-x = f;
 
-% compute its centered Fourier spectrum
-[M, N] = size(x); % height, width
+figure;
+subplot(131)
+imshow(abs(fft2(f)),[])
+subplot(132)
+imshow(log(abs(fft2(f))),[])
+subplot(133)
+imshow(log(abs(fftshift(fft2(f)))),[])
 
-% Determine padding sizes (1)
-P = 2*M; % Eq (4-102)
-Q = 2*N; % Eq (4-103)
-
-% Form a padded image using zero-padding (2)
-f_p = zeros(P, Q);
-f_p(1:M, 1:N) = im2double(x); % copy over original image
-
-% Center the Fourier Transform (3)
-[X, Y] = meshgrid(1:P, 1:Q);
-% % c = -1^(X + Y); % centering term, Eq (4-76)
-f_c = f_p * c;  % multiply by $-1^(x + y)$
-
-% Compute DFT (4). 
-F = fftshift(fft2(f_p)); % Eq (4-67)
+% % f = im2double(f);
+% x = f;
+% 
+% % compute its centered Fourier spectrum
+% [M, N] = size(x); % height, width
+% 
+% % Determine padding sizes (1)
+% P = 2*M; % Eq (4-102)
+% Q = 2*N; % Eq (4-103)
+% 
+% % Form a padded image using zero-padding (2)
+% f_p = zeros(P, Q);
+% f_p(1:M, 1:N) = im2double(x); % copy over original image
+% 
+% % Center the Fourier Transform (3)
+% [X, Y] = meshgrid(1:P, 1:Q);
+% % % c = -1^(X + Y); % centering term, Eq (4-76)
+% f_c = f_p * c;  % multiply by $-1^(x + y)$
+% 
+% % Compute DFT (4). 
+% F = fftshift(fft2(f_p)); % Eq (4-67)
 
 
 % 
@@ -42,12 +51,6 @@ F = fftshift(fft2(f_p)); % Eq (4-67)
 % % Compute DFT (4). 
 % F = fftshift(fft2(f_c)); % Eq (4-67)
 
-figure;
-imshow(abs(fft2(f)),[])
-figure;
-imshow(log(abs(fft2(f))),[])
-figure;
-imshow(log(abs(fftshift(fft2(f)))),[])
 
 
 % % Center the Fourier Transform (3)
