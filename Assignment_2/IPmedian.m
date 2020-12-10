@@ -7,14 +7,14 @@ function result = IPmedian(f, k)
         for y=1:N
             set = zeros(windowSize);
             % loop over the window size
-            for s=-k:k
-                for t=-k:k
-                    if (x+s < 1 || y+t < 1 || x+s > M || y+t > N)
+            for r=-k:k
+                for c=-k:k
+                    if (x+r < 1 || y+c < 1 || x+r > M || y+c > N)
                         % fixed one padding
-                        set(k+1+s, k+1+t) = double(1);
+                        set(k+1+r, k+1+c) = double(1);
                         continue;
                     end
-                    set(k+1+s, k+1+t) = f(x+s, y+t);
+                    set(k+1+r, k+1+c) = f(x+r, y+c);
                 end
             end
             % take the median of the pixels inside the window
