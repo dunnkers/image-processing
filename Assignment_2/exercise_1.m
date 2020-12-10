@@ -33,8 +33,16 @@ saveas(gcf, 'output_plots/exercise1.svg');
 
 % Use your result in (a) to compute the average value of the image.
 
-mean(fftshift(fft2(f)), 'all')
-mean(f, 'all')
+% average of the image
+average_image = mean(f, 'all')
 
-temp = fft2(f);
-temp(1,1)
+% average of the image proportional to the zero-frequency term (Eq.4-92)
+[M, N] = size(f);
+average_image_proportional = M*N*mean(f, 'all')
+
+% zero-frequency term in the result of (a)
+spectrum = abs(fftshift(fft2(f)));
+zero_frequency_term_of_a = spectrum(M/2+1,N/2+1)
+
+% average of the original image using result of (a)
+average_image_using_a = spectrum(M/2+1,N/2+1)/(M*N)
