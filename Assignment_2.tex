@@ -13,6 +13,38 @@
 Note, that all used source code can be found attached next to this report's pdf file. Its structure should be self-explanatory; all requested functions are named accordingly and any extra functions are explained in the report. Note that (almost) every function has a corresponding test script, which is named just like its function, but with a suffix '\texttt{\_test}'. Where possible, we followed the terminology from the book \citep{gonzalez2008digital} for variable naming.
 
 \section*{Exercise 1}
+For the first exercise of this lab we had to compute the \textit{centered Fourier spectrum} of the input image \textit{characters.tif}. This involves three steps, first we need to apply the fourier transformation, then we need to center it, and lastly we need to take the magnitude of it. 
+
+The first step is to calculate the 2D Discrete Fourier Transform (DFT) of the image, according to Formula \ref{fourier2d}. Since we are allowed to use Matlab's \textit{fft2} function we did not implement this ourselves.
+
+\begin{equation}\label{fourier2d}
+    F(u, v)=\sum_{x=0}^{M-1} \sum_{y=0}^{N-1} f(x, y) e^{-j 2 \pi(u x / M+v y / N)}
+\end{equation}
+
+For the second step we need to center the Fourier transform. Figure \ref
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{Assignment_2/output_plots/}
+    \caption{}
+    \label{fig:fouriershiftFromBook}
+\end{figure}
+
+matlab abs is book formula
+
+
+
+\begin{equation}\label{fouriershift}
+    f(x, y)(-1)^{x+y} \Leftrightarrow F(u-M / 2, v-N / 2)
+\end{equation}
+
+By using a log transformation we were able to more clearly show the spectra more clearly, as can be seen in Figure TODO.
+
+
+
+
+The resulting code can be seen in \ding{118} Listing \ref{code:exercise1}.
 
 \section*{Exercise 2}
 \subsection*{(a)} In this exercise we are asked to implement a \textit{Butterworth Highpass Filter} (BHPF) transfer function. To do this, we first built a distance function $D$ as according to Eq (4-112):
@@ -79,7 +111,7 @@ We can observe in the figure that the images look exactly alike the examples in 
 
 \section*{Exercise 3}
 \subsection*{(a)}
-For this exercise we are tasked to create a function, \textit{IPmedian}, that performs median filtering in a $(2k + 1) \times (2k + 1)$ window, with a variable $k$. A median filter uses Formula \ref{eq:median} (Eq. 5-27 in the book). This comes down to taking the median of the pixel values that fall into the region of the mask. So for a $3 \times 3$ mask, the center of the mask will be placed over the pixel and the values of all the pixels in the mask will be placed into a set of which the median is taken. The resulting value is the output value. This is repeated for all pixels of the image. For our implementation see \ding{118} Listing \ref{code:IPmedian}
+For this exercise we are tasked to create a function, \textit{IPmedian}, that performs median filtering in a $(2k + 1) \times (2k + 1)$ window, with a variable $k$. A median filter uses Formula \ref{eq:median} (Eq. 5-27 in the book). This comes down to taking the median of the pixel values that fall into the region of the mask. So for a $3 \times 3$ mask, the center of the mask will be placed over the pixel and the values of all the pixels in the mask will be placed into a set of which the median is taken. The resulting value is the output value. This is repeated for all pixels of the image. For our implementation see \ding{118} Listing \ref{code:IPmedian}.
 
 \begin{equation}\label{eq:median}
     \widehat{f}(x, y)=\operatorname{median}_{(s, t) \in S_{x y}} g(s, t)
