@@ -17,18 +17,13 @@ Q = 2*N; % Eq (4-103)
 f_p = zeros(P, Q);
 f_p(1:M, 1:N) = im2double(x); % copy over original image
 
-% Center the Fourier Transform (3)
-[X, Y] = meshgrid(1:P, 1:Q);
-c = -1^(X + Y); % centering term, Eq (4-76)
-f_c = f_p * c;  % multiply by $-1^(x + y)$
-
 % Compute DFT (4). 
-F = fftshift(fft2(f_c)); % Eq (4-67)
+F = fftshift(fft2(f_p)); % Eq (4-67)
 
 % Form the product G(u, v) (6)
 G = F .* H; % Eq (4-104)
 
 % Obtain filtered image, compute inverse DFT of G(u, v)
-g_p = real(ifft2(ifftshift(G))) * c; % among others, IDFT from Eq (4-68)
+g_p = real(ifft2(ifftshift(G))); % among others, IDFT from Eq (4-68)
 g = g_p(1:M, 1:N);
 end
