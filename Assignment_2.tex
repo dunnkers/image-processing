@@ -13,16 +13,16 @@
 Note, that all used source code can be found attached next to this report's pdf file. Its structure should be self-explanatory; all requested functions are named accordingly and any extra functions are explained in the report. Note that (almost) every function has a corresponding test script, which is named just like its function, but with a suffix '\texttt{\_test}'. Where possible, we followed the terminology from the book \citep{gonzalez2008digital} for variable naming.
 
 \section*{Exercise 1}
-\subsection{(a)}
+\subsection*{(a)}
 For the first exercise of this lab we had to compute the \textit{centered Fourier spectrum} of the input image \textit{characters.tif}. This involves three steps, first we need to apply the fourier transformation, then we need to center it, and lastly we need to take the magnitude of it. 
 
-The first step is to calculate the 2D Discrete Fourier Transform (DFT) of the image, according to Formula \ref{eq:fourier2d}. Since we are allowed to use Matlab's \textit{fft2} function we did not implement this ourselves.
+The first step is to calculate the 2D Discrete Fourier Transform (DFT) of the image, according to Formula \ref{eq:fourier2d} (Eq.4-67 in the book). Since we are allowed to use Matlab's \textit{fft2} function we did not implement this ourselves.
 
 \begin{equation}\label{eq:fourier2d}
     F(u, v)=\sum_{x=0}^{M-1} \sum_{y=0}^{N-1} f(x, y) e^{-j 2 \pi(u x / M+v y / N)}
 \end{equation}
 
-For the second step we need to center the Fourier transform. For displaying and filtering purposes we want to move the four quarter periods (shown with the dotted lines on the left side of Figure \ref{fig:fouriershiftFromBook}), so that we have one full period instead. To do this we need to apply Formula \ref{eq:fouriershift}. Seeing as we are allowed to use Matlab's \textit{fftshift} function we did not have to implement this ourselves.
+For the second step we need to center the Fourier transform. For displaying and filtering purposes we want to move the four quarter periods (shown with the dotted lines on the left side of Figure \ref{fig:fouriershiftFromBook}), so that we have one full period instead. To do this we need to apply Formula \ref{eq:fouriershift} (Eq.4-76 in the book). Seeing as we are allowed to use Matlab's \textit{fftshift} function we did not have to implement this ourselves.
 
 \begin{figure}[h]
     \centering
@@ -35,28 +35,36 @@ For the second step we need to center the Fourier transform. For displaying and 
     f(x, y)(-1)^{x+y} \Leftrightarrow F(u-M / 2, v-N / 2)
 \end{equation}
 
-The third and final step is taking the magnitude of the centered Fourier transform, which gives us the spectrum. The magnitude of each pixel is the absolute value of each pixel. Since the centered Fourier transform consists of complex numbers we need to apply Formula \ref{eq:absComplex}. This gives us the polar representation of the pixel and can be used to visualize the spectrum. Matlab's standard function \textit{abs} handles complex numbers using this formula, so we again did not implement this.
+The third and final step is taking the magnitude of the centered Fourier transform, which gives us the spectrum. The magnitude of each pixel is the absolute value of each pixel. Since the centered Fourier transform consists of complex numbers we need to apply Formula \ref{eq:absComplex} (Eq.4-87 in the book). This gives us the polar representation of the pixel and can be used to visualize the spectrum. Matlab's standard function \textit{abs} handles complex numbers using this formula, so we again did not implement this.
 
 \begin{equation}\label{eq:absComplex}
     |F(u, v)|=\sqrt{R^{2}(u, v)+I^{2}(u, v)}
 \end{equation}
 
-\subsection{(b)}
-Now that we have the centered Fourier spectrum of the input image we can visualize it. In Figure TODO
-
-By using a log transformation we were able to more clearly show the spectra more clearly, as can be seen in Figure TODO.
+\newpage
+\subsection*{(b)}
+Now that we have the centered Fourier spectrum of the input image we can visualize it. The centered Fourier spectrum is visualized in Figure \ref{fig:exercise1}b, but is near impossible to see (please use the matlab code to get an interactive image if you do want to see it properly). To make sure the spectrum is easily visible we use a log transformation. In Figure \ref{fig:exercise1}d the log transformation of the spectrum can be seen and is much easier to interpret. Figure \ref{fig:exercise1}a and \ref{fig:exercise1}c show the non-centered Fourier spectrum without and with the log transformation respectively.
 
 \begin{figure}[h]
     \centering
-    \includesvg[width=\textwidth]{Assignment_2/output_plots/.svg}
-    \caption{Visualization of the BHPF transfer function $H(u, v)$. (1) H in 3D space, (2) H as a grayscale intensity value in a 2D space and (3) a cross-section of H versus the distance function D.}
-    \label{fig:bhpf}
+    \includesvg[width=\textwidth]{Assignment_2/output_plots/exercise1.svg}
+    \caption{(a) non-centered Fourier spectrum. (b) centered Fourier spectrum. (c) log transformation of the non-centered Fourier spectrum. (d) log transformation of the centered Fourier spectrum.}
+    \label{fig:exercise1}
 \end{figure}
 
+\subsection*{(c)}
+The last part of the exercise simply wants us to use the result from (a) to compute the average value of the image. Formula \ref{eq:zeroFreqProp} (Eq.4-92 in the book) shows that the zero-frequency term of the DFT is proportional to the mean of the original image. The following steps are clearly outlined in \ding{118} Listing \ref{code:exercise1}. The average of the original image is $0.7997$ and using Formula \ref{eq:zeroFreqProp} we determined that $M N \bar{f} = 3.7855e+05$. By selecting the middle pixel of the centered Fourier spectrum (the result of (a)) we get the zero-frequency term of our result, which is also $3.7855e+05$. We divide that by the dimensions of the image ($M$ and $N$) and get the average value of the original image again: $0.7997$.
 
+\begin{equation}\label{eq:zeroFreqProp}
+    \begin{aligned}
+    F(0,0) &=M N \frac{1}{M N} \sum_{x=0}^{M-1} \sum_{y=0}^{N-1} f(x, y) \\
+    &=M N \bar{f}
+    \end{aligned}
+\end{equation}
 
-The resulting code can be seen in \ding{118} Listing \ref{code:exercise1}.
+The resulting code for the entire exercise can be seen in \ding{118} Listing \ref{code:exercise1}.
 
+\newpage
 \section*{Exercise 2}
 \subsection*{(a)} In this exercise we are asked to implement a \textit{Butterworth Highpass Filter} (BHPF) transfer function. To do this, we first built a distance function $D$ as according to Eq (4-112):
 
@@ -150,6 +158,7 @@ For the last part we had to apply a $3 \times 3$ filter to the image we created 
 
 $^*$Note that some of the images are hard to make out in PDF format, so please run \textit{IPmedian\_test.m} to get the high resolution images.
 
+\newpage
 \bibliographystyle{plain}
 \typeout{}
 \bibliography{Assignment_2}
