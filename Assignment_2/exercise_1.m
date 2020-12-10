@@ -12,16 +12,6 @@ im2 = abs(fftshift(fft2(f)));
 im3 = log(abs(fft2(f)));
 im4 = log(abs(fftshift(fft2(f))));
 
-% DFT = fftshift(fft2(f));
-% spectrum = sqrt(real(DFT).^2 + imag(DFT).^2);
-% im4 = log(spectrum);
-
-mean(fftshift(fft2(f)), 'all')
-mean(f, 'all')
-
-temp = fft2(f);
-temp(1,1)
-
 % Display the spectrum.
 figure;
 subplot(221);
@@ -37,4 +27,14 @@ subplot(224);
 imshow(im4,[])
 title('abs of fftshift + fft')
 
+% Write current figure to file
+set(gcf, 'PaperUnits', 'normalized')
+saveas(gcf, 'output_plots/exercise1.svg');
+
 % Use your result in (a) to compute the average value of the image.
+
+mean(fftshift(fft2(f)), 'all')
+mean(f, 'all')
+
+temp = fft2(f);
+temp(1,1)
