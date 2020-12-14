@@ -4,19 +4,52 @@ close all;                            % close open figure windows
 imname = 'plant';
 inputfile = ['input_images/', imname,'.tif'];          
 f = imread(inputfile);                  % read input image
+f = im2double(f);
+[M, N] = size(f);
+assert(M==N);
 
 % Pyramid decomposition
 J = 3;
 sigma = 1.0;
-g = IPpyr_decomp(f, J, sigma); %this also converts image to double
+g = IPpyr_decomp(f, J, sigma);
 
 % Pyramid reconstruction
-recon = IPpyr_recon(g, J, sigma);
+g2 = IPpyr_recon(g, J, sigma);
 
 % Show results
 figure;
 subplot(121);
-f = im2double(f);
 imshow(f)
 subplot(122);
-imshow(recon)
+imshow(g2)
+
+% compute absolute error between f and g2 + create difference image
+error = 0.0;
+diffImage = zeros(M, N);
+
+% turn the next two line on if you want to compare uint8 images
+% g2 = im2uint8(g2);
+% f = imread(inputfile);
+
+for i = 1:M
+    for j = 1:N
+        error = error + abs(f(i,j) - g2(i,j));
+        diffImage(i,j) = abs(f(i,j) - g2(i,j));
+    end
+end
+error = error / (M * N)
+
+% show results
+figure;
+subplot(131);
+imshow(f)
+subplot(132);
+imshow(g2)
+subplot(133);
+imshow(diffImage)
+
+% Write current figure to file
+saveas(gcf, 'output_plots/IPpyr_recon_test.svg');
+
+
+
