@@ -25,9 +25,10 @@ figure;
 [M, N] = size(f); % height, width
 J = 3;
 sigma = 1.0;
-I = IPpyr_decomp(f, J, sigma);
+g = IPpyr_decomp(f, J, sigma);
 colormap(gray(256));
-imagesc(I);
+save('IPpyr_decomp-g_J=3,sigma=1.0.mat', 'g')
+imagesc(g);
 axis equal;
 axis tight;
 title({'pyramid decomposition', '(J=3, sigma=1.0)'});
