@@ -44,7 +44,7 @@ where $h_\sigma$ denotes \textit{Gaussian filtering}, which is a filter with a G
 
 \subsection*{(a)} In this first exercise, we were asked to implement a function \textsc{IPpyr\_decomp} that builds a Laplacian pyramid decomposition. For the parameters of this function, $f$ is the input image, $J$ the composition level and $\sigma$ the Gaussian filter kernel parameter. For our implementation, see \ding{118} Listing \ref{code:IPpyr_decomp}.
 
-In our implementation, we use matlab \textit{Cell} types to store the pyramid and the detail signals, in variables $f$ and $d$, respectively. Note that the Matlab cell type indeed makes it possible to store matrices of variable lengths, though we do need the function \textsc{mat2cell} and \textsc{cell2mat} for storing/retrieving from the cell array. Like announced, we were allowed to use the function \textsc{imgaussfilt} to perform the Gaussian filtering process. We hand it a double image (\textsc{im2double}) and the parameter $\sigma$. We perform both the Reducing and Expanding operations and store the residuals in $d$.
+In our implementation, we use matlab \textit{Cell} types to store the pyramid and the detail signals, in variables $f$ and $d$, respectively. Note that the Matlab cell type indeed makes it possible to store matrices of variable lengths, though we do need the function \textsc{mat2cell} and \textsc{cell2mat} for storing/retrieving from the cell array. Like announced, we were allowed to use the function \textsc{imgaussfilt} to perform the Gaussian filtering process. We hand it a \textit{double} image (\textsc{im2double}) and the parameter $\sigma$. We perform both the Reducing and Expanding operations and store the residuals in $d$.
 
 Now finally, we can store the result in a matrix $g$. We can compute the height for this result matrix using:
 
@@ -84,29 +84,40 @@ For exercise 2 we are going to reconstruct the decomposed image from exercise 1.
     \mathrm{EXPAND}(f)=h_{\sigma} *(\uparrow 2(f))
 \end{equation}
 
-Now we are tasked with writing a Matlab function \textit{IPpyr_recon(g,J,sigma)} that implements the Laplacian pyramid reconstruction. Here $g$ is the decomposed image that was the result of exercise 1, $J$ is the number of decomposition levels, and \textit{sigma} is the standard deviation for the Gaussian filter. Our implementation can be seen in \ding{118} Listing \ref{code:IPpyr_recon}.
+Now we are tasked with writing a Matlab function \textit{IPpyr\_recon(g,J,sigma)} that implements the Laplacian pyramid reconstruction. Here $g$ is the decomposed image that was the result of exercise 1, $J$ is the number of decomposition levels, and \textit{sigma} is the standard deviation for the Gaussian filter. Our implementation can be seen in \ding{118} Listing \ref{code:IPpyr_recon}.
 
 \subsection*{(b)}
-Next we had to apply our function \textit{IPpyr_recon(g,J,sigma)} to the result of exercise 1. At first we missed the part about writing and loading it from/to a .mat file, so we wrote our test file to simply generate it from the input image. We altered our code to save and load the .mat file afterwards, but you can still find the code that first decomposes the image commented out in \ding{118} Listing \ref{code:IPpyr_recon_test}, along with the final code for the test.
+Next we had to apply our function \textit{IPpyr\_recon(g,J,sigma)} to the result of exercise 1. At first we missed the part about writing and loading it from/to a .mat file, so we wrote our test file to simply generate it from the input image. We altered our code to save and load the .mat file afterwards, but you can still find the code that first decomposes the image commented out in \ding{118} Listing \ref{code:IPpyr_recon_test}, along with the final code for the test.
 
-Figure \ref{fig:2b} shows the input image and the reconstructed image side by side.
+Figure \ref{fig:2b} shows the input image and the reconstructed image side by side. Here we used $J = 3$ and $sigma = 1.0$ as stated in the assignment.
 
 \begin{figure}[h]
     \centering
-    \includesvg[width=0.7\textwidth]{Assignment_3/output_plots/plant_all_pyr-decomp.svg}
-    \caption{Laplacian pyramid decomposition of \ref{fig:plant_original} using $J=3$ and $\sigma=1.0$. Residuals $d$ are vertically stacked, with at the bottom the final decomposition, $f_{3}$.}
-    \label{fig:plant_all_pyr-decomp}
+    \includegraphics[width=\textwidth]{Assignment_3/output_plots/IPpyr_recon_test_partial.png}
+    \caption{Left) Input image. Right) Reconstruction of the image after having decomposed it.}
+    \label{fig:2b}
 \end{figure}
 
 \subsection*{(c)}
+The next step is to calculate the mean absolute error between the reconstructed image and the input image. For this we need to use Formula \ref{eq:meanabserror} and we need to make sure both images are of the same type (which is \textit{double} for us).
 
 \begin{equation}\label{eq:meanabserror}
     \operatorname{error}(f, g)=\frac{1}{M \times N} \sum_{i=1}^{M} \sum_{j=1}^{N}|f(i, j)-g(i, j)|
 \end{equation}
 
+We also need to compute the difference image between the input and reconstructed images. This is done by taking the mean absolute value of each pixel value using both images. The result is presented in Figure \ref{fig:recon_all}.
+
+$^*$Note: We used the input image converted to the type \textit{double} and the reconstructed image which was already of the type \textit{double}. So we did not convert our reconstructed image to \textit{uint8} as stated in the assignment, seeing as that gave very weird and incorrect results.
 
 \subsection*{(d)}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{Assignment_3/output_plots/IPpyr_recon_test_partial.png}
+    \caption{Left) Input image. Middle) Reconstruction of the image after having decomposed it. Right) Difference image between the input image and reconstructed image.}
+    \label{fig:recon_all}
+\end{figure}
+The last part of the assignment is to put the input image, the reconstructed image, and the difference image together in a single figure and save it. We did this as can be seen in \ding{118} Listing \ref{code:IPpyr_recon_test} and in Figure \ref{fig:recon_all}. The mean absolute error between the two images as implemented in (c) gives us the error $0.0252$, which seems very reasonable when we look at the difference image in Figure \ref{fig:recon_all}.
 
 \newpage
 \bibliographystyle{plain}
