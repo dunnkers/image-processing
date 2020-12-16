@@ -33,13 +33,16 @@ imshow(g2)
 % Write current figure to file
 saveas(gcf, 'output_plots/IPpyr_recon_test_partial.svg');
 
-% compute absolute error between f and g2 + create difference image
-error = 0.0;
-diffImage = zeros(M, N);
+% Nicer output image but requires Matlab 2020a or above
+exportgraphics(gcf, 'output_plots/IPpyr_recon_test_partial.png');
 
 % turn the next two line on if you want to compare uint8 images
 % g2 = im2uint8(g2);
 % f = imread(inputfile);
+
+% compute absolute error between f and g2 + create difference image
+error = 0.0;
+diffImage = zeros(M, N);
 
 for i = 1:M
     for j = 1:N
@@ -61,5 +64,6 @@ imshow(diffImage)
 % Write current figure to file
 saveas(gcf, 'output_plots/IPpyr_recon_test.svg');
 
-
+% Nicer output image but requires Matlab 2020a or above
+exportgraphics(gcf, 'output_plots/IPpyr_recon_test.png');
 
