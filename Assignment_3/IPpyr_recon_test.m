@@ -1,17 +1,24 @@
 clc;                                  % clear the command window
 close all;                            % close open figure windows      
 
-imname = 'plant';
-inputfile = ['input_images/', imname,'.tif'];          
-f = imread(inputfile);                  % read input image
-f = im2double(f);
-[M, N] = size(f);
-assert(M==N);
-
-% Pyramid decomposition
+% Define J and sigma
 J = 3;
 sigma = 1.0;
-g = IPpyr_decomp(f, J, sigma);
+
+% % Create the decomposed image from the input image
+% imname = 'plant';
+% inputfile = ['input_images/', imname,'.tif'];          
+% f = imread(inputfile);                  % read input image
+% f = im2double(f);
+% [M, N] = size(f);
+% assert(M==N);
+% 
+% % Pyramid decomposition
+% g = IPpyr_decomp(f, J, sigma);
+
+% Load it from file
+mat = load('IPpyr_decomp_data-J=3,sigma=1.0.mat');
+g = mat.g;
 
 % Pyramid reconstruction
 g2 = IPpyr_recon(g, J, sigma);
@@ -22,6 +29,9 @@ subplot(121);
 imshow(f)
 subplot(122);
 imshow(g2)
+
+% Write current figure to file
+saveas(gcf, 'output_plots/IPpyr_recon_test_partial.svg');
 
 % compute absolute error between f and g2 + create difference image
 error = 0.0;
