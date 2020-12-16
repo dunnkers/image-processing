@@ -34,7 +34,7 @@ imshow(g2)
 saveas(gcf, 'output_plots/IPpyr_recon_test_partial.svg');
 
 % Nicer output image but requires Matlab 2020a or above
-exportgraphics(gcf, 'output_plots/IPpyr_recon_test_partial.png');
+% exportgraphics(gcf, 'output_plots/IPpyr_recon_test_partial.png');
 
 % turn the next two line on if you want to compare uint8 images
 % g2 = im2uint8(g2);
@@ -65,5 +65,5 @@ imshow(diffImage)
 saveas(gcf, 'output_plots/IPpyr_recon_test.svg');
 
 % Nicer output image but requires Matlab 2020a or above
-exportgraphics(gcf, 'output_plots/IPpyr_recon_test.png');
+% exportgraphics(gcf, 'output_plots/IPpyr_recon_test.png');
 
