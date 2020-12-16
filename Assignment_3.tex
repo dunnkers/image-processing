@@ -56,27 +56,57 @@ Now finally, we can store the result in a matrix $g$. We can compute the height 
 which we conveniently implemented using an element-wise squaring operation in Matlab, i.e. using \texttt{.\^} (see code line 25). Next come some basic geometry operations to stack the result images vertically over the space of $P$ and centering each image horizontally over the space of $M$. This done, we result with a result matrix $g$, which  is also saved to \texttt{IPpyr\_decomp-g\_J=3,sigma=1.0.mat}.
 \subsection*{(b)} Next, we visualize the results, using again a \texttt{*\_test} script. See Figure ~\ref{fig:plant_original} for the original image and Figure~\ref{fig:plant_all_pyr-decomp} for its Laplacian pyramid decomposition using $J=3$ and $\sigma=1.0$.
 
-\begin{figure}[ht]
+\begin{figure}[h]
     \centering
-    \includesvg[width=0.5\textwidth]{Assignment_3/output_plots/plant_original.svg}
+    \includesvg[width=0.8\textwidth]{Assignment_3/output_plots/plant_original.svg}
     \caption{Original plant image for Exercise 1 without any filtering applied.}
     \label{fig:plant_original}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
-    \includesvg[width=\textwidth]{Assignment_3/output_plots/plant_all_pyr-decomp.svg}
+    \includesvg[width=0.7\textwidth]{Assignment_3/output_plots/plant_all_pyr-decomp.svg}
     \caption{Laplacian pyramid decomposition of \ref{fig:plant_original} using $J=3$ and $\sigma=1.0$. Residuals $d$ are vertically stacked, with at the bottom the final decomposition, $f_{3}$.}
     \label{fig:plant_all_pyr-decomp}
 \end{figure}
 
 \subsection*{(c)} See \texttt{IPpyr\_decomp\_data-J=3,sigma=1.0.mat} for the result matrix data $g$.
 
+\newpage
 \section*{Exercise 2}
 \subsection*{(a)}
+For exercise 2 we are going to reconstruct the decomposed image from exercise 1. The exercise states \textit{"Let $f$ be a grey value image with Laplacian pyramid decomposition of $J$ levels given by detail signals $d_1, d_2, \ldots , d_{J−1}$ and coarsest approximation $f_J$. As before you may assume that the image $f$ is a square image of size $M \times M$, where $M$ is a power of 2."} To reconstruct the image we need to use Formula \ref{eq:reconstruct}, which in turn needs Formula \ref{eq:expand}.
+
+\begin{equation}\label{eq:reconstruct}
+    f_{j}=\operatorname{EXPAND}\left(f_{j+1}\right)+d_j, \quad j=J-1, \ldots, 1
+\end{equation}
+\begin{equation}\label{eq:expand}
+    \mathrm{EXPAND}(f)=h_{\sigma} *(\uparrow 2(f))
+\end{equation}
+
+Now we are tasked with writing a Matlab function \textit{IPpyr_recon(g,J,sigma)} that implements the Laplacian pyramid reconstruction. Here $g$ is the decomposed image that was the result of exercise 1, $J$ is the number of decomposition levels, and \textit{sigma} is the standard deviation for the Gaussian filter. Our implementation can be seen in \ding{118} Listing \ref{code:IPpyr_recon}.
+
 \subsection*{(b)}
+Next we had to apply our function \textit{IPpyr_recon(g,J,sigma)} to the result of exercise 1. At first we missed the part about writing and loading it from/to a .mat file, so we wrote our test file to simply generate it from the input image. We altered our code to save and load the .mat file afterwards, but you can still find the code that first decomposes the image commented out in \ding{118} Listing \ref{code:IPpyr_recon_test}, along with the final code for the test.
+
+Figure \ref{fig:2b} shows the input image and the reconstructed image side by side.
+
+\begin{figure}[h]
+    \centering
+    \includesvg[width=0.7\textwidth]{Assignment_3/output_plots/plant_all_pyr-decomp.svg}
+    \caption{Laplacian pyramid decomposition of \ref{fig:plant_original} using $J=3$ and $\sigma=1.0$. Residuals $d$ are vertically stacked, with at the bottom the final decomposition, $f_{3}$.}
+    \label{fig:plant_all_pyr-decomp}
+\end{figure}
+
 \subsection*{(c)}
+
+\begin{equation}\label{eq:meanabserror}
+    \operatorname{error}(f, g)=\frac{1}{M \times N} \sum_{i=1}^{M} \sum_{j=1}^{N}|f(i, j)-g(i, j)|
+\end{equation}
+
+
 \subsection*{(d)}
+
 
 \newpage
 \bibliographystyle{plain}
@@ -89,4 +119,7 @@ which we conveniently implemented using an element-wise squaring operation in Ma
 \lstinputlisting[caption={\textsc{IPpyr\_decomp} function: Laplacian pyramid decomposition.}, label={code:IPpyr_decomp}]{Assignment_3/IPpyr_decomp.m}
 \subsection{Exercise 2}
 \subsubsection{Exercise 2 (a)}
+\lstinputlisting[caption={\textsc{IPpyr\_recon} function: Laplacian pyramid reconstruction.}, label={code:IPpyr_recon}]{Assignment_3/IPpyr_recon.m}
+\subsubsection{Exercise 2 (b-d)}
+\lstinputlisting[caption={\textsc{IPpyr\_recon\_test} test script: executing the various task from exercise 2b-d.}, label={code:IPpyr_recon_test}]{Assignment_3/IPpyr_recon_test.m}
 \end{document}
