@@ -6,26 +6,25 @@ function g2 = IPpyr_recon(g,J,sigma)
 %       sigma: standard deviation of the Gaussian filter
 
     [P, M] = size(g);
-    
-    % extract coarsest level image
-    M_j = M / (2^(J-1));
-    N_start_j = M_j * (2^(J-1) / 2) - 0.5 * M_j;
-    f_j = g(P-M_j+1:P, N_start_j+1:N_start_j+M_j);
-    usedSpace = M_j;
-    
+
+    % Extract residuals d and coarsest level image f_J
+    heights = M * (1/2) .^ (0:J-1); % compute image heights for all levels
+    d = cell(1, J - 1);
+    for j = 1:J
+        w = heights(j);
+        x = M/2 - w/2 + 1;
+        y = sum(heights(1:j-1)) + 1;
+        im = g(y:y+w-1, x:x+w-1);
+        if (j == J); f_j = im; else; d(j) = mat2cell(im, w); end
+    end
+
     for j = (J-1):-1:1
         % EXPAND = upsample & Gaussian filter
         f_j = IPzoom(f_j, uint8(2));
         f_j = imgaussfilt(f_j, sigma);
         
-        % extract previous d
-        M_j = M / (2^(j-1));
-        N_start_j = M_j * (2^(j-1) / 2) - 0.5 * M_j;
-        g_j = g(P-usedSpace-M_j+1:P-usedSpace, N_start_j+1:N_start_j+M_j);
-        usedSpace = usedSpace + M_j;
-        
-        % add previous d to expanded image
-        f_j = f_j + g_j;
+        % Add previous d to expanded image
+        f_j = f_j + cell2mat(d(j));
     end
     g2 = f_j;
 end
