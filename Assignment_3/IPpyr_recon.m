@@ -1,4 +1,10 @@
 function g2 = IPpyr_recon(g,J,sigma)
+% IPpyr_recon Laplacian pyramid reconstruction
+%   Arguments:
+%       g: result matrix from IPpyr_decomp
+%       J: the number of decomposition levels
+%       sigma: standard deviation of the Gaussian filter
+
     [P, M] = size(g);
     
     % extract coarsest level image

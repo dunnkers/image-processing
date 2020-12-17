@@ -6,12 +6,12 @@ J = 3;
 sigma = 1.0;
 
 % % Create the decomposed image from the input image
-% imname = 'plant';
-% inputfile = ['input_images/', imname,'.tif'];          
-% f = imread(inputfile);                  % read input image
-% f = im2double(f);
-% [M, N] = size(f);
-% assert(M==N);
+imname = 'plant';
+inputfile = ['input_images/', imname,'.tif'];          
+f = imread(inputfile);                  % read input image
+f = im2double(f);
+[M, N] = size(f);
+assert(M==N);
 % 
 % % Pyramid decomposition
 % g = IPpyr_decomp(f, J, sigma);
@@ -50,7 +50,7 @@ for i = 1:M
         diffImage(i,j) = abs(f(i,j) - g2(i,j));
     end
 end
-error = error / (M * N)
+error = error / (M * N);
 
 % show results
 figure;
