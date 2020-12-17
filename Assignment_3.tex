@@ -75,7 +75,7 @@ which we conveniently implemented using an element-wise squaring operation in Ma
 \newpage
 \section*{Exercise 2}
 \subsection*{(a)}
-For exercise 2 we are going to reconstruct the decomposed image from exercise 1. The exercise states \textit{"Let $f$ be a grey value image with Laplacian pyramid decomposition of $J$ levels given by detail signals $d_1, d_2, \ldots , d_{J−1}$ and coarsest approximation $f_J$. As before you may assume that the image $f$ is a square image of size $M \times M$, where $M$ is a power of 2."} To reconstruct the image we need to use Formula \ref{eq:reconstruct}, which in turn needs Formula \ref{eq:expand}.
+For exercise 2 we are going to reconstruct the decomposed image from exercise 1. The exercise states \textit{"Let $f$ be a grey value image with Laplacian pyramid decomposition of $J$ levels given by detail signals $d_1, d_2, \ldots, d_{J - 1}$ and coarsest approximation $f_J$. As before you may assume that the image $f$ is a square image of size $M \times M$, where $M$ is a power of 2."} To reconstruct the image we need to use Formula \ref{eq:reconstruct}, which in turn needs Formula \ref{eq:expand}.
 
 \begin{equation}\label{eq:reconstruct}
     f_{j}=\operatorname{EXPAND}\left(f_{j+1}\right)+d_j, \quad j=J-1, \ldots, 1
@@ -94,7 +94,7 @@ Figure \ref{fig:2b} shows the input image and the reconstructed image side by si
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{Assignment_3/output_plots/IPpyr_recon_test_partial.png}
-    \caption{Left) Input image. Right) Reconstruction of the image after having decomposed it.}
+    \caption{(Left) Input image. (Right) Reconstruction of the image after having decomposed it.}
     \label{fig:2b}
 \end{figure}
 
@@ -114,7 +114,7 @@ $^*$Note: We used the input image converted to the type \textit{double} and the 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{Assignment_3/output_plots/IPpyr_recon_test.png}
-    \caption{Left) Input image. Middle) Reconstruction of the image after having decomposed it. Right) Difference image between the input image and reconstructed image.}
+    \caption{(Left) Input image. (Middle) Reconstruction of the image after having decomposed it. (Right) Difference image between the input image and reconstructed image.}
     \label{fig:recon_all}
 \end{figure}
 The last part of the assignment is to put the input image, the reconstructed image, and the difference image together in a single figure and save it. We did this as can be seen in \ding{118} Listing \ref{code:IPpyr_recon_test} and in Figure \ref{fig:recon_all}. The mean absolute error between the two images as implemented in (c) gives us the error $0.0252$, which seems very reasonable when we look at the difference image in Figure \ref{fig:recon_all}.
