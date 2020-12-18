@@ -7,11 +7,14 @@ function g2 = IPpyr_recon(g,J,sigma)
 
     [P, M] = size(g);
     
+    % calculate the coordinates needed for each level
+    D = M * (1/2) .^ (0:J-1);      % compute image dimensions D for all levels
+    P = sum(D) + 1;                % +1 for Matlab indexing
+    x = M/2 - D/2 + 1;             % compute `g` x-coordinates
+    y = cumsum([0, D(1:J-1)]) + 1; % compute `g` y-coordinates
+    
     % extract coarsest level image
-    M_j = M / (2^(J-1));
-    N_start_j = M_j * (2^(J-1) / 2) - 0.5 * M_j;
-    f_j = g(P-M_j+1:P, N_start_j+1:N_start_j+M_j);
-    usedSpace = M_j;
+    f_j = g(y(J):y(J)+D(J)-1, x(J):x(J)+D(J)-1);
     
     for j = (J-1):-1:1
         % EXPAND = upsample & Gaussian filter
@@ -19,10 +22,7 @@ function g2 = IPpyr_recon(g,J,sigma)
         f_j = imgaussfilt(f_j, sigma);
         
         % extract previous d
-        M_j = M / (2^(j-1));
-        N_start_j = M_j * (2^(j-1) / 2) - 0.5 * M_j;
-        g_j = g(P-usedSpace-M_j+1:P-usedSpace, N_start_j+1:N_start_j+M_j);
-        usedSpace = usedSpace + M_j;
+        g_j = g(y(j):y(j)+D(j)-1, x(j):x(j)+D(j)-1);
         
         % add previous d to expanded image
         f_j = f_j + g_j;

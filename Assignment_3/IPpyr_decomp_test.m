@@ -37,4 +37,3 @@ set(gcf, 'PaperUnits', 'normalized')
 set(gcf, 'PaperPosition', [0 0 0.75 1.00])
 saveas(gcf, all_file);
 fprintf('\nComplete image has been saved in file %s\n', all_file);
-

@@ -32,20 +32,15 @@ for j = 2:J
 end
 
 % Build output g
-heights = M * (1/2) .^ (0:J-1);
-P = sum(heights);
-g = ones(P, M);
-for j = 1:J-1
-    d_j = cell2mat(d(j));
-    w = size(d_j, 1);
-    x = M/2 - w/2 + 1;
-    y = sum(heights(1:j-1)) + 1;
-    g(y:y+w-1, x:x+w-1)=d_j;
-end
-f_J = cell2mat(f(J));
-w = size(f_J, 1);
-x = M/2 - w/2 + 1;
-y = sum(heights(1:J-1));
-g(y:y+w-1, x:x+w-1)=f_J;
-end
+D = M * (1/2) .^ (0:J-1);      % compute image dimensions D for all levels
+P = sum(D) + 1;                % +1 for Matlab indexing
+x = M/2 - D/2 + 1;             % compute `g` x-coordinates
+y = cumsum([0, D(1:J-1)]) + 1; % compute `g` y-coordinates
 
+% Insert detail signals `d` and coarsest decomposition level `J` into image
+g = ones(P, M);
+for j = 1:J
+    if (j == J); im = f(j); else; im = d(j); end
+    g(y(j):y(j)+D(j)-1, x(j):x(j)+D(j)-1) = cell2mat(im);
+end
+end
