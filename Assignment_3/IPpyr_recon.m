@@ -5,17 +5,17 @@ function g2 = IPpyr_recon(g,J,sigma)
 %       J: the number of decomposition levels
 %       sigma: standard deviation of the Gaussian filter
 
-    [P, M] = size(g);
+    [~, M] = size(g);
 
     % Extract residuals d and coarsest level image f_J
-    heights = M * (1/2) .^ (0:J-1); % compute image heights for all levels
+    D = M * (1/2) .^ (0:J-1);      % compute image dimensions D for all levels
+    x = M/2 - D/2 + 1;             % compute `g` x-coordinates
+    y = cumsum([0, D(1:J-1)]) + 1; % compute `g` y-coordinates
+
     d = cell(1, J - 1);
     for j = 1:J
-        w = heights(j);
-        x = M/2 - w/2 + 1;
-        y = sum(heights(1:j-1)) + 1;
-        im = g(y:y+w-1, x:x+w-1);
-        if (j == J); f_j = im; else; d(j) = mat2cell(im, w); end
+        im = g(y(j):y(j)+D(j)-1, x(j):x(j)+D(j)-1);
+        if (j == J); f_j = im; else; d(j) = mat2cell(im, D(j)); end
     end
 
     for j = (J-1):-1:1
