@@ -5,18 +5,18 @@ close all;                            % close open figure windows
 J = 3;
 sigma = 1.0;
 
-% % Create the decomposed image from the input image
-% imname = 'plant';
-% inputfile = ['input_images/', imname,'.tif'];          
-% f = imread(inputfile);                  % read input image
-% f = im2double(f);
-% [M, N] = size(f);
-% assert(M==N);
-% 
-% % Pyramid decomposition
+% Load initial input image
+imname = 'plant';
+inputfile = ['input_images/', imname,'.tif'];          
+f = imread(inputfile);                  % read input image
+f = im2double(f);
+[M, N] = size(f);
+assert(M==N);
+
+% % Decompose the image
 % g = IPpyr_decomp(f, J, sigma);
 
-% Load it from file
+% Load decomposed image from file
 mat = load('IPpyr_decomp_data-J=3,sigma=1.0.mat');
 g = mat.g;
 
@@ -37,20 +37,31 @@ saveas(gcf, 'output_plots/IPpyr_recon_test_partial.svg');
 % exportgraphics(gcf, 'output_plots/IPpyr_recon_test_partial.png');
 
 % turn the next two line on if you want to compare uint8 images
-% g2 = im2uint8(g2);
-% f = imread(inputfile);
+g2 = im2uint8(g2);
+f = imread(inputfile);
 
 % compute absolute error between f and g2 + create difference image
 error = 0.0;
-diffImage = zeros(M, N);
+% diffImage2 = zeros(M, N);
+% diffImage2 = im2uint8(diffImage2);
+
+diffImage = abs(f - g2);
+% g2 = im2uint8(g2);
+% f = imread(inputfile);
+% diffImage2 = abs(f - g2);
+
+error2 = sum(abs(f - g2), 'all') / (M * N)
 
 for i = 1:M
     for j = 1:N
         error = error + abs(f(i,j) - g2(i,j));
-        diffImage(i,j) = abs(f(i,j) - g2(i,j));
+%         diffImage2(i,j) = abs(f(i,j) - g2(i,j));
     end
 end
 error = error / (M * N)
+
+% sum(imabsdiff(diffImage2, diffImage), 'all')
+abs(error-error2);
 
 % show results
 figure;
@@ -62,7 +73,7 @@ subplot(133);
 imshow(diffImage)
 
 % Write current figure to file
-saveas(gcf, 'output_plots/IPpyr_recon_test.svg');
+saveas(gcf, 'output_plots/IPpyr_recon_testB.svg');
 
 % Nicer output image but requires Matlab 2020a or above
 % exportgraphics(gcf, 'output_plots/IPpyr_recon_test.png');
