@@ -2,7 +2,7 @@ function g = IPpyr_decomp(f, J, sigma)
 % IPpyr_decomp Laplacian pyramid decomposition
 %   Arguments:
 %       f: input image
-%       J: the number
+%       J: the number of decomposition levels
 %       sigma: standard deviation of the Gaussian filter
 f_1 = im2double(f);
 [M, N] = size(f_1); % height, width

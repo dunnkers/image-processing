@@ -58,7 +58,7 @@ for i = 1:M
 %         diffImage2(i,j) = abs(f(i,j) - g2(i,j));
     end
 end
-error = error / (M * N)
+error = error / (M * N);
 
 % sum(imabsdiff(diffImage2, diffImage), 'all')
 abs(error-error2);

@@ -15,8 +15,6 @@ title({'Original `plant` image', ' '});
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Write current figure to file
 all_file = ['output_plots/', imname,'_original','.svg'];
-% set(gcf, 'PaperUnits', 'normalized')  
-% set(gcf, 'PaperPosition', [0 0 1.75 0.40])
 saveas(gcf, all_file);
 fprintf('\nComplete image has been saved in file %s\n', all_file);
 
