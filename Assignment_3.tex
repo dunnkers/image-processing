@@ -87,7 +87,7 @@ For exercise 2 we are going to reconstruct the decomposed image from exercise 1.
 Now we are tasked with writing a Matlab function \textit{IPpyr\_recon(g,J,sigma)} that implements the Laplacian pyramid reconstruction. Here $g$ is the decomposed image that was the result of exercise 1, $J$ is the number of decomposition levels, and \textit{sigma} is the standard deviation for the Gaussian filter. Our implementation can be seen in \ding{118} Listing \ref{code:IPpyr_recon}.
 
 \subsection*{(b)}
-Next we had to apply our function \textit{IPpyr\_recon(g,J,sigma)} to the result of exercise 1. At first we missed the part about writing and loading it from/to a .mat file, so we wrote our test file to simply generate it from the input image. We altered our code to save and load the .mat file afterwards, but you can still find the code that first decomposes the image commented out in \ding{118} Listing \ref{code:IPpyr_recon_test}, along with the final code for the test.
+Next we had to apply our function \textit{IPpyr\_recon(g,J,sigma)} to the result of exercise 1. We first load the .mat file that was saved in Exercise 1, extract the coarsest level image, $f_J$ and then apply our reconstruction function \textit{IPpyr\_recon} to it. See \ding{118} Listing \ref{code:IPpyr_recon_test}, for the final testing code.
 
 Figure \ref{fig:2b} shows the input image and the reconstructed image side by side. Here we used $J = 3$ and $sigma = 1.0$ as stated in the assignment.
 
