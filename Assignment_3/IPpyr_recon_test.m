@@ -42,7 +42,7 @@ f = imread(inputfile);
 
 % compute absolute error between f and g2 + create difference image
 diffImage = abs(f - g2);
-error = sum(abs(f - g2), 'all') / (M * N)
+error = sum(abs(f - g2), 'all') / (M * N);
 
 % show results
 figure;
