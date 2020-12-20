@@ -65,7 +65,7 @@ which we conveniently implemented using an element-wise squaring operation in Ma
 
 \begin{figure}[H]
     \centering
-    \includesvg[width=0.7\textwidth]{Assignment_3/output_plots/plant_all_pyr-decomp.svg}
+    \includesvg[width=0.68\textwidth]{Assignment_3/output_plots/plant_all_pyr-decomp.svg}
     \caption{Laplacian pyramid decomposition of \ref{fig:plant_original} using $J=3$ and $\sigma=1.0$. Residuals $d$ are vertically stacked, with at the bottom the final decomposition, $f_{3}$.}
     \label{fig:plant_all_pyr-decomp}
 \end{figure}
@@ -99,15 +99,13 @@ Figure \ref{fig:2b} shows the input image and the reconstructed image side by si
 \end{figure}
 
 \subsection*{(c)}
-The next step is to calculate the mean absolute error between the reconstructed image and the input image. For this we need to use Formula \ref{eq:meanabserror} and we need to make sure both images are of the same type (which is \textit{double} for us).
+The next step is to calculate the mean absolute error between the reconstructed image and the input image. For this we need to use Formula \ref{eq:meanabserror} and we need to make sure both images are of the same type. We loaded the input file again as \textit{uin8} and converted our reconstructed image to \textit{uint8} as well.
 
 \begin{equation}\label{eq:meanabserror}
     \operatorname{error}(f, g)=\frac{1}{M \times N} \sum_{i=1}^{M} \sum_{j=1}^{N}|f(i, j)-g(i, j)|
 \end{equation}
 
 We also need to compute the difference image between the input and reconstructed images. This is done by taking the mean absolute value of each pixel value using both images. The result is presented in Figure \ref{fig:recon_all}.
-
-$^*$Note: We used the input image converted to the type \textit{double} and the reconstructed image which was already of the type \textit{double}. So we did not convert our reconstructed image to \textit{uint8} as stated in the assignment, seeing as that gave very weird and incorrect results.
 
 \subsection*{(d)}
 
@@ -117,7 +115,7 @@ $^*$Note: We used the input image converted to the type \textit{double} and the 
     \caption{(Left) Input image. (Middle) Reconstruction of the image after having decomposed it. (Right) Difference image between the input image and reconstructed image.}
     \label{fig:recon_all}
 \end{figure}
-The last part of the assignment is to put the input image, the reconstructed image, and the difference image together in a single figure and save it. We did this as can be seen in \ding{118} Listing \ref{code:IPpyr_recon_test} and in Figure \ref{fig:recon_all}. The mean absolute error between the two images as implemented in (c) gives us the error $0.0252$, which seems very reasonable when we look at the difference image in Figure \ref{fig:recon_all}.
+The last part of the assignment is to put the input image, the reconstructed image, and the difference image together in a single figure and save it. We did this as can be seen in \ding{118} Listing \ref{code:IPpyr_recon_test} and in Figure \ref{fig:recon_all}. The mean absolute error between the two images as implemented in (c) gives us the error $0$, which means that the images are identical. This also shows in the completely black difference image in Figure \ref{fig:recon_all}. Using the Laplacian pyramid decomposition and reconstruction give the ability to compress the image without losing detail.
 
 \bibliographystyle{plain}
 \typeout{}
