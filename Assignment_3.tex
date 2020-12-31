@@ -3,7 +3,7 @@
 
 \title{Image Processing\\
     Lab 3}
-\author{Kevin Gevers (s25595987) \\ Jeroen Overschie (s2995697)}
+\author{Kevin Gevers (s25595987) \\ Jeroen Overschie (s2995697)\\Group 01}
 \date{\today}
 
 \begin{document}
@@ -13,7 +13,9 @@
 Note, that all used source code can be found attached next to this report's pdf file. Its structure should be self-explanatory; all requested functions are named accordingly and any extra functions are explained in the report. Note that (almost) every function has a corresponding test script, which is named just like its function, but with a suffix '\texttt{\_test}'. Where possible, we followed the terminology from the book \citep{gonzalez2008digital} for variable naming.
 
 \section*{Exercise 1}
-First some basic theory on the subject. We are given some grey scale image, $f$. We now denote the Laplacian pyramid of f using:
+First some basic theory on the subject. The goal is to work with Laplacian Pyramid decompositions, for which we apply both the decomposition process and the reconstruction process. The decomposition allows one to conveniently store images in multiple formats to use any suited version wherever desirable. By applying some filter, i.e. a Gaussian filter, we aid the subsampling process by making increasing the chance for picking pixels that are good representations of the original image; which the filter does by somewhat `smoothing` the image. Moreover, by saving the differences between the various decomposition levels, we are able to reconstruct the original image by performing the same process in reverse, using the difference images to again obtain an image of the original dimensions.
+
+Let us explain the notation used in the process. We are given some grey scale image, $f$. We now denote the Laplacian pyramid of f using:
 \[
     f_1 = f
 \]
@@ -40,7 +42,7 @@ Which are more simply said the decompositions scaled back to the dimensions of t
     \textsc{EXPAND}(f) = h_\sigma * (\uparrow_2 (f)),
 \]
 
-where $h_\sigma$ denotes \textit{Gaussian filtering}, which is a filter with a Gaussian response that can be used for performing a sort of image blur. The filter has the parameter $\sigma$, which is the standard deviation of the kernel. Furthermore, the operations denoted by the arrows, $\downarrow_2$ and $\uparrow_2$ denote \textbf{shrinking} and \textbf{zooming} an image by a factor $2$, respectively. In the spirit of maximum re-usability and efficiency, we reused some functions from Exercise 1 for this: the 'fundamental' functions \textsc{IPinterpolate} and \textsc{IPscaling\_transformation} to do the scaling work, and \textsc{IPdownsample} and \textsc{IPzoom} to apply them. These functions are thoroughly documented in the first report. In this lab, we use \textsc{IPdownsample} for our shrinking functionality ($\downarrow_2$) and \textsc{IPzoom} for zooming functionality ($\uparrow_2$).
+where $h_\sigma$ denotes \textit{Gaussian filtering}, which is a filter with a Gaussian response that can be used for performing a sort of image blur. The filter has the parameter $\sigma$, which is the standard deviation of the kernel. Furthermore, the operations denoted by the arrows, $\downarrow_2$ and $\uparrow_2$ denote \textbf{shrinking} and \textbf{zooming} an image by a factor $2$, respectively. In the spirit of maximum re-usability and efficiency, we reused some functions from Exercise 1 for this: the 'fundamental' functions \textsc{IPinterpolate} (\ding{118} Listing~\ref{code:IPinterpolate}) and \textsc{IPscaling\_transformation} (\ding{118} Listing~\ref{code:IPscaling_transformation}) to do the scaling work, and \textsc{IPdownsample} (\ding{118} Listing~\ref{code:IPdownsample}) and \textsc{IPzoom} (\ding{118} Listing~\ref{code:IPzoom}) to apply them. These functions are thoroughly documented in the first report. In this lab, we use \textsc{IPdownsample} for our shrinking functionality ($\downarrow_2$) and \textsc{IPzoom} for zooming functionality ($\uparrow_2$).
 
 \subsection*{(a)} In this first exercise, we were asked to implement a function \textsc{IPpyr\_decomp} that builds a Laplacian pyramid decomposition. For the parameters of this function, $f$ is the input image, $J$ the composition level and $\sigma$ the Gaussian filter kernel parameter. For our implementation, see \ding{118} Listing \ref{code:IPpyr_decomp}.
 
@@ -53,19 +55,21 @@ Now finally, we can store the result in a matrix $g$. We can compute the height 
     P = M \times (1+\frac{1}{2}+(\frac{1}{2})^2+...+(\frac{1}{2})^{J-1}),
 \]
 
-which we conveniently implemented using an element-wise squaring operation in Matlab, i.e. using \texttt{.\^} (see code line 25). Next come some basic geometry operations to stack the result images vertically over the space of $P$ and centering each image horizontally over the space of $M$. This done, we result with a result matrix $g$, which  is also saved to \texttt{IPpyr\_decomp-g\_J=3,sigma=1.0.mat}.
-\subsection*{(b)} Next, we visualize the results, using again a \texttt{*\_test} script. See Figure ~\ref{fig:plant_original} for the original image and Figure~\ref{fig:plant_all_pyr-decomp} for its Laplacian pyramid decomposition using $J=3$ and $\sigma=1.0$.
+which we conveniently implemented using an element-wise squaring operation in Matlab, i.e. using \texttt{.\^} (see \textsc{IPpyr\_decomp} code line 35 in Listing~\ref{code:IPpyr_decomp}). Note we add 1 to compensate for the Matlab indexing starting at 1 instead of 0. Next come some basic geometry operations to stack the result images vertically over the space of $P$ and centering each image horizontally over the space of $M$. This done, we result with a result matrix $g$, which  is also saved to \texttt{IPpyr\_decomp-g\_J=3,sigma=1.0.mat}.
 
-\begin{figure}[h]
+\subsection*{(b)} Next, we visualize the results, using again a \texttt{*\_test} script. See Listing~\ref{code:IPpyr_decomp_test} for the testing code. See Figure ~\ref{fig:plant_original} for the original image and Figure~\ref{fig:plant_all_pyr-decomp} for its Laplacian pyramid decomposition using $J=3$ and $\sigma=1.0$. We can observe that the results look very much alike the example images given in the assignment instructions, despite having tuned the parameters slightly differently (sigma is higher in the assignment instructions, i.e. is 5.0 instead of our 1.0). As can be seen in the bottom most image, a decomposition of a 4x smaller size was made and still looks reasonably alike thanks to the filtering techniques applied at every step. Also the difference images look alike what was given in the assignment, indicating a correct decomposition.
+
+\begin{figure}[H]
     \centering
     \includesvg[width=0.8\textwidth]{Assignment_3/output_plots/plant_original.svg}
     \caption{Original plant image for Exercise 1 without any filtering applied.}
     \label{fig:plant_original}
 \end{figure}
 
+\newpage
 \begin{figure}[H]
     \centering
-    \includesvg[width=0.68\textwidth]{Assignment_3/output_plots/plant_all_pyr-decomp.svg}
+    \includesvg[width=0.65\textwidth]{Assignment_3/output_plots/plant_all_pyr-decomp.svg}
     \caption{Laplacian pyramid decomposition of \ref{fig:plant_original} using $J=3$ and $\sigma=1.0$. Residuals $d$ are vertically stacked, with at the bottom the final decomposition, $f_{3}$.}
     \label{fig:plant_all_pyr-decomp}
 \end{figure}
@@ -115,7 +119,13 @@ We also need to compute the difference image between the input and reconstructed
     \caption{(Left) Input image. (Middle) Reconstruction of the image after having decomposed it. (Right) Difference image between the input image and reconstructed image.}
     \label{fig:recon_all}
 \end{figure}
-The last part of the assignment is to put the input image, the reconstructed image, and the difference image together in a single figure and save it. We did this as can be seen in \ding{118} Listing \ref{code:IPpyr_recon_test} and in Figure \ref{fig:recon_all}. The mean absolute error between the two images as implemented in (c) gives us the error $0$, which means that the images are identical. This also shows in the completely black difference image in Figure \ref{fig:recon_all}. Using the Laplacian pyramid decomposition and reconstruction give the ability to compress the image without losing detail.
+The last part of the assignment is to put the input image, the reconstructed image, and the difference image together in a single figure and save it. We did this as can be seen in \ding{118} Listing \ref{code:IPpyr_recon_test} and in Figure \ref{fig:recon_all}. The mean absolute error between the two images as implemented in (c) gives us the error $0$, which means that the images are identical. This also shows in the completely black difference image in Figure \ref{fig:recon_all}. Using the Laplacian pyramid decomposition and reconstruction give the ability to compress the image without losing detail and later reconstruct the exact same image as the original.
+
+\section*{Individual contributions}
+\begin{itemize}
+    \item \textbf{Exercise 1}. Contribution to program design, program implementation, answering questions posed and writing the report: \textit{Jeroen} 100\%.
+    \item \textbf{Exercise 2}. Contribution to program design, program implementation, answering questions posed and writing the report: \textit{Kevin} 100\%.
+\end{itemize}
 
 \bibliographystyle{plain}
 \typeout{}
@@ -125,7 +135,14 @@ The last part of the assignment is to put the input image, the reconstructed ima
 \appendix
 \section{Code}
 \subsection{Exercise 1}
+\subsubsection{Exercise 1 (a)}
+\lstinputlisting[caption={IPscaling\_transformation.m: perform geometric transformations of \\the \textit{scaling} kind, given an affine transformation matrix or a scaling constant.}, label={code:IPscaling_transformation}]{Assignment_1/IPscaling_transformation.m}
+\lstinputlisting[caption={IPinterpolate.m: interpolate an unknown pixel intensity value using\\ one of the supported methods.}, label={code:IPinterpolate}]{Assignment_1/IPinterpolate.m}
+\lstinputlisting[caption={IPdownsample.m: downsample images using \textsc{IPscaling\_transformation}.}, label={code:IPdownsample}]{Assignment_1/IPdownsample.m}
+\lstinputlisting[caption={IPzoom.m: zoom images using \textsc{IPscaling\_transformation}.}, label={code:IPzoom}]{Assignment_1/IPzoom.m}
 \lstinputlisting[caption={\textsc{IPpyr\_decomp} function: Laplacian pyramid decomposition.}, label={code:IPpyr_decomp}]{Assignment_3/IPpyr_decomp.m}
+\subsubsection{Exercise 1 (b)}
+\lstinputlisting[caption={\texttt{IPpyr\_decomp\_test}: Testing the Laplacian pyramid decomposition function, \textsc{IPpyr\_decomp}.}, label={code:IPpyr_decomp_test}]{Assignment_3/IPpyr_decomp_test.m}
 \subsection{Exercise 2}
 \subsubsection{Exercise 2 (a)}
 \lstinputlisting[caption={\textsc{IPpyr\_recon} function: Laplacian pyramid reconstruction.}, label={code:IPpyr_recon}]{Assignment_3/IPpyr_recon.m}
