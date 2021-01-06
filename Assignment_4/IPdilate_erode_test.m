@@ -21,11 +21,13 @@ fprintf('\nComplete image has been saved in file %s\n', all_file);
 % Structuring Elements
 B_cross     = logical([0 1 0; 1 1 1; 0 1 0]);
 B_square    = logical([1 1 1; 1 1 1; 1 1 1]);
-B_circle    =  logical( [0 0 1 0 0;
-                         0 1 1 1 0;
-                         1 1 1 1 1;
-                         0 1 1 1 0;
-                         0 0 1 0 0]);
+B_diamond    =  logical( [0 0 0 1 0 0 0;
+                         0 0 1 1 1 0 0;
+                         0 1 1 1 1 1 0;
+                         1 1 1 1 1 1 1;
+                         0 1 1 1 1 1 0;
+                         0 0 1 1 1 0 0;
+                         0 0 0 1 0 0 0;]);
 
 % Dilation
 figure;
@@ -63,20 +65,20 @@ imagesc(B_square);
 axis equal;
 axis tight;
 title({'`Square` SE'});
-% Circle
+% Diamond
 subplot(244);
-g = IPdilate(f, B_circle);
+g = IPdilate(f, B_diamond);
 colormap(gray(256));
 imagesc(g);
 axis equal;
 axis tight;
-title({'Dilated `wirebondmask` image', '`Circle` SE'});
+title({'Dilated `wirebondmask` image', '`Diamond` SE'});
 
 subplot(248);
-imagesc(B_circle);
+imagesc(B_diamond);
 axis equal;
 axis tight;
-title({'`Circle` SE'});
+title({'`Diamond` SE'});
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Write current figure to file
 all_file = ['output_plots/', imname,'_all','_dilate', '.svg'];
@@ -84,8 +86,6 @@ set(gcf, 'PaperUnits', 'normalized')
 set(gcf, 'PaperPosition', [0 0 0.75 1.00])
 saveas(gcf, all_file);
 fprintf('\nComplete image has been saved in file %s\n', all_file);
-
-
 
 
 
@@ -127,20 +127,20 @@ imagesc(B_square);
 axis equal;
 axis tight;
 title({'`Square` SE'});
-% Circle
+% Diamond
 subplot(244);
-g = IPerode(f, B_circle);
+g = IPerode(f, B_diamond);
 colormap(gray(256));
 imagesc(g);
 axis equal;
 axis tight;
-title({'Eroded `wirebondmask` image', '`Circle` SE'});
+title({'Eroded `wirebondmask` image', '`Diamond` SE'});
 
 subplot(248);
-imagesc(B_circle);
+imagesc(B_diamond);
 axis equal;
 axis tight;
-title({'`Circle` SE'});
+title({'`Diamond` SE'});
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Write current figure to file
 all_file = ['output_plots/', imname,'_all','_erode', '.svg'];
