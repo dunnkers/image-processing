@@ -2,40 +2,33 @@ function Idil = IPdilate(I, B)
 % IPdilate Dilates a binary image using some structuring element.
 %   Arguments:
 %       I: input image to dilate. Must be binary, i.e. have logical values.
-%       B: structuring element. Must have odd dimensions. Its origin is
-%       automatically set at its centerpoint.
+%       B: structuring element (SE). Must have odd dimensions and also be 
+%       binary, i.e. have logical values. Its origin is automatically set 
+%       at its centerpoint.
 %   Returns: dilated image
 % Dimensions
 [M, N] = size(I);       % height, width
 [Mse, Nse] = size(B);   % height, width
-% Ensure image is binary and of logical type
+% Ensure image and SE is binary and of logical type
 assert(islogical(I));
+assert(islogical(B));
 % Ensure SE has odd dimensions
 assert(rem(Mse, 2) ~= 0)
 assert(rem(Nse, 2) ~= 0)
-% Compute SE origin
-origin_y = (Mse + 1) / 2;
-origin_x = (Nse + 1) / 2;
+
+% Put padding around original image. Then, SE can freely move around.
+padding_y = floor(Mse / 2);
+padding_x = floor(Nse / 2);
+Ipad = padarray(I, [padding_y, padding_x], 0, 'both');
 
 % Loop image pixels
 Idil = zeros(M, N);
-for y=1:M
-    for x=1:N
-        % Loop SE
-        a = (Mse - 1) / 2;
-        b = (Nse - 1) / 2;
-        result = zeros(Mse, Nse);
-        for s=-a:a
-            for t=-b:b
-                % Skip anything outside the orginal image
-                if (y+s < 1 || x+t < 1 || y+s > M || x+t > N)
-                    continue;
-                end
-                result(s+a, t+b) = I(y + s, x + t) && ...
-                    B(origin_y + s, origin_x + t);
-            end
-        end
-        Idil(y, x) = any(any(result));
+for y=(1 + padding_y):M
+    for x=(1 + padding_x):N
+        SE_ycoords = (y - padding_y):(y + padding_y);
+        SE_xcoords = (x - padding_x):(x + padding_x);
+        se = Ipad(SE_ycoords, SE_xcoords);
+        Idil(y, x) = any(se(B));
     end 
 end
 end
