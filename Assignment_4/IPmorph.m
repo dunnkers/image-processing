@@ -24,7 +24,7 @@ padding_x = floor(Nse / 2);
 Ipad = padarray(I, [padding_y, padding_x], 0, 'both');
 
 % Loop image pixels
-Imorph = zeros(M, N);
+Imorph = false(M, N);
 for y=(1 + padding_y):M
     for x=(1 + padding_x):N
         SE_ycoords = (y - padding_y):(y + padding_y);
