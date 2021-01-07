@@ -29,14 +29,14 @@ colormap(gray(256));
 imagesc(IPerode(A, B4));
 axis equal;
 axis tight;
-title({'(a)', '(A \o B^4)'});
+title({'(a)', '(A ⊖ B^4)'});
 
 subplot(234);
 colormap(gray(256));
 imagesc(IPdilate(IPerode(A, B4), B2));
 axis equal;
 axis tight;
-title({'(a)', '(A \o B^4) \oplus B^2'});
+title({'(a)', '(A ⊖ B^4) \oplus B^2'});
 
 % (b)
 subplot(232);
@@ -44,14 +44,14 @@ colormap(gray(256));
 imagesc(IPerode(A, B1));
 axis equal;
 axis tight;
-title({'(b)', '(A \o B^1)'});
+title({'(b)', '(A ⊖ B^1)'});
 
 subplot(235);
 colormap(gray(256));
 imagesc(IPdilate(IPerode(A, B1), B3));
 axis equal;
 axis tight;
-title({'(b)', '(A \o B^1) \oplus B^3'});
+title({'(b)', '(A ⊖ B^1) \oplus B^3'});
 
 % (c)
 subplot(233);
