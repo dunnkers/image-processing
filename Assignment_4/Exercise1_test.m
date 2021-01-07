@@ -23,48 +23,117 @@ radius = L/2;
 B4 = (rowsInImage - centerY).^2 ...
     + (columnsInImage - centerX).^2 <= radius.^2;
 
-% (a)
 figure;
+% (a)
 subplot(231);
+colormap(gray(256));
+imagesc(I);
+axis equal;
+axis tight;
+title({'A'});
+
+subplot(232);
 colormap(gray(256));
 imagesc(IPerode(I, B4));
 axis equal;
 axis tight;
-title({'(a)', '(A ⊖ B^4)'});
+title({'(A ⊖ B^4)'});
 
-subplot(234);
+subplot(233);
 colormap(gray(256));
 imagesc(IPdilate(IPerode(I, B4), B2));
 axis equal;
 axis tight;
-title({'(a)', '(A ⊖ B^4) \oplus B^2'});
+title({'(A ⊖ B^4) \oplus B^2'});
 
+subplot(235);
+colormap(gray(256));
+imagesc(B4);
+axis equal;
+axis tight;
+title({'B^4'});
+
+subplot(236);
+colormap(gray(256));
+imagesc(B2);
+axis equal;
+axis tight;
+title({'B^2'});
+sgtitle('(a)');
+
+figure;
 % (b)
+subplot(231);
+colormap(gray(256));
+imagesc(I);
+axis equal;
+axis tight;
+title({'A'});
+
 subplot(232);
 colormap(gray(256));
 imagesc(IPerode(I, B1));
 axis equal;
 axis tight;
-title({'(b)', '(A ⊖ B^1)'});
+title({'(A ⊖ B^1)'});
 
-subplot(235);
+subplot(233);
 colormap(gray(256));
 imagesc(IPdilate(IPerode(I, B1), B3));
 axis equal;
 axis tight;
-title({'(b)', '(A ⊖ B^1) \oplus B^3'});
+title({'(A ⊖ B^1) \oplus B^3'});
 
+subplot(235);
+colormap(gray(256));
+imagesc(B1);
+axis equal;
+axis tight;
+title({'B^1'});
+
+subplot(236);
+colormap(gray(256));
+imagesc(B3);
+axis equal;
+axis tight;
+title({'B^3'});
+sgtitle('(b)');
+
+figure;
 % (c)
-subplot(233);
+subplot(231);
+colormap(gray(256));
+imagesc(I);
+axis equal;
+axis tight;
+title({'A'});
+
+subplot(232);
 colormap(gray(256));
 imagesc(IPdilate(I, B1));
 axis equal;
 axis tight;
-title({'(c)', '(A \oplus B^1)'});
+title({'(A \oplus B^1)'});
 
-subplot(236);
+subplot(233);
 colormap(gray(256));
 imagesc(IPdilate(IPdilate(I, B1), B3));
 axis equal;
 axis tight;
-title({'(c)', '(A \oplus B^1) \oplus B^3'});
+title({'(A \oplus B^1) \oplus B^3'});
+
+subplot(235);
+colormap(gray(256));
+imagesc(B1);
+axis equal;
+axis tight;
+title({'B^1'});
+
+subplot(236);
+colormap(gray(256));
+imagesc(B3);
+axis equal;
+axis tight;
+title({'B^3'});
+
+sgtitle('(c)');

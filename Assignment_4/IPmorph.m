@@ -33,9 +33,9 @@ for y=(1 + padding_y):M
         
         switch type
             case 'dilate'
-                Imorph(y, x) = any(A(B));
+                Imorph(y - padding_y, x - padding_x) = any(A(B));
             case 'erode'
-                Imorph(y, x) = all(A(B));
+                Imorph(y - padding_y, x - padding_x) = all(A(B));
         end
     end 
 end
