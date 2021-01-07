@@ -4,6 +4,7 @@ assert(rem(L, 4) == 0);
 A_a = zeros(L, L);
 A_b = ones(L, L);
 A = logical([A_a A_b A_a; A_b A_b A_b; A_a A_b A_a;]);
+I = padarray(A, [L*2, L*2], 0, 'both');
 
 B1 = true(L-1, L/4-1);
 B2_a = zeros(L/4-1, L/4-1);
@@ -26,14 +27,14 @@ B4 = (rowsInImage - centerY).^2 ...
 figure;
 subplot(231);
 colormap(gray(256));
-imagesc(IPerode(A, B4));
+imagesc(IPerode(I, B4));
 axis equal;
 axis tight;
 title({'(a)', '(A \o B^4)'});
 
 subplot(234);
 colormap(gray(256));
-imagesc(IPdilate(IPerode(A, B4), B2));
+imagesc(IPdilate(IPerode(I, B4), B2));
 axis equal;
 axis tight;
 title({'(a)', '(A \o B^4) \oplus B^2'});
@@ -41,14 +42,14 @@ title({'(a)', '(A \o B^4) \oplus B^2'});
 % (b)
 subplot(232);
 colormap(gray(256));
-imagesc(IPerode(A, B1));
+imagesc(IPerode(I, B1));
 axis equal;
 axis tight;
 title({'(b)', '(A \o B^1)'});
 
 subplot(235);
 colormap(gray(256));
-imagesc(IPdilate(IPerode(A, B1), B3));
+imagesc(IPdilate(IPerode(I, B1), B3));
 axis equal;
 axis tight;
 title({'(b)', '(A \o B^1) \oplus B^3'});
@@ -56,14 +57,14 @@ title({'(b)', '(A \o B^1) \oplus B^3'});
 % (c)
 subplot(233);
 colormap(gray(256));
-imagesc(IPdilate(A, B1));
+imagesc(IPdilate(I, B1));
 axis equal;
 axis tight;
 title({'(c)', '(A \oplus B^1)'});
 
 subplot(236);
 colormap(gray(256));
-imagesc(IPdilate(IPdilate(A, B1), B3));
+imagesc(IPdilate(IPdilate(I, B1), B3));
 axis equal;
 axis tight;
 title({'(c)', '(A \oplus B^1) \oplus B^3'});
