@@ -1,0 +1,89 @@
+\documentclass{article}
+\usepackage{styles}
+
+\title{Image Processing\\
+    Lab 4}
+\author{Kevin Gevers (s25595987) \\ Jeroen Overschie (s2995697)\\Group 01}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+Note, that all used source code can be found attached next to this report's pdf file. Its structure should be self-explanatory; all requested functions are named accordingly and any extra functions are explained in the report. Note that (almost) every function has a corresponding test script, which is named just like its function, but with a suffix '\texttt{\_test}'. Where possible, we followed the terminology from the book \citep{gonzalez2008digital} for variable naming.
+
+\section*{Exercise 1}
+In this first exercise, we are asked to solve Problem 9.9 from the book, from the Morphological Image Processing chapter. The exercise entails sketching dilations and erosions from some (binary) set using various Structuring Elements (SE's). Let us first illustrate the set $A$ on which the morphological operations will be applied on, and the respective Structuring Elements, $B^1$, $B^2$, $B^3$ and $B^4$.
+
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.19\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/pen&paper/A.svg}
+         \caption{$y=x$}
+         \label{fig:y equals x}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.19\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/pen&paper/B1.svg}
+         \caption{$y=3sinx$}
+         \label{fig:SE_B1}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.19\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/pen&paper/B2.svg}
+         \caption{$y=5/x$}
+         \label{fig:SE_B2}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.19\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/pen&paper/B3.svg}
+         \caption{$y=3sinx$}
+         \label{fig:SE_B3}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.19\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/pen&paper/B4.svg}
+         \caption{$y=3sinx$}
+         \label{fig:SE_B4}
+     \end{subfigure}
+     
+    \caption{Three simple graphs}
+    \label{fig:three graphs}
+\end{figure}
+
+
+\subsection*{(a)} $(A \ominus B^4) \oplus B^2$
+
+\section*{Individual contributions}
+\begin{itemize}
+    \item \textbf{Exercise 1 and 2}. Contribution to program design, program implementation, answering questions posed and writing the report: \textit{Jeroen} 100\%.
+    \item \textbf{Exercise 3}. Contribution to program design, program implementation, answering questions posed and writing the report: \textit{Kevin} 100\%.
+\end{itemize}
+
+\bibliographystyle{plain}
+\typeout{}
+\bibliography{Assignment_4}
+
+\newpage
+\appendix
+\section{Code}
+\subsection{Exercise 1}
+\subsubsection{Exercise 1 (a)}
+\lstinputlisting[caption={IPscaling\_transformation.m: perform geometric transformations of \\the \textit{scaling} kind, given an affine transformation matrix or a scaling constant.}, label={code:IPscaling_transformation}]{Assignment_1/IPscaling_transformation.m}
+\lstinputlisting[caption={IPinterpolate.m: interpolate an unknown pixel intensity value using\\ one of the supported methods.}, label={code:IPinterpolate}]{Assignment_1/IPinterpolate.m}
+\lstinputlisting[caption={IPdownsample.m: downsample images using \textsc{IPscaling\_transformation}.}, label={code:IPdownsample}]{Assignment_1/IPdownsample.m}
+\lstinputlisting[caption={IPzoom.m: zoom images using \textsc{IPscaling\_transformation}.}, label={code:IPzoom}]{Assignment_1/IPzoom.m}
+\lstinputlisting[caption={\textsc{IPpyr\_decomp} function: Laplacian pyramid decomposition.}, label={code:IPpyr_decomp}]{Assignment_3/IPpyr_decomp.m}
+\subsubsection{Exercise 1 (b)}
+\lstinputlisting[caption={\texttt{IPpyr\_decomp\_test}: Testing the Laplacian pyramid decomposition function, \textsc{IPpyr\_decomp}.}, label={code:IPpyr_decomp_test}]{Assignment_3/IPpyr_decomp_test.m}
+\subsection{Exercise 2}
+\subsubsection{Exercise 2 (a)}
+\lstinputlisting[caption={\textsc{IPpyr\_recon} function: Laplacian pyramid reconstruction.}, label={code:IPpyr_recon}]{Assignment_3/IPpyr_recon.m}
+\subsubsection{Exercise 2 (b-d)}
+\lstinputlisting[caption={\textsc{IPpyr\_recon\_test} test script: executing the various task from exercise 2b-d.}, label={code:IPpyr_recon_test}]{Assignment_3/IPpyr_recon_test.m}
+\end{document}
