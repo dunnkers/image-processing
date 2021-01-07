@@ -15,7 +15,7 @@ Note, that all used source code can be found attached next to this report's pdf 
 \section*{Exercise 1}
 In this first exercise, we are asked to solve Problem 9.9 from the book, from the Morphological Image Processing chapter. The exercise entails sketching dilations and erosions from some (binary) set using various Structuring Elements (SE's). Let us first illustrate the set $A$ on which the morphological operations will be applied on, and the respective Structuring Elements, $B^1$, $B^2$, $B^3$ and $B^4$.
 
-\begin{figure}
+\begin{figure}[ht]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
@@ -24,7 +24,7 @@ In this first exercise, we are asked to solve Problem 9.9 from the book, from th
          \label{fig:set_A}
      \end{subfigure}
      \hfill
-     \begin{subfigure}[b]{0.9\textwidth}
+     \begin{subfigure}[b]{0.08\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/pen&paper/B1.svg}
          \caption{$B^1$}
@@ -38,14 +38,14 @@ In this first exercise, we are asked to solve Problem 9.9 from the book, from th
          \label{fig:SE_B2}
      \end{subfigure}
      \hfill
-     \begin{subfigure}[b]{0.15\textwidth}
+     \begin{subfigure}[b]{0.11\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/pen&paper/B3.svg}
          \caption{$B^3$}
          \label{fig:SE_B3}
      \end{subfigure}
      \hfill
-     \begin{subfigure}[b]{0.15\textwidth}
+     \begin{subfigure}[b]{0.18\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/pen&paper/B4.svg}
          \caption{$B^4$}
@@ -56,8 +56,10 @@ In this first exercise, we are asked to solve Problem 9.9 from the book, from th
     \label{fig:ex1_overview}
 \end{figure}
 
+A notable observation is that, for the Structuring Elements, it is not always the case that the origin lies in the middle of the shape. For most, the origin is indeed in the shape center, but for $B^3$ (see Figure~\ref{fig:SE_B3}) the origin is at the bottom-right point of the shape. This is important to note since it has an effect on the dilation/erosion procedures. For the other shapes, the origin lies at the center point.
 
 \subsection*{(a)} $(A \ominus B^4) \oplus B^2$
+
 
 \section*{Individual contributions}
 \begin{itemize}
