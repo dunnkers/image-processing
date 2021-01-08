@@ -20,7 +20,7 @@ fprintf('\nComplete image has been saved in file %s\n', all_file);
 
 % Structuring Elements
 B_cross     = logical([0 1 0; 1 1 1; 0 1 0]);
-B_square    = logical([1 1 1; 1 1 1; 1 1 1]);
+B_square    = true(15, 15);
 B_diamond    =  logical( [0 0 0 1 0 0 0;
                          0 0 1 1 1 0 0;
                          0 1 1 1 1 1 0;
