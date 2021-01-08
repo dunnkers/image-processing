@@ -5,7 +5,6 @@ clear;                                % clear workspace
 imname = 'nutsbolts';
 inputfile = ['input_images/', imname, '.tif'];          
 f = imread(inputfile);                  % read input image
-class(f)
 % K = 7 for our input
 
 B_square = logical([1 1 1; 1 1 1; 1 1 1]);
@@ -22,23 +21,20 @@ skeleton = IPskeletondecomp(f, B_square);
 
 % Matlab's function to compare
 matlab_skeleton = bwskel(f);
-
-whos skeleton
-whos matlab_skeleton
-
-sum(imabsdiff(skeleton, matlab_skeleton), 'all')
+matlab_skeleton2 = bwmorph(f,'skel',7);
 
 figure;
-subplot(131);
+subplot(221);
 imshow(f)
 title("input image");
-subplot(132);
+subplot(222);
 imshow(skeleton)
 title("IPskeletondecomp");
-subplot(133);
+subplot(223);
 imshow(matlab_skeleton)
 title("matlab\_skeleton");
-
+subplot(224);
+imshow(matlab_skeleton2)
 
 
 

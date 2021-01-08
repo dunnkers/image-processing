@@ -8,8 +8,6 @@ function sum_Sk = IPskeletondecomp(I, B)
     opened_I = IPdilate(eroded_I, B);
     
     Sk = logical(I - opened_I);
-%     figure;
-%     imshow(Sk)
     
     eroded_A = IPerode(I, B);
     
@@ -19,8 +17,6 @@ function sum_Sk = IPskeletondecomp(I, B)
         return
     else
         sum_Sk = logical(Sk + IPskeletondecomp(eroded_A, B));
-%         figure;
-%         imshow(sum_Sk)
     end
 end
 
