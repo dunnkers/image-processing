@@ -153,7 +153,6 @@ Both dilation operations enlarge the shape. The first, however, does so mainly i
 
 \section*{Exercise 2}
 
-\subsection*{(a)}
 \begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.75\textwidth}
@@ -167,56 +166,139 @@ Both dilation operations enlarge the shape. The first, however, does so mainly i
      \begin{subfigure}[b]{0.33\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/Bcross.svg}
-         \caption{$(A \oplus B^1)$}
+         \caption{3x3 cross SE, $Bcross$.}
          \label{fig:Bcross}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.33\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/Bsquare.svg}
-         \caption{$(A \oplus B^1) \oplus B^3$}
+         \caption{3x3 square SE, $Bsquare$.}
          \label{fig:Bsquare}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.33\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/Bbigsquare.svg}
-         \caption{$(A \oplus B^1) \oplus B^3$}
+         \caption{15x15 square SE, $Bbigsquare$.}
          \label{fig:Bbigsquare}
      \end{subfigure}
      
-    \caption{Overview of the two dilation operations of assignment (c), using the SE's $B^1$ (Figure~\ref{fig:SE_B1}) and $B^3$ (Figure~\ref{fig:SE_B3}).}
+    \caption{Overview of the input image $I$ and the Structuring Elements used to test the morphological functions that follow.}
     \label{fig:structuring-elements-overview}
 \end{figure}
 
+\subsection*{(a)} In this first assignment, we apply the morphological \textbf{dilation} transformation. 
 \begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bcross_dilated.svg}
-         \caption{$(A \oplus B^1)$}
+         \caption{$(I \oplus Bcross)$}
          \label{fig:wirebondmask_Bcross_dilated}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bsquare_dilated.svg}
-         \caption{$(A \oplus B^1) \oplus B^3$}
+         \caption{$(I \oplus Bsquare)$}
          \label{fig:wirebondmask_Bsquare_dilated}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bbigsquare_dilated.svg}
-         \caption{$(A \oplus B^1) \oplus B^3$}
+         \caption{$(I \oplus Bbigsquare)$}
          \label{fig:wirebondmask_Bbigsquare_dilated}
      \end{subfigure}
      
-    \caption{Overview of the two dilation operations of assignment (c), using the SE's $B^1$ (Figure~\ref{fig:SE_B1}) and $B^3$ (Figure~\ref{fig:SE_B3}).}
+    \caption{Dilation transformations on $I$ (Figure~\ref{fig:wirebondmask-image}) using the \textsc{IPdilate} function and various Structuring Elements. Two 3x3 SE's are used, and for illustration purposes a bigger one is used, too.}
     \label{fig:wirebondmask_dilated}
 \end{figure}
 
-\subsection*{(b)}
+\begin{figure}[H]
+     \centering
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bbigsquare_IPdilate.svg}
+         \caption{\textsc{IPdilate}}
+         \label{fig:wirebondmask_Bbigsquare_IPdilate}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bbigsquare_imdilate.svg}
+         \caption{\textsc{imdilate}}
+         \label{fig:wirebondmask_Bbigsquare_imdilate}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bbigsquare_dilate_diff.svg}
+         \caption{Difference}
+         \label{fig:wirebondmask_Bbigsquare_dilate_diff}
+     \end{subfigure}
+     
+    \caption{Comparison between the \textsc{IPdilate} and \textsc{imdilate} functions, using the \texttt{Bbigsquare} Structuring Element.}
+    \label{fig:wirebondmask_dilate_diff}
+\end{figure}
+
+\subsection*{(b)} In this second assignment, we apply the morphological \textbf{erosion} transformation. 
+
+\begin{figure}[H]
+     \centering
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bcross_eroded.svg}
+         \caption{$(I \ominus Bcross)$}
+         \label{fig:wirebondmask_Bcross_eroded}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bsquare_eroded.svg}
+         \caption{$(I \ominus Bsquare)$}
+         \label{fig:wirebondmask_Bsquare_eroded}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bbigsquare_eroded.svg}
+         \caption{$(I \ominus Bbigsquare)$}
+         \label{fig:wirebondmask_Bbigsquare_eroded}
+     \end{subfigure}
+     
+    \caption{Erosion transformations on $I$ (Figure~\ref{fig:wirebondmask-image}) using the \textsc{IPerode} function and various Structuring Elements. Two 3x3 SE's are used, and for illustration purposes a bigger one is used, too.}
+    \label{fig:wirebondmask_eroded}
+\end{figure}
+
+\begin{figure}[H]
+     \centering
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bbigsquare_IPerode.svg}
+         \caption{\textsc{IPerode}}
+         \label{fig:wirebondmask_Bbigsquare_IPerode}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bbigsquare_imerode.svg}
+         \caption{\textsc{imerode}}
+         \label{fig:wirebondmask_Bbigsquare_imerode}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bbigsquare_erode_diff.svg}
+         \caption{Difference}
+         \label{fig:wirebondmask_Bbigsquare_erode_diff}
+     \end{subfigure}
+     
+    \caption{Comparison between the \textsc{IPerode} and \textsc{imerode} functions, using the \texttt{Bbigsquare} Structuring Element.}
+    \label{fig:wirebondmask_erode_diff}
+\end{figure}
+
 \subsection*{(c)}
 
 \section*{Individual contributions}
