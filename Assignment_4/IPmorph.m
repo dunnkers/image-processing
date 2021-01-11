@@ -19,24 +19,30 @@ assert(rem(Mse, 2) ~= 0)
 assert(rem(Nse, 2) ~= 0)
 
 % Put padding around original image. Then, SE can freely move around.
-padding_y = floor(Mse / 2);
-padding_x = floor(Nse / 2);
-Ipad = padarray(I, [padding_y, padding_x], 0, 'both');
+pad_y = floor(Mse / 2);
+pad_x = floor(Nse / 2);
+switch type
+    case 'dilate'
+        Ipad = padarray(I, [pad_y, pad_x], 0, 'both');
+    case 'erode'
+        Ipad = padarray(I, [pad_y, pad_x], 1, 'both');
+end
 
 % Loop image pixels
 Imorph = false(M, N);
-for y=(1 + padding_y):M
-    for x=(1 + padding_x):N
-        SE_ycoords = (y - padding_y):(y + padding_y);
-        SE_xcoords = (x - padding_x):(x + padding_x);
+for y=(1:M)+pad_y
+    for x=(1:N)+pad_x
+        SE_ycoords = (y - pad_y):(y + pad_y);
+        SE_xcoords = (x - pad_x):(x + pad_x);
         A = Ipad(SE_ycoords, SE_xcoords);
         
         switch type
             case 'dilate'
-                Imorph(y - padding_y, x - padding_x) = any(A(B));
+                value = any(A(B));
             case 'erode'
-                Imorph(y - padding_y, x - padding_x) = all(A(B));
+                value = all(A(B));
         end
+        Imorph(y - pad_y, x - pad_x) = value;
     end 
 end
 end

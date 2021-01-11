@@ -6,11 +6,9 @@ inputfile = ['input_images/', imname, '.tif'];
 f = imread(inputfile);                  % read input image
 
 % Original image
-figure;
+figure('visible', 'off');
 colormap(gray(256));
 imagesc(f);
-axis equal;
-axis tight;
 title({'Original `wirebondmask` image', ' '});
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Write current figure to file
@@ -18,133 +16,135 @@ all_file = ['output_plots/', imname,'_original','.svg'];
 saveas(gcf, all_file);
 fprintf('\nComplete image has been saved in file %s\n', all_file);
 
-% Structuring Elements
-B_cross     = logical([0 1 0; 1 1 1; 0 1 0]);
-B_square    = true(15, 15);
-B_diamond    =  logical( [0 0 0 1 0 0 0;
-                         0 0 1 1 1 0 0;
-                         0 1 1 1 1 1 0;
-                         1 1 1 1 1 1 1;
-                         0 1 1 1 1 1 0;
-                         0 0 1 1 1 0 0;
-                         0 0 0 1 0 0 0;]);
+% Show Morphological operations per Structuring Element
+%% Cross
+Bcross = logical([0 1 0; 1 1 1; 0 1 0]);
+figure('visible', 'off');
+colormap(gray(256));
+imagesc(Bcross);
+saveas(gcf, ['output_plots/', 'Bcross', '.svg']);
+% Dilate
+figure('visible', 'off');
+g = IPdilate(f, Bcross);
+colormap(gray(256));
+imagesc(g);
+saveas(gcf, ['output_plots/', imname, '_Bcross', '_dilated', '.svg']);
+% Erode
+figure('visible', 'off');
+g = IPerode(f, Bcross);
+colormap(gray(256));
+imagesc(g);
+saveas(gcf, ['output_plots/', imname, '_Bcross', '_eroded', '.svg']);
 
-% Dilation
+%% Square
+Bsquare = true(3, 3);
+figure('visible', 'off');
+colormap(gray(256));
+imagesc(Bsquare);
+saveas(gcf, ['output_plots/', 'Bsquare', '.svg']);
+% Dilate
+figure('visible', 'off');
+g = IPdilate(f, Bsquare);
+colormap(gray(256));
+imagesc(g);
+saveas(gcf, ['output_plots/', imname, '_Bsquare', '_dilated', '.svg']);
+% Erode
+figure('visible', 'off');
+g = IPerode(f, Bsquare);
+colormap(gray(256));
+imagesc(g);
+saveas(gcf, ['output_plots/', imname, '_Bsquare', '_eroded', '.svg']);
+
+%% Big square
+Bbigsquare = true(15, 15);
+figure('visible', 'off');
+colormap(gray(256));
+imagesc(Bbigsquare);
+saveas(gcf, ['output_plots/', 'Bbigsquare', '.svg']);
+% Dilate
+figure('visible', 'off');
+g = IPdilate(f, Bbigsquare);
+colormap(gray(256));
+imagesc(g);
+saveas(gcf, ['output_plots/', imname, '_Bbigsquare', '_dilated', '.svg']);
+% Erode
+figure('visible', 'off');
+g = IPerode(f, Bbigsquare);
+colormap(gray(256));
+imagesc(g);
+saveas(gcf, ['output_plots/', imname, '_Bbigsquare', '_eroded', '.svg']);
+
+% Compare with Matlab's built-in functions
+%% Compare to imdilate
 figure;
-subplot(241);
+subplot(131);
+g = IPdilate(f, Bbigsquare);
+colormap(gray(256));
+imagesc(g);
+axis equal;
+axis tight;
+title('IPdilate');
+subplot(132);
+g2 = imdilate(f, Bbigsquare);
+colormap(gray(256));
+imagesc(g2);
+axis equal;
+axis tight;
+title('imdilate');
+subplot(133);
+colormap(gray(256));
+imshow(g - g2);
+axis equal;
+axis tight;
+title('diff');
+saveas(gcf, ['output_plots/', imname, '_Bbigsquare', '_eroded', '_all', '.svg']);
+%% Compare to imerode
+figure;
+subplot(131);
+g = IPerode(f, Bbigsquare);
+colormap(gray(256));
+imagesc(g);
+axis equal;
+axis tight;
+title('IPerode');
+subplot(132);
+g2 = imerode(f, Bbigsquare);
+colormap(gray(256));
+imagesc(g2);
+axis equal;
+axis tight;
+title('imerode');
+subplot(133);
+colormap(gray(256));
+imshow(g - g2);
+axis equal;
+axis tight;
+title('diff');
+saveas(gcf, ['output_plots/', imname, '_Bbigsquare', '_dilated', '_all', '.svg']);
+%% Erode with 3 different SE's - Figure 9.5 from the book.
+figure;
+subplot(221);
 colormap(gray(256));
 imagesc(f);
 axis equal;
 axis tight;
-title({'Original `wirebondmask` image', ' '});
-% Dilation w/ `Cross` SE
-subplot(242);
-g = IPdilate(f, B_cross);
+title('original image');
+subplot(222);
 colormap(gray(256));
-imagesc(g);
+imagesc(IPerode(f, true(11, 11)));
 axis equal;
 axis tight;
-title({'Dilated `wirebondmask` image', '`Cross` SE'});
-
-subplot(246);
-imagesc(B_cross);
-axis equal;
-axis tight;
-title({'`Cross` SE'});
-% Square
-subplot(243);
-g = IPdilate(f, B_square);
+title('11x11 square SE');
+subplot(223);
 colormap(gray(256));
-imagesc(g);
+imagesc(IPerode(f, true(15, 15)));
 axis equal;
 axis tight;
-title({'Dilated `wirebondmask` image', '`Square` SE'});
-
-subplot(247);
-imagesc(B_square);
-axis equal;
-axis tight;
-title({'`Square` SE'});
-% Diamond
-subplot(244);
-g = IPdilate(f, B_diamond);
+title('15x15 square SE');
+subplot(224);
 colormap(gray(256));
-imagesc(g);
+imagesc(IPerode(f, true(45, 45)));
 axis equal;
 axis tight;
-title({'Dilated `wirebondmask` image', '`Diamond` SE'});
-
-subplot(248);
-imagesc(B_diamond);
-axis equal;
-axis tight;
-title({'`Diamond` SE'});
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Write current figure to file
-all_file = ['output_plots/', imname,'_all','_dilate', '.svg'];
-set(gcf, 'PaperUnits', 'normalized')
-set(gcf, 'PaperPosition', [0 0 0.75 1.00])
-saveas(gcf, all_file);
-fprintf('\nComplete image has been saved in file %s\n', all_file);
-
-
-
-
-
-% Erosion
-figure;
-subplot(241);
-colormap(gray(256));
-imagesc(f);
-axis equal;
-axis tight;
-title({'Original `wirebondmask` image', ' '});
-% Dilation w/ `Cross` SE
-subplot(242);
-g = IPerode(f, B_cross);
-colormap(gray(256));
-imagesc(g);
-axis equal;
-axis tight;
-title({'Eroded `wirebondmask` image', '`Cross` SE'});
-
-subplot(246);
-imagesc(B_cross);
-axis equal;
-axis tight;
-title({'`Cross` SE'});
-% Square
-subplot(243);
-g = IPerode(f, B_square);
-colormap(gray(256));
-imagesc(g);
-axis equal;
-axis tight;
-title({'Eroded `wirebondmask` image', '`Square` SE'});
-
-subplot(247);
-imagesc(B_square);
-axis equal;
-axis tight;
-title({'`Square` SE'});
-% Diamond
-subplot(244);
-g = IPerode(f, B_diamond);
-colormap(gray(256));
-imagesc(g);
-axis equal;
-axis tight;
-title({'Eroded `wirebondmask` image', '`Diamond` SE'});
-
-subplot(248);
-imagesc(B_diamond);
-axis equal;
-axis tight;
-title({'`Diamond` SE'});
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Write current figure to file
-all_file = ['output_plots/', imname,'_all','_erode', '.svg'];
-set(gcf, 'PaperUnits', 'normalized')
-set(gcf, 'PaperPosition', [0 0 0.75 1.00])
-saveas(gcf, all_file);
-fprintf('\nComplete image has been saved in file %s\n', all_file);
+title('45x45 square SE');
+saveas(gcf, ['output_plots/', imname, '_variousse', '_eroded', '_all', '.svg']);
