@@ -9,7 +9,6 @@ f = imread(inputfile);                  % read input image
 figure('visible', 'off');
 colormap(gray(256));
 imagesc(f);
-title({'Original `wirebondmask` image', ' '});
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Write current figure to file
 all_file = ['output_plots/', imname,'_original','.svg'];
@@ -29,15 +28,11 @@ set(gcf, 'PaperPosition', [0 0 0.25 0.15])
 saveas(gcf, ['output_plots/', 'Bcross', '.svg']);
 % Dilate
 figure('visible', 'off');
-g = IPdilate(f, Bcross);
-colormap(gray(256));
-imshow(g);
+imshow(IPdilate(f, Bcross));
 saveas(gcf, ['output_plots/', imname, '_Bcross', '_dilated', '.svg']);
 % Erode
 figure('visible', 'off');
-g = IPerode(f, Bcross);
-colormap(gray(256));
-imshow(g);
+imshow(IPerode(f, Bcross));
 saveas(gcf, ['output_plots/', imname, '_Bcross', '_eroded', '.svg']);
 
 %% Square
@@ -52,21 +47,16 @@ set(gcf, 'PaperPosition', [0 0 0.25 0.15])
 saveas(gcf, ['output_plots/', 'Bsquare', '.svg']);
 % Dilate
 figure('visible', 'off');
-g = IPdilate(f, Bsquare);
-colormap(gray(256));
-imshow(g);
+imshow(IPdilate(f, Bsquare));
 saveas(gcf, ['output_plots/', imname, '_Bsquare', '_dilated', '.svg']);
 % Erode
 figure('visible', 'off');
-g = IPerode(f, Bsquare);
-colormap(gray(256));
-imshow(g);
+imshow(IPerode(f, Bsquare));
 saveas(gcf, ['output_plots/', imname, '_Bsquare', '_eroded', '.svg']);
 
 %% Big square
 Bbigsquare = true(15, 15);
 figure('visible', 'off');
-colormap(gray(256));
 imagesc(Bbigsquare);
 xticks(unique(round(get(gca, 'xTick')))); % only whole value tick labels
 yticks(unique(round(get(gca, 'yTick')))); % only whole value tick labels
@@ -75,92 +65,54 @@ set(gcf, 'PaperPosition', [0 0 0.25 0.15])
 saveas(gcf, ['output_plots/', 'Bbigsquare', '.svg']);
 % Dilate
 figure('visible', 'off');
-g = IPdilate(f, Bbigsquare);
-colormap(gray(256));
-imshow(g);
+imshow(IPdilate(f, Bbigsquare));
 saveas(gcf, ['output_plots/', imname, '_Bbigsquare', '_dilated', '.svg']);
 % Erode
 figure('visible', 'off');
-g = IPerode(f, Bbigsquare);
-colormap(gray(256));
-imshow(g);
+imshow(IPerode(f, Bbigsquare));
 saveas(gcf, ['output_plots/', imname, '_Bbigsquare', '_eroded', '.svg']);
 
 % Compare with Matlab's built-in functions
-%% Compare to imdilate
-figure;
-subplot(131);
+%% Compare IPdilate to imdilate
+figure('visible', 'off');
 g = IPdilate(f, Bbigsquare);
-colormap(gray(256));
 imshow(g);
-axis equal;
-axis tight;
-title('IPdilate');
-subplot(132);
+saveas(gcf, ['output_plots/', imname, '_Bbigsquare', '_IPdilate', '.svg']);
+% imdilate
+figure('visible', 'off');
 g2 = imdilate(f, Bbigsquare);
-colormap(gray(256));
 imshow(g2);
-axis equal;
-axis tight;
-title('imdilate');
-subplot(133);
-colormap(gray(256));
+saveas(gcf, ['output_plots/', imname, '_Bbigsquare', '_imdilate', '.svg']);
+% difference
+figure('visible', 'off');
 imshow(g - g2);
-axis equal;
-axis tight;
-title('diff');
-set(gcf, 'PaperUnits', 'normalized')
-set(gcf, 'PaperPosition', [0 0 1.00 0.2])
-saveas(gcf, ['output_plots/', imname, '_Bbigsquare', '_eroded', '_all', '.svg']);
-%% Compare to imerode
-figure;
-subplot(131);
+saveas(gcf, ['output_plots/', imname, '_Bbigsquare', '_dilate', '_diff', '.svg']);
+
+%% Compare IPerode to imerode
+figure('visible', 'off');
 g = IPerode(f, Bbigsquare);
-colormap(gray(256));
 imshow(g);
-axis equal;
-axis tight;
-title('IPerode');
-subplot(132);
+saveas(gcf, ['output_plots/', imname, '_Bbigsquare', '_IPerode', '.svg']);
+% imerode
+figure('visible', 'off');
 g2 = imerode(f, Bbigsquare);
-colormap(gray(256));
 imshow(g2);
-axis equal;
-axis tight;
-title('imerode');
-subplot(133);
-colormap(gray(256));
+saveas(gcf, ['output_plots/', imname, '_Bbigsquare', '_imerode', '.svg']);
+% difference
+figure('visible', 'off');
 imshow(g - g2);
-axis equal;
-axis tight;
-title('diff');
-set(gcf, 'PaperUnits', 'normalized')
-set(gcf, 'PaperPosition', [0 0 1.00 0.2])
-saveas(gcf, ['output_plots/', imname, '_Bbigsquare', '_dilated', '_all', '.svg']);
+saveas(gcf, ['output_plots/', imname, '_Bbigsquare', '_erode', '_diff', '.svg']);
+
 %% Erode with 3 different SE's - Figure 9.5 from the book.
-figure;
-subplot(221);
-colormap(gray(256));
-imshow(f);
-axis equal;
-axis tight;
-title('original image');
-subplot(222);
-colormap(gray(256));
+% 11x11 square SE
+figure('visible', 'off');
 imshow(IPerode(f, true(11, 11)));
-axis equal;
-axis tight;
-title('11x11 square SE');
-subplot(223);
-colormap(gray(256));
+saveas(gcf, ['output_plots/', imname, '_11x11SE', '_erode', '.svg']);
+% 15x15 square SE
+figure('visible', 'off');
 imshow(IPerode(f, true(15, 15)));
-axis equal;
-axis tight;
-title('15x15 square SE');
-subplot(224);
-colormap(gray(256));
+saveas(gcf, ['output_plots/', imname, '_15x15SE', '_erode', '.svg']);
+% 45x45 square SE
+figure('visible', 'off');
 imshow(IPerode(f, true(45, 45)));
-axis equal;
-axis tight;
-title('45x45 square SE');
-saveas(gcf, ['output_plots/', imname, '_variousse', '_eroded', '_all', '.svg']);
+saveas(gcf, ['output_plots/', imname, '_45x45SE', '_erode', '.svg']);
