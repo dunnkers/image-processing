@@ -57,6 +57,7 @@ saveas(gcf, ['output_plots/', imname, '_Bsquare', '_eroded', '.svg']);
 %% Big square
 Bbigsquare = true(15, 15);
 figure('visible', 'off');
+colormap(gray(256));
 imagesc(Bbigsquare);
 xticks(unique(round(get(gca, 'xTick')))); % only whole value tick labels
 yticks(unique(round(get(gca, 'yTick')))); % only whole value tick labels
