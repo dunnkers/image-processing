@@ -153,11 +153,82 @@ Both dilation operations enlarge the shape. The first, however, does so mainly i
 
 \section*{Exercise 2}
 
+\subsection*{(a)}
+\begin{figure}[H]
+     \centering
+     \begin{subfigure}[b]{0.7\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_original.svg}
+         \caption{The input image $I$.}
+         \label{fig:wirebondmask-image}
+     \end{subfigure}
+     \newline
+     \hfill
+     \begin{subfigure}[b]{0.33\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/Bcross.svg}
+         \caption{$(A \oplus B^1)$}
+         \label{fig:Bcross}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.33\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/Bsquare.svg}
+         \caption{$(A \oplus B^1) \oplus B^3$}
+         \label{fig:Bsquare}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.33\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/Bbigsquare.svg}
+         \caption{$(A \oplus B^1) \oplus B^3$}
+         \label{fig:Bbigsquare}
+     \end{subfigure}
+     
+    \caption{Overview of the two dilation operations of assignment (c), using the SE's $B^1$ (Figure~\ref{fig:SE_B1}) and $B^3$ (Figure~\ref{fig:SE_B3}).}
+    \label{fig:structuring-elements-overview}
+\end{figure}
+
+\begin{figure}[H]
+     \centering
+     \begin{subfigure}[b]{0.32\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bcross_dilated.svg}
+         \caption{$(A \oplus B^1)$}
+         \label{fig:wirebondmask_Bcross_dilated}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.32\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bsquare_dilated.svg}
+         \caption{$(A \oplus B^1) \oplus B^3$}
+         \label{fig:wirebondmask_Bsquare_dilated}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.32\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bbigsquare_dilated.svg}
+         \caption{$(A \oplus B^1) \oplus B^3$}
+         \label{fig:wirebondmask_Bbigsquare_dilated}
+     \end{subfigure}
+     
+    \caption{Overview of the two dilation operations of assignment (c), using the SE's $B^1$ (Figure~\ref{fig:SE_B1}) and $B^3$ (Figure~\ref{fig:SE_B3}).}
+    \label{fig:wirebondmask_dilated}
+\end{figure}
+
+\subsection*{(b)}
 \begin{figure}[H]
     \centering
-    \includesvg[width=0.8\textwidth]{Assignment_4/output_plots/wirebondmask_original.svg}
-    \caption{Original `Wirebondmask` image for Exercise 2 without any morphological operation applied.}
-    \label{fig:plant_original}
+    \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bbigsquare_eroded_all.svg}
+    \caption{Overview of the two dilation operations of assignment (c), using the SE's $B^1$ (Figure~\ref{fig:SE_B1}) and $B^3$ (Figure~\ref{fig:SE_B3}).}
+    \label{fig:wirebondmask_eroded_all}
+\end{figure}
+\subsection*{(c)}
+\begin{figure}[H]
+    \centering
+    \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_variousse_eroded_all.svg}
+    \caption{Overview of the two dilation operations of assignment (c), using the SE's $B^1$ (Figure~\ref{fig:SE_B1}) and $B^3$ (Figure~\ref{fig:SE_B3}).}
+    \label{fig:wirebondmask_variousse_eroded_all}
 \end{figure}
 
 \section*{Individual contributions}
