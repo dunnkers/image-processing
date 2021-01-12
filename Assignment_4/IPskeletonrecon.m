@@ -1,9 +1,12 @@
 function sum_Sk_recon = IPskeletonrecon(skeleton, B)
-    
+    assert(islogical(B));
+
+    % Extract part from skeleton where values are 1
     Sk_recon = zeros(size(skeleton));
     Sk_recon(skeleton==1) = 1;
     Sk_recon = logical(Sk_recon);
     
+    % Decrease all non-zero values by 1
     skeleton(skeleton~=0) = skeleton(skeleton~=0) - 1;
     
     % Base case: all skeletons have been processed
@@ -12,7 +15,7 @@ function sum_Sk_recon = IPskeletonrecon(skeleton, B)
         return
     end
     
-    % dilate for all values
+    % Dilate the skeletons for all values of k
     k = max(skeleton, [], 'all');
     next_skel = zeros(size(skeleton));
     for i=1:k
@@ -22,5 +25,6 @@ function sum_Sk_recon = IPskeletonrecon(skeleton, B)
         next_skel(dilated_skel_k==1) = i;
     end
     
+    % Recursively call the next dilation step
     sum_Sk_recon = logical(Sk_recon + IPskeletonrecon(next_skel, B));
 end

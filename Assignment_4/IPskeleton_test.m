@@ -9,23 +9,29 @@ f = imread(inputfile);                  % read input image
 
 B_square = logical([1 1 1; 1 1 1; 1 1 1]);
 
-% k = 0;
-% eroded_A = IPerode(f, B_square);
-% while (sum(eroded_A, 'all'))
-%     k = k + 1;
-%     eroded_A = IPerode(eroded_A, B_square);
-% end
-% k
+% f = logical([1 0 0 0 0; 0 1 1 0 0; 0 1 1 0 0; 0 1 1 1 0;
+%     0 1 1 1 0; 1 1 1 1 1; 1 1 1 1 1; 1 1 1 1 1; 1 1 1 1 1; 1 1 1 1 1;]);
+
+% f = logical([   0 0 0 0 0 0 0;
+%                 0 1 0 0 0 0 0;
+%                 0 0 1 1 0 0 0;
+%                 0 0 1 1 0 0 0;
+%                 0 0 1 1 1 0 0;
+%                 0 0 1 1 1 0 0;
+%                 0 1 1 1 1 1 0;
+%                 0 1 1 1 1 1 0;
+%                 0 1 1 1 1 1 0;
+%                 0 1 1 1 1 1 0;
+%                 0 1 1 1 1 1 0;
+%                 0 0 0 0 0 0 0;]);
 
 skeleton = IPskeletondecomp(f, B_square);
 reconstruction = IPskeletonrecon(skeleton, B_square);
 
-% Matlab's function to compare
-% matlab_skeleton = bwskel(f);
-% matlab_skeleton2 = bwmorph(f,'skel',7);
+% Show that they are in fact the same
+difference = sum(imabsdiff(f, reconstruction), 'all');
 
-sum(imabsdiff(f, reconstruction), 'all')
-
+% Show 
 figure;
 subplot(221);
 imshow(f)
@@ -38,7 +44,7 @@ imshow(skeleton)
 title("IPskeletondecomp");
 subplot(224);
 imshow(f-reconstruction)
-title("difference");
+title("difference=" + difference);
 
 
 
