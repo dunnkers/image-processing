@@ -332,11 +332,38 @@ Both dilation operations enlarge the shape. The first, however, does so mainly i
 % TODO add text and stuff
 
 
-\begin{figure}[H]
-    \centering
-    \includesvg[width=\textwidth]{Assignment_4/output_plots/nutsbolts_skeleton_test.svg}
-    \caption{$I \oplus Bcross$}
-    \label{fig:skeleton_test}
+\begin{figure}[h]
+     \centering
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/input_images/skeleton_input.svg}
+         \caption{Erosion using $11 \times 11$ SE}
+         \label{fig:book9.5figure-wirebondmask-image-11x11}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/skeleton_reconstruction.svg}
+         \caption{Erosion using $15 \times 15$ SE}
+         \label{fig:book9.5figure-wirebondmask-image-15x15}
+     \end{subfigure}
+     \newline
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/skeleton_skeleton.svg}
+         \caption{Erosion using $45 \times 45$ SE}
+         \label{fig:book9.5figure-wirebondmask-image-45x45}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/skeleton_difference.svg}
+         \caption{Erosion using $45 \times 45$ SE}
+         \label{fig:book9.5figure-wirebondmask-image-45x45}
+     \end{subfigure}
+     
+    \caption{Erosion of the Wirebondmask image (Figure~\ref{fig:wirebondmask-image}), using various-sized square SE's, recreating part of Figure 9.5 from the book \citep{gonzalez2008digital}.}
+    \label{fig:book9.5figure}
 \end{figure}
 
 \section*{Individual contributions}
