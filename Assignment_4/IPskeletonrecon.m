@@ -1,3 +1,11 @@
+% IPskeletonrecon Reconstructs a binary image from a skeleton.
+%   Arguments:
+%       skeleton: skeleton image. Must use the encoding from the
+%       assignment and thus be of a type that allows for numbers > 1.
+%       B: structuring element (SE). Must have odd dimensions and also be 
+%       binary, i.e. have logical values. Its origin is automatically set 
+%       at its centerpoint.
+%   Returns: reconstructed image
 function sum_Sk_recon = IPskeletonrecon(skeleton, B)
     assert(islogical(B));
 

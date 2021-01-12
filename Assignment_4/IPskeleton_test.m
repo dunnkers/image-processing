@@ -5,13 +5,10 @@ clear;                                % clear workspace
 imname = 'nutsbolts';
 inputfile = ['input_images/', imname, '.tif'];          
 f = imread(inputfile);                  % read input image
-% K = 7 for our input
 
 B_square = logical([1 1 1; 1 1 1; 1 1 1]);
 
-% f = logical([1 0 0 0 0; 0 1 1 0 0; 0 1 1 0 0; 0 1 1 1 0;
-%     0 1 1 1 0; 1 1 1 1 1; 1 1 1 1 1; 1 1 1 1 1; 1 1 1 1 1; 1 1 1 1 1;]);
-
+% % Example from the slides (with borders added)
 % f = logical([   0 0 0 0 0 0 0;
 %                 0 1 0 0 0 0 0;
 %                 0 0 1 1 0 0 0;
@@ -28,10 +25,10 @@ B_square = logical([1 1 1; 1 1 1; 1 1 1]);
 skeleton = IPskeletondecomp(f, B_square);
 reconstruction = IPskeletonrecon(skeleton, B_square);
 
-% Show that they are in fact the same
-difference = sum(imabsdiff(f, reconstruction), 'all');
+% Calculate the difference between the input and the reconstruction
+difference = sum(abs(double(f) - double(reconstruction)), 'all')
 
-% Show 
+% Show input, skeleton, result and difference
 figure;
 subplot(221);
 imshow(f)
@@ -46,6 +43,9 @@ subplot(224);
 imshow(f-reconstruction)
 title("difference=" + difference);
 
+% Save current plot
+saveas(gcf, ['output_plots/', imname, '_skeleton_test.svg']);
+exportgraphics(gcf, ['output_plots/', imname, '_skeleton_test.png']);
 
 
 

@@ -1,3 +1,11 @@
+% IPskeletondecomp Decomposes a binary image into a skeleton.
+%   Arguments:
+%       A: input image. Must be binary, i.e. have logical values.
+%       B: structuring element (SE). Must have odd dimensions and also be 
+%       binary, i.e. have logical values. Its origin is automatically set 
+%       at its centerpoint.
+%   Returns: skeleton of the input image using the encoding from the
+%   assignment
 function sum_Sk = IPskeletondecomp(A, B)
     % (A erode k*B) - ((A erode k*B) dilate B)
     assert(islogical(A));
@@ -11,20 +19,6 @@ function sum_Sk = IPskeletondecomp(A, B)
     % (for all k>0 cases the input has been eroded in the previous
     % itteration of the recursion)
     Sk = A - opened_A;
-    
-%     figure;
-%     subplot(221);
-%     imshow(A)
-%     title("A");
-%     subplot(222);
-%     imshow(opened_A)
-%     title("opened_A");
-%     subplot(223);
-%     imshow(Sk)
-%     title("Sk");
-%     subplot(224);
-%     imshow(eroded_A)
-%     title("eroded_A");
     
     % Basecase: figure is empty after erosion
     if (sum(eroded_A, 'all') == 0)
