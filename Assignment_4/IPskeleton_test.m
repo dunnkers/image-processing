@@ -26,7 +26,7 @@ skeleton = IPskeletondecomp(f, B_square);
 reconstruction = IPskeletonrecon(skeleton, B_square);
 
 % Calculate the difference between the input and the reconstruction
-difference = sum(abs(double(f) - double(reconstruction)), 'all')
+difference = sum(abs(double(f) - double(reconstruction)), 'all');
 
 % Show input, skeleton, result and difference
 figure;
