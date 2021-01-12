@@ -1,23 +1,24 @@
-function sum_Sk = IPskeletondecomp(I, B)
+function sum_Sk = IPskeletondecomp(A, B)
     % (A erode kB) - ((A erode kB) dilate B)
-    assert(islogical(I));
+    assert(islogical(A));
     assert(islogical(B));
     
-    % Opening
-    eroded_I = IPerode(I, B);
-    opened_I = IPdilate(eroded_I, B);
-    
-    Sk = logical(I - opened_I);
-    
-    eroded_A = IPerode(I, B);
-    
     % basecase: figure is empty after erosion
+    eroded_A = IPerode(A, B);
     if (sum(eroded_A, 'all') == 0)
         sum_Sk = eroded_A; % empty figure
         return
-    else
-        sum_Sk = logical(Sk + IPskeletondecomp(eroded_A, B));
     end
+    
+    % Opening
+    opened_A = IPdilate(eroded_A, B);
+    
+    Sk = logical(A - opened_A); % input - opened input
+    
+    % next recursion will start with the eroded input of this recursion
+    next_Sk = IPskeletondecomp(eroded_A, B);
+    next_Sk(next_Sk ~= 0) = next_Sk(next_Sk~=0) + 1;
+    sum_Sk = Sk + next_Sk;
 end
 
 

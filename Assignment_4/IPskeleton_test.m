@@ -18,23 +18,27 @@ B_square = logical([1 1 1; 1 1 1; 1 1 1]);
 % k
 
 skeleton = IPskeletondecomp(f, B_square);
+reconstruction = IPskeletonrecon(skeleton, B_square);
 
 % Matlab's function to compare
-matlab_skeleton = bwskel(f);
-matlab_skeleton2 = bwmorph(f,'skel',7);
+% matlab_skeleton = bwskel(f);
+% matlab_skeleton2 = bwmorph(f,'skel',7);
+
+sum(imabsdiff(f, reconstruction), 'all')
 
 figure;
 subplot(221);
 imshow(f)
 title("input image");
 subplot(222);
+imshow(reconstruction)
+title("reconstruction");
+subplot(223);
 imshow(skeleton)
 title("IPskeletondecomp");
-subplot(223);
-imshow(matlab_skeleton)
-title("matlab\_skeleton");
 subplot(224);
-imshow(matlab_skeleton2)
+imshow(f-reconstruction)
+title("difference");
 
 
 
