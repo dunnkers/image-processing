@@ -331,6 +331,14 @@ Both dilation operations enlarge the shape. The first, however, does so mainly i
 
 % TODO add text and stuff
 
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=\textwidth]{Assignment_4/output_plots/nutsbolts_skeleton_test.svg}
+    \caption{$I \oplus Bcross$}
+    \label{fig:skeleton_test}
+\end{figure}
+
 \section*{Individual contributions}
 \begin{itemize}
     \item \textbf{Exercise 1 and 2}. Contribution to program design, program implementation, answering questions posed and writing the report: \textit{Jeroen} 100\%.
@@ -352,13 +360,13 @@ Both dilation operations enlarge the shape. The first, however, does so mainly i
 \subsubsection{Exercise 2 (b)}
 \lstinputlisting[caption={\texttt{IPerode.m}: perform dilation using \textsc{IPmorph} (Listing~\ref{code:IPmorph}).}, label={code:IPerode}]{Assignment_4/IPerode.m}
 \subsubsection{Exercise 2 (c)}
-\lstinputlisting[caption={\texttt{IPdilate\_erode\_test.m}: Test script to demonstrate both \textsc{IPdilate} and \textsc{IPerode} functionality. Saves images to .svg files.}, label={code:IPdilate_erode_test}]{Assignment_4/IPdilate_erode_test.m}
+\lstinputlisting[caption={\texttt{IPdilate\_erode\_test.m}: Test script to demonstrate the functionality of both \textsc{IPdilate} and \textsc{IPerode}. Saves images to .svg files.}, label={code:IPdilate_erode_test}]{Assignment_4/IPdilate_erode_test.m}
 
 \subsection{Exercise 3}
 \subsubsection{Exercise 3 (a)}
-\lstinputlisting[caption={\texttt{IPskeletondecomp.m}: TODO}, label={code:IPskeletondecomp}]{Assignment_4/IPskeletondecomp.m}
+\lstinputlisting[caption={\texttt{IPskeletondecomp.m}: Perform skeleton decomposition of the binary input image.}, label={code:IPskeletondecomp}]{Assignment_4/IPskeletondecomp.m}
 \subsubsection{Exercise 3 (b)}
-\lstinputlisting[caption={\texttt{IPskeletonrecon.m}: TODO}, label={code:IPskeletonrecon}]{Assignment_4/IPskeletonrecon.m}
+\lstinputlisting[caption={\texttt{IPskeletonrecon.m}: Perferm image reconstruction using the skeleton.}, label={code:IPskeletonrecon}]{Assignment_4/IPskeletonrecon.m}
 \subsubsection{Exercise 3 (c)}
-\lstinputlisting[caption={\texttt{IPskeleton\_test.m}: TODO}, label={code:IPskeleton_test}]{Assignment_4/IPskeleton_test.m}
+\lstinputlisting[caption={\texttt{IPskeleton\_test.m}: Test script to demonstrate the functionality of both \textsc{IPskeletondecomp} and \textsc{IPskeletonrecon}.}, label={code:IPskeleton_test}]{Assignment_4/IPskeleton_test.m}
 \end{document}
