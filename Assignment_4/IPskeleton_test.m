@@ -49,6 +49,9 @@ exportgraphics(gcf, ['output_plots/', imname, '_skeleton_test.png']);
 
 % Plot and save individual images
 figure;
+imshow(f)
+saveas(gcf, 'output_plots/skeleton_input.svg');
+figure;
 imshow(reconstruction)
 saveas(gcf, 'output_plots/skeleton_reconstruction.svg');
 figure;
