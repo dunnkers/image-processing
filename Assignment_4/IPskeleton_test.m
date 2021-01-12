@@ -47,5 +47,16 @@ title("difference=" + difference);
 saveas(gcf, ['output_plots/', imname, '_skeleton_test.svg']);
 exportgraphics(gcf, ['output_plots/', imname, '_skeleton_test.png']);
 
+% Plot and save individual images
+figure;
+imshow(reconstruction)
+saveas(gcf, 'output_plots/skeleton_reconstruction.svg');
+figure;
+imshow(skeleton)
+saveas(gcf, 'output_plots/skeleton_skeleton.svg');
+figure;
+imshow(f-reconstruction)
+saveas(gcf, 'output_plots/skeleton_difference.svg');
+
 
 
