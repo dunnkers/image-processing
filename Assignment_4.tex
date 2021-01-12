@@ -166,25 +166,25 @@ Both dilation operations enlarge the shape. The first, however, does so mainly i
      \begin{subfigure}[b]{0.33\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/Bcross.svg}
-         \caption{3x3 cross SE, $Bcross$.}
+         \caption{$Bcross$ (3x3 SE)}
          \label{fig:Bcross}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.33\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/Bsquare.svg}
-         \caption{3x3 square SE, $Bsquare$.}
+         \caption{$Bsquare$  (3x3 SE)}
          \label{fig:Bsquare}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.33\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/Bbigsquare.svg}
-         \caption{15x15 square SE, $Bbigsquare$.}
+         \caption{$Bbigsquare$ (15x15 SE)}
          \label{fig:Bbigsquare}
      \end{subfigure}
      
-    \caption{Overview of the input image $I$ and the Structuring Elements used to test the morphological functions that follow.}
+    \caption{Overview of the input image $I$ and the Structuring Elements (SE's), $Bcross$, $Bsquare$ and $Bbigsquare$ used to test the morphological functions that follow. Two $3 \times 3$ SE's are defined and one $15 \times 15$ SE to investigate functionality using a larger SE.}
     \label{fig:structuring-elements-overview}
 \end{figure}
 
@@ -194,25 +194,25 @@ Both dilation operations enlarge the shape. The first, however, does so mainly i
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bcross_dilated.svg}
-         \caption{$(I \oplus Bcross)$}
+         \caption{$I \oplus Bcross$}
          \label{fig:wirebondmask_Bcross_dilated}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bsquare_dilated.svg}
-         \caption{$(I \oplus Bsquare)$}
+         \caption{$I \oplus Bsquare$}
          \label{fig:wirebondmask_Bsquare_dilated}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bbigsquare_dilated.svg}
-         \caption{$(I \oplus Bbigsquare)$}
+         \caption{$I \oplus Bbigsquare$}
          \label{fig:wirebondmask_Bbigsquare_dilated}
      \end{subfigure}
      
-    \caption{Dilation transformations on $I$ (Figure~\ref{fig:wirebondmask-image}) using the \textsc{IPdilate} function and various Structuring Elements. Two 3x3 SE's are used, and for illustration purposes a bigger one is used, too.}
+    \caption{Dilation transformations on $I$ (Figure~\ref{fig:wirebondmask-image}) using the \textsc{IPdilate} function and the Structuring Elements like defined in Figure~\ref{fig:structuring-elements-overview}.}
     \label{fig:wirebondmask_dilated}
 \end{figure}
 
@@ -239,7 +239,7 @@ Both dilation operations enlarge the shape. The first, however, does so mainly i
          \label{fig:wirebondmask_Bbigsquare_dilate_diff}
      \end{subfigure}
      
-    \caption{Comparison between the \textsc{IPdilate} and \textsc{imdilate} functions, using the \texttt{Bbigsquare} Structuring Element.}
+    \caption{$I \oplus Bbigsquare$ executed using both \textsc{IPdilate} and \textsc{imdilate}, and the difference between the two results.}
     \label{fig:wirebondmask_dilate_diff}
 \end{figure}
 
@@ -250,25 +250,25 @@ Both dilation operations enlarge the shape. The first, however, does so mainly i
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bcross_eroded.svg}
-         \caption{$(I \ominus Bcross)$}
+         \caption{$I \ominus Bcross$}
          \label{fig:wirebondmask_Bcross_eroded}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bsquare_eroded.svg}
-         \caption{$(I \ominus Bsquare)$}
+         \caption{$I \ominus Bsquare$}
          \label{fig:wirebondmask_Bsquare_eroded}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_Bbigsquare_eroded.svg}
-         \caption{$(I \ominus Bbigsquare)$}
+         \caption{$I \ominus Bbigsquare$}
          \label{fig:wirebondmask_Bbigsquare_eroded}
      \end{subfigure}
      
-    \caption{Erosion transformations on $I$ (Figure~\ref{fig:wirebondmask-image}) using the \textsc{IPerode} function and various Structuring Elements. Two 3x3 SE's are used, and for illustration purposes a bigger one is used, too.}
+    \caption{Erosion transformations on $I$ (Figure~\ref{fig:wirebondmask-image}) using the \textsc{IPerode} function and the Structuring Elements like defined in Figure~\ref{fig:structuring-elements-overview}.}
     \label{fig:wirebondmask_eroded}
 \end{figure}
 
@@ -295,11 +295,41 @@ Both dilation operations enlarge the shape. The first, however, does so mainly i
          \label{fig:wirebondmask_Bbigsquare_erode_diff}
      \end{subfigure}
      
-    \caption{Comparison between the \textsc{IPerode} and \textsc{imerode} functions, using the \texttt{Bbigsquare} Structuring Element.}
+    \caption{$I \ominus Bbigsquare$ executed using both \textsc{IPerode} and \textsc{imerode}, and the difference between the two results.}
     \label{fig:wirebondmask_erode_diff}
 \end{figure}
 
 \subsection*{(c)}
+\begin{figure}[H]
+     \centering
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_11x11SE_erode.svg}
+         \caption{Erosion using $11 \times 11$ SE}
+         \label{fig:book9.5figure-wirebondmask-image-11x11}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_15x15SE_erode.svg}
+         \caption{Erosion using $15 \times 15$ SE}
+         \label{fig:book9.5figure-wirebondmask-image-15x15}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/wirebondmask_45x45SE_erode.svg}
+         \caption{Erosion using $45 \times 45$ SE}
+         \label{fig:book9.5figure-wirebondmask-image-45x45}
+     \end{subfigure}
+     
+    \caption{Erosion of the Wirebondmask image (Figure~\ref{fig:wirebondmask-image}), using various-sized square SE's, recreating part of Figure 9.5 from the book \citep{gonzalez2008digital}.}
+    \label{fig:book9.5figure}
+\end{figure}
+
+\section*{Exercise 3}
+
+% TODO add text and stuff
 
 \section*{Individual contributions}
 \begin{itemize}
@@ -314,6 +344,21 @@ Both dilation operations enlarge the shape. The first, however, does so mainly i
 \newpage
 \appendix
 \section{Code}
-\subsection{Exercise 1}
-\subsubsection{Exercise 1 (a)}
+\subsection{Exercise 2}
+\lstinputlisting[caption={IPmorph.m: perform morphological transformations, namely \textit{dilation} and \textit{erosion}, using a single function.}, label={code:IPmorph}]{Assignment_4/IPmorph.m}
+
+\subsubsection{Exercise 2 (a)}
+\lstinputlisting[caption={\texttt{IPdilate.m}: perform dilation using \textsc{IPmorph} (Listing~\ref{code:IPmorph}).}, label={code:IPdilate}]{Assignment_4/IPdilate.m}
+\subsubsection{Exercise 2 (b)}
+\lstinputlisting[caption={\texttt{IPerode.m}: perform dilation using \textsc{IPmorph} (Listing~\ref{code:IPmorph}).}, label={code:IPerode}]{Assignment_4/IPerode.m}
+\subsubsection{Exercise 2 (c)}
+\lstinputlisting[caption={\texttt{IPdilate\_erode\_test.m}: Test script to demonstrate both \textsc{IPdilate} and \textsc{IPerode} functionality. Saves images to .svg files.}, label={code:IPdilate_erode_test}]{Assignment_4/IPdilate_erode_test.m}
+
+\subsection{Exercise 3}
+\subsubsection{Exercise 3 (a)}
+\lstinputlisting[caption={\texttt{IPskeletondecomp.m}: TODO}, label={code:IPskeletondecomp}]{Assignment_4/IPskeletondecomp.m}
+\subsubsection{Exercise 3 (b)}
+\lstinputlisting[caption={\texttt{IPskeletonrecon.m}: TODO}, label={code:IPskeletonrecon}]{Assignment_4/IPskeletonrecon.m}
+\subsubsection{Exercise 3 (c)}
+\lstinputlisting[caption={\texttt{IPskeleton\_test.m}: TODO}, label={code:IPskeleton_test}]{Assignment_4/IPskeleton_test.m}
 \end{document}
