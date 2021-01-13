@@ -327,18 +327,33 @@ Both dilation operations enlarge the shape. The first, however, does so mainly i
     \label{fig:book9.5figure}
 \end{figure}
 
+\newpage
 \section*{Exercise 3}
+In this exercise we are tasked with creating an implementation of the morphological skeleton decomposition and reconstruction. Skeleton decomposition can be used as a controlled erosion process that allows for quick and accurate processing of images that would otherwise require computationally and memory expensive operations.
 
-% TODO add text and stuff
+\subsection*{(a)}
+The first part of the exercise is the skeleton decomposition. The function will require a binary input image and a structuring element (SE). The structuring element for will be a 3 by 3 matrix for the purpose of this exercise. The decomposition follows 4 steps that have to be done \textit{K} times each. K is the determined by how many times erosion can be applied to the input image before the image is empty (step 1 applies the erosion). The steps are as follows:
+
+\begin{enumerate}
+    \item $A \ominus k \cdot B$
+    \item $(A \ominus k \cdot B) \circ B$
+    \item $S_k(A) = (A \ominus k \cdot B) - ((A \ominus k \cdot B) \circ B)$
+    \item $\bigcup_{k=0}^{K}S_k(A)$
+\end{enumerate}
+
+Where: A = input image, B = structuring element, and $S_k$ = skeleton for iteration k.
 
 
-\begin{figure}[h]
+
+
+
+\begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
-         \includesvg[width=\textwidth]{Assignment_4/input_images/skeleton_input.svg}
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/skeleton_input.svg}
          \caption{Erosion using $11 \times 11$ SE}
-         \label{fig:book9.5figure-wirebondmask-image-11x11}
+         \label{fig:skeleton_input}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.45\textwidth}
