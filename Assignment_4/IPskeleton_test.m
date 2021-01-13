@@ -48,16 +48,16 @@ saveas(gcf, ['output_plots/', imname, '_skeleton_test.svg']);
 exportgraphics(gcf, ['output_plots/', imname, '_skeleton_test.png']);
 
 % Plot and save individual images
-figure;
+figure('visible', 'off');
 imshow(f)
 saveas(gcf, 'output_plots/skeleton_input.svg');
-figure;
+figure('visible', 'off');
 imshow(reconstruction)
 saveas(gcf, 'output_plots/skeleton_reconstruction.svg');
-figure;
+figure('visible', 'off');
 imshow(skeleton)
 saveas(gcf, 'output_plots/skeleton_skeleton.svg');
-figure;
+figure('visible', 'off');
 imshow(f-reconstruction)
 saveas(gcf, 'output_plots/skeleton_difference.svg');
 
