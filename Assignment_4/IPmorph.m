@@ -26,28 +26,39 @@ assert(ismember(type, {'erode', 'dilate'}));
 % Put padding around original image. Then, SE can freely move around.
 pad_y = floor(Mse / 2);
 pad_x = floor(Nse / 2);
-switch type
-    case 'erode'    % pad with 1's in case of erosion
-        Ipad = padarray(I, [pad_y, pad_x], 1, 'both');
-    case 'dilate'   % pad with 0's in case of dilation
-        Ipad = padarray(I, [pad_y, pad_x], 0, 'both');
-end
 
-% Loop image pixels
+% Construct a 1-padding around image
+P = padarray(zeros(M, N), [pad_y, pad_x], 1, 'both');
+
+% Isolate foreground pixels
+[A1, A2] = find(I);
+[B1, B2] = find(B);
+[P1, P2] = find(P);
+% shift SE coordinates such that origin is at center
+B1 = B1 - pad_y;
+B2 = B2 - pad_x;
+% shift padding coordinates
+P1 = P1 - pad_y;
+P2 = P2 - pad_x;
+% form sets of coordinates
+A = [A1 A2]; 
+B = [B1 B2];
+P = [P1 P2];
+% Loop image foreground pixels
 Imorph = false(M, N);
-for y=(1:M)+pad_y
-    for x=(1:N)+pad_x
-        SE_ycoords = (y - pad_y):(y + pad_y);
-        SE_xcoords = (x - pad_x):(x + pad_x);
-        A = Ipad(SE_ycoords, SE_xcoords);
-        
-        switch type
-            case 'erode'  % erode:  1 iff SE 'fits' neighborhood exactly.
-                value = all(A(B));
-            case 'dilate' % dilate: 1 iff SE 'hits' any in neighboorhood.
-                value = any(A(B));
-        end
-        Imorph(y - pad_y, x - pad_x) = value;
-    end 
+for i=1:length(A)
+    z = A(i, :);
+    switch type
+        case 'erode'  % erode:  1 iff SE 'fits' neighborhood exactly.
+            Bz = B + (z - 1);
+            subset = ismember(Bz, [A; P], 'rows');
+            value = all(subset);
+        case 'dilate' % dilate: 1 iff SE 'hits' any in neighboorhood.
+            Bhat = -(B - 1) + 1; % Reflect. correct for Matlab indexing.
+            Bz = Bhat + (z - 1);
+            subset = ismember(Bz, A, 'rows');
+            value = any(subset);
+    end
+    Imorph(z(1), z(2)) = value;
 end
 end
