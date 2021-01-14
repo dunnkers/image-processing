@@ -56,6 +56,9 @@ saveas(gcf, ['output_plots/', imname, '_Bsquare', '_eroded', '.svg']);
 
 %% Big square
 Bbigsquare = true(15, 15);
+Bbigsquare(1, 1) = 0;
+Bbigsquare(1, 2) = 0;
+Bbigsquare(2, 1) = 0;
 figure('visible', 'off');
 colormap(gray(256));
 imagesc(Bbigsquare);

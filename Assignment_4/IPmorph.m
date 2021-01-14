@@ -45,7 +45,8 @@ for y=(1:M)+pad_y
             case 'erode'  % erode:  1 iff SE 'fits' neighborhood exactly.
                 value = all(A(B));
             case 'dilate' % dilate: 1 iff SE 'hits' any in neighboorhood.
-                value = any(A(B));
+                Bhat = rot90(B, 2)';
+                value = any(A(Bhat));
         end
         Imorph(y - pad_y, x - pad_x) = value;
     end 
