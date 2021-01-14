@@ -30,7 +30,7 @@ function sum_Sk_recon = IPskeletonrecon(skeleton, B)
         skel_k = zeros(size(skeleton));
         skel_k(skeleton==i) = 1;
         dilated_skel_k = IPdilate(logical(skel_k), B);
-        if (i = 1)
+        if (i == 1)
             intermediate_skeleton = dilated_skel_k;
         end
         next_skel(dilated_skel_k==1) = i;
