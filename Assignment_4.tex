@@ -152,7 +152,43 @@ It can be seen that the erosion of the shape by the rectangular SE makes that mu
 Both dilation operations enlarge the shape. The first, however, does so mainly in vertical estate; using the $B^1$ SE the most hits occur in the vertical direction. We do get some horizontal enlargement too, but this is confined to a little less than $L/4$ on all horizontal edges. The last dilation operation enlarges the entire shape in all directions. Note again that the non-centered origin of $B^3$ does not have a major impact in the result of the dilation operation.
 
 \section*{Exercise 2}
+\subsection*{(a)}
+In this first assignment, we are asked to implement morphological \textbf{dilation}. The goal is to perform \textbf{binary} dilation using some arbitrary \textit{Structuring Element} (SE) of size $3 \times 3$. Because we are performing binary dilation, we have to assume and make sure our input images are also binary, i.e. have only 1's and 0's in them - which can be neatly described in Matlab using the \texttt{logical} type. Furthermore, we assume that the origin of the SE lies in the center. That said, let us first describe the applicable theory on Morphology in image processing.
 
+The effect of a morphological dilation operation can be interpreted as "growing" or "thickening" objects in an image. Note that with objects we mean the \textit{foreground} pixels of an image (1's) - whilst the background is represented by \textit{background} pixels (0's). Because a dilation thickens image objects given a suitable SE, it can be used to bridge small gaps between otherwise continuous image components. It is even more useful when performed after an erosion, which is a morphological \textit{opening} - which is a technique that can be used to remove small noise, smoothen object contours and break narrow bridges.
+
+Since dilation is best defined using notation and terminology from \textbf{set theory}, we need some prior knowledge first. We first denote $A$ as being a set of foreground pixels, such that $A \subseteq I$, i.e. it is part of the input image $I$. Also, since we are using set theory, we need to define our image in suitable notation too. To define a binary image, we can conveniently decide to regard \textbf{foreground pixels only}, such that we can define the entire image in one set of 2-dimensional tuples representing the (x, y) coordinates. Each tuple can be said to be part of the 2-D integer space, i.e. $Z^2$. To obtain the background pixels, we can take the complement of the foreground pixel set, i.e. $A^c$. Note that even though the complement means \textbf{all} objects not in $A$ (i.e. $A^c = E \setminus A$; the difference with the universal set), in the case of working with a digital image our dimensions are actually bounded by the image border - meaning that the set of background pixels can also be expressed as a discrete set.
+
+Given that $A$ and $B$ are sets in $Z^2$, we can now define dilation as:
+
+\begin{equation}\label{eq:dilation}
+    A \oplus B = \{z|(\hat{B})_z \cap A \neq \emptyset\},
+\end{equation}
+
+in which $\hat{B}$ denotes the \textit{reflection} of a set around its origin:
+
+\begin{equation}\label{eq:reflection}
+    \hat{B} = \{w | w = -b\text{, for }\in B\},
+\end{equation}
+
+and $(B)_z$ denotes the translation of the set $B$ by point $z=(z_1, z_2)$:
+
+\begin{equation}\label{eq:translation}
+    (B)_z = \{c|c=b+z\text{, for }b\in B\}
+\end{equation}
+
+Which intuitively means that we reflect B by its origin and keep all translations $z$ where the foreground elements of $\hat{B}$ overlap with at least one element of $A$. When we have obtained the set of all translations $z$ that obey these conditions, it means that the dilation of $A$ by $B$ is equal to that set of translations: remember we consider only the foreground pixels in our representation of the binary image, so the dilation output matches up with our data representation.
+
+To implement the dilation operation in Matlab, we recognized both the dilation and erosion operations had similar functionality that could be shared - under the principle of writing DRY (\textit{Don't Repeat Yourself}) code. Therefore we first wrote a general-purpose function for both operations, \textsc{IPmorph}, which can be found in \ding{118} Listing~\ref{code:IPmorph}. This function loops the input image pixels one-by-one and then 'overlaps' the SE with the pixel neighborhood centered at the origin, which is at the SE center point. To better facilitate overlapping the SE around the entire input image, a padding is created around the input image. In the case of erosion, the padding consists out of 1's - whilst for dilation these are 0's.
+
+Note that we do not use a strictly set-theoretical approach in our Matlab algorithm - this was done with computational speed in mind. If we adhere strictly to the set-theoretical approach as described in the book, we lose lots of computational speed. Specifically, we tried using the \textsc{intersect} Matlab function to perform the intersection ($\cap$) from Eq~\ref{eq:dilation}, however, the function remained too slow: executing just one dilation would take many seconds. The same applies to erosion: as we will see later in computing the erosion there also exists the possibility of using set inclusion ($\subseteq$) - which could be implemented using the \textsc{ismember} Matlab function. This, however, turned out even slower than \textsc{intersect}.
+
+That said, the dilation function can be found in \ding{118} Listing~\ref{code:IPdilate}, which uses the \textsc{IPmorph} function like described above. More specifically, in the case of dilation the Matlab \textsc{any} function is used to implement the SE 'hitting' any foreground pixels within its neighborhood, like described in Eq~\ref{eq:dilation}. Also, $\hat{B}$ is computed using \textsc{rot90} and a transpose (\').
+
+\subsection*{(b)}
+Next up is morphological \textbf{erosion}. Erosion shrinks or thins objects in a binary image.
+
+\subsection*{(c)}
 \begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.75\textwidth}
@@ -188,7 +224,7 @@ Both dilation operations enlarge the shape. The first, however, does so mainly i
     \label{fig:structuring-elements-overview}
 \end{figure}
 
-\subsection*{(a)} In this first assignment, we apply the morphological \textbf{dilation} transformation. 
+\subsubsection*{Dilation} In this first assignment, we apply the morphological \textbf{dilation} transformation. 
 \begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
@@ -243,7 +279,7 @@ Both dilation operations enlarge the shape. The first, however, does so mainly i
     \label{fig:wirebondmask_dilate_diff}
 \end{figure}
 
-\subsection*{(b)} In this second assignment, we apply the morphological \textbf{erosion} transformation. 
+\subsubsection*{Erosion} In this second assignment, we apply the morphological \textbf{erosion} transformation. 
 
 \begin{figure}[H]
      \centering
@@ -299,7 +335,7 @@ Both dilation operations enlarge the shape. The first, however, does so mainly i
     \label{fig:wirebondmask_erode_diff}
 \end{figure}
 
-\subsection*{(c)}
+\subsection*{Recreating Figure 9.5 from the book}
 \begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
@@ -396,28 +432,28 @@ To demonstrate our implementations we created a test file that generates the ske
 
 \begin{figure}[H]
      \centering
-     \begin{subfigure}[t]{0.49\textwidth}
+     \begin{subfigure}[t]{0.4\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/skeleton_input.svg}
          \caption{The \textit{nutsbolts.tif} input image (saved as an svg)}
          \label{fig:skeleton_input}
      \end{subfigure}
      \hfill
-     \begin{subfigure}[t]{0.49\textwidth}
+     \begin{subfigure}[t]{0.4\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/skeleton_reconstruction.svg}
          \caption{The reconstruction of the image. This is the produced by passing the result of \textit{IPskeletondecomp} to the \textit{IPskeletonrecon} function.}
          \label{fig:skeleton_reconstruction}
      \end{subfigure}
      \newline
-     \begin{subfigure}[t]{0.49\textwidth}
+     \begin{subfigure}[t]{0.4\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/skeleton_skeleton.svg}
          \caption{The complete skeleton image. This is produced by passing the binary input image \ref{fig:skeleton_input} to the \textit{IPskeletondecomp} function.}
          \label{fig:skeleton_skeleton}
      \end{subfigure}
      \hfill
-     \begin{subfigure}[t]{0.49\textwidth}
+     \begin{subfigure}[t]{0.4\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/skeleton_difference.svg}
          \caption{The difference image of the input image and the reconstructed image. The absolute difference is 0 here (this is verified in the code, see \ding{118} Listing \ref{code:IPskeleton_test}), meaning the images are exactly the same and this image is completely black.}
