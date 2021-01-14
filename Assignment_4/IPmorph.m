@@ -34,6 +34,8 @@ P = padarray(zeros(M, N), [pad_y, pad_x], 1, 'both');
 [A1, A2] = find(I);
 [B1, B2] = find(B);
 [P1, P2] = find(P);
+% Background pixels
+[Ac1, Ac2] = find(I == 0);
 % shift SE coordinates such that origin is at center
 B1 = B1 - pad_y;
 B2 = B2 - pad_x;
@@ -41,9 +43,10 @@ B2 = B2 - pad_x;
 P1 = P1 - pad_y;
 P2 = P2 - pad_x;
 % form sets of coordinates
-A = [A1 A2]; 
-B = [B1 B2];
-P = [P1 P2];
+A  = [A1 A2]; 
+Ac = [Ac1 Ac2];
+B  = [B1 B2];
+P  = [P1 P2];
 % Loop image foreground pixels
 Imorph = false(M, N);
 for i=1:length(A)
@@ -51,12 +54,12 @@ for i=1:length(A)
     switch type
         case 'erode'  % erode:  1 iff SE 'fits' neighborhood exactly.
             Bz = B + (z - 1);
-            subset = ismember(Bz, [A; P], 'rows');
-            value = all(subset);
+            subset = intersect(Bz, [A; P]);
+            value = ~any(subset);
         case 'dilate' % dilate: 1 iff SE 'hits' any in neighboorhood.
             Bhat = -(B - 1) + 1; % Reflect. correct for Matlab indexing.
             Bz = Bhat + (z - 1);
-            subset = ismember(Bz, A, 'rows');
+            subset = intersect(Bz, A);
             value = any(subset);
     end
     Imorph(z(1), z(2)) = value;
