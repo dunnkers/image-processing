@@ -13,7 +13,7 @@
 Note, that all used source code can be found attached next to this report's pdf file. Its structure should be self-explanatory; all requested functions are named accordingly and any extra functions are explained in the report. Note that (almost) every function has a corresponding test script, which is named just like its function, but with a suffix '\texttt{\_test}'. Where possible, we followed the terminology from the book \citep{gonzalez2008digital} for variable naming.
 
 \section*{Exercise 1}
-In this first exercise, we are asked to solve Problem 9.9 from the book, from the Morphological Image Processing chapter. The exercise entails sketching dilations and erosions from some (binary) set using various Structuring Elements (SE's). Let us first illustrate the set $A$ on which the morphological operations will be applied on, and the respective Structuring Elements, $B^1$, $B^2$, $B^3$ and $B^4$.
+In this first exercise, we are asked to solve Problem 9.9 from the book, from the Morphological Image Processing chapter. The exercise entails sketching dilations and erosions from some (binary) set using various Structuring Elements (SE's). Let us first illustrate the set $A$ on which the morphological operations will be applied, and the respective Structuring Elements, $B^1$, $B^2$, $B^3$, and $B^4$.
 
 \begin{figure}[H]
      \centering
@@ -118,7 +118,7 @@ It can be observed that the first erosion strips off almost all foreground pixel
     \label{fig:ex1_b}
 \end{figure}
 
-It can be seen that the erosion of the shape by the rectangular SE makes that much of the vertical foreground pixels remain, but where the rectangular shape does fit is mainly in the horizontal cross spacing. Because the height of the rectangular SE $B^1$ (Figure~\ref{fig:SE_B1}) is exactly $L$, it fits the left- and right sections of the cross perfectly. Because the origin is at center, what is left after the erosion operation is only a small horizontal section. The dilation operation, on the other hand, then again increases the amount of foreground pixels by enlarging the shape. The fact that the $B^3$ origin is at the bottom right position of the shape does not much influence the dilation operation (it would for the erosion operation).
+It can be seen that the erosion of the shape by the rectangular SE makes that much of the vertical foreground pixels remain, but where the rectangular shape does fit is mainly in the horizontal cross spacing. Because the height of the rectangular SE $B^1$ (Figure~\ref{fig:SE_B1}) is exactly $L$, it fits the left- and right sections of the cross perfectly. Because the origin is at the center, what is left after the erosion operation is only a small horizontal section. The dilation operation, on the other hand, then again increases the number of foreground pixels by enlarging the shape. The fact that the $B^3$ origin is at the bottom right position of the shape does not much influence the dilation operation (it would for the erosion operation).
 
 \subsection*{(c)} Lastly, we dilate by $B^1$ and then dilate again, but by $B^3$, i.e. $(A \oplus B^1) \oplus B^3$. The result of this operation can be seen in Figure~\ref{fig:ex1_c}.
 
@@ -149,7 +149,7 @@ It can be seen that the erosion of the shape by the rectangular SE makes that mu
     \label{fig:ex1_c}
 \end{figure}
 
-Both dilation operations enlarge the shape. The first, however, does so mainly in vertical estate; using the $B^1$ SE the most hits occur in the vertical direction. We do get some horizontal enlargement too, but this is confined to a little less than $L/4$ on all horizontal edges. The last dilation operation enlarges the entire shape in all directions. Note again that the non-centered origin of $B^3$ does not have a major impact in the result of the dilation operation.
+Both dilation operations enlarge the shape. The first, however, does so mainly in the vertical estate; using the $B^1$ SE the most hits occur in the vertical direction. We do get some horizontal enlargement too, but this is confined to a little less than $L/4$ on all horizontal edges. The last dilation operation enlarges the entire shape in all directions. Note again that the non-centered origin of $B^3$ does not have a major impact on the result of the dilation operation.
 
 \section*{Exercise 2}
 \subsection*{(a)}
@@ -177,18 +177,32 @@ and $(B)_z$ denotes the translation of the set $B$ by point $z=(z_1, z_2)$:
     (B)_z = \{c|c=b+z\text{, for }b\in B\}
 \end{equation}
 
-Which intuitively means that we reflect B by its origin and keep all translations $z$ where the foreground elements of $\hat{B}$ overlap with at least one element of $A$. When we have obtained the set of all translations $z$ that obey these conditions, it means that the dilation of $A$ by $B$ is equal to that set of translations: remember we consider only the foreground pixels in our representation of the binary image, so the dilation output matches up with our data representation.
+This intuitively means that we reflect B by its origin and keep all translations $z$ where the foreground elements of $\hat{B}$ overlap with at least one element of $A$. When we have obtained the set of all translations $z$ that obey these conditions, it means that the dilation of $A$ by $B$ is equal to that set of translations: remember we consider only the foreground pixels in our representation of the binary image, so the dilation output matches up with our data representation.
 
-To implement the dilation operation in Matlab, we recognized both the dilation and erosion operations had similar functionality that could be shared - under the principle of writing DRY (\textit{Don't Repeat Yourself}) code. Therefore we first wrote a general-purpose function for both operations, \textsc{IPmorph}, which can be found in \ding{118} Listing~\ref{code:IPmorph}. This function loops the input image pixels one-by-one and then 'overlaps' the SE with the pixel neighborhood centered at the origin, which is at the SE center point. To better facilitate overlapping the SE around the entire input image, a padding is created around the input image. In the case of erosion, the padding consists out of 1's - whilst for dilation these are 0's.
+To implement the dilation operation in Matlab, we recognized both the dilation and erosion operations had similar functionality that could be shared - under the principle of writing DRY (\textit{Don't Repeat Yourself}) code. Therefore we first wrote a general-purpose function for both operations, \textsc{IPmorph}, which can be found in \ding{118} Listing~\ref{code:IPmorph}. This function loops the input image pixels one-by-one and then 'overlaps' the SE with the pixel neighborhood centered at the origin, which is at the SE center point. To better facilitate overlapping the SE around the entire input image, padding is created around the input image. In the case of erosion, the padding consists out of 1's - whilst for dilation, these are 0's.
 
-Note that we do not use a strictly set-theoretical approach in our Matlab algorithm - this was done with computational speed in mind. If we adhere strictly to the set-theoretical approach as described in the book, we lose lots of computational speed. Specifically, we tried using the \textsc{intersect} Matlab function to perform the intersection ($\cap$) from Eq~\ref{eq:dilation}, however, the function remained too slow: executing just one dilation would take many seconds. The same applies to erosion: as we will see later in computing the erosion there also exists the possibility of using set inclusion ($\subseteq$) - which could be implemented using the \textsc{ismember} Matlab function. This, however, turned out even slower than \textsc{intersect}.
+Note that we do not use a strictly set-theoretical approach in our Matlab algorithm - this was done with the computational speed in mind. If we adhere strictly to the set-theoretical approach as described in the book, we lose lots of computational speed. Specifically, we tried using the \textsc{intersect} Matlab function to perform the intersection ($\cap$) from Eq~\ref{eq:dilation}, however, the function remained too slow: executing just one dilation would take many seconds. The same applies to erosion: as we will see later in computing the erosion there also exists the possibility of using set inclusion ($\subseteq$) - which could be implemented using the \textsc{ismember} Matlab function. This, however, turned out even slower than \textsc{intersect}.
 
-That said, the dilation function can be found in \ding{118} Listing~\ref{code:IPdilate}, which uses the \textsc{IPmorph} function like described above. More specifically, in the case of dilation the Matlab \textsc{any} function is used to implement the SE 'hitting' any foreground pixels within its neighborhood, like described in Eq~\ref{eq:dilation}. Also, $\hat{B}$ is computed using \textsc{rot90} and a transpose (\').
+That said, the dilation function \textsc{IPdilate} can be found in \ding{118} Listing~\ref{code:IPdilate}, which uses the \textsc{IPmorph} function like described above. More specifically, in the case of dilation the Matlab \textsc{any} function is used to implement the SE 'hitting' any foreground pixels within its neighborhood, like described in Eq~\ref{eq:dilation}. From the neighborhood, we first seek out only the applicable pixels by selecting only those in the SE by using \textsc{A(B)}.  Also, $\hat{B}$ is computed using \textsc{rot90} and a transpose (\').
 
 \subsection*{(b)}
-Next up is morphological \textbf{erosion}. Erosion shrinks or thins objects in a binary image.
+Next up is morphological \textbf{erosion}. Erosion shrinks or thins objects in a binary image. Using the notation like in (a), we can denote the erosion as follows:
+
+\begin{equation}\label{eq:erosion}
+    A \ominus B = \{z|(B)_z \subseteq A \}
+\end{equation}
+
+which can also be written using an intersection operation onto the object complement $A^c$:
+
+\begin{equation}\label{eq:erosion-intersection}
+    A \ominus B = \{z|(B)_z \cap A^c = \emptyset \}
+\end{equation}
+
+Which concludes the mathematical notation of the erosion operation. Intuitively it can be understood that erosion needs the SE to exactly 'fit' all pixels in its neighborhood; only then will an object pixel 'remain'. The erosion operation was implemented in \textsc{IPerode} and can be found in \ding{118} Listing~\ref{code:IPerode}. To implement the SE 'fitting' the foreground pixels, the \textsc{all} Matlab operation is used.
 
 \subsection*{(c)}
+Finally, we test both our functions by performing the operations on the \texttt{wirebondmask.tif} image and using various SE's. The script for testing can be find in \ding{118} Listing~\ref{code:IPdilate_erode_test}. The image is of size ($486 \times 486$) and is already in the binary format we need, i.e. has the Matlab \texttt{logical} type. We devised three SE's to test our functions: a $3 \times 3$ cross, a $3 \times 3$ square and one with higher dimensions, a $15 \times 15$ but with its top-left corner set as 0's. The latter SE is to make sure our algorithm is compatible with non-symmetrical SE's and still correctly computes the dilation using its reflection. For an overview of the input image and SE's used, see Figure~\ref{fig:structuring-elements-overview}.
+
 \begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.75\textwidth}
@@ -220,11 +234,15 @@ Next up is morphological \textbf{erosion}. Erosion shrinks or thins objects in a
          \label{fig:Bbigsquare}
      \end{subfigure}
      
-    \caption{Overview of the input image $I$ and the Structuring Elements (SE's), $Bcross$, $Bsquare$ and $Bbigsquare$ used to test the morphological functions that follow. Two $3 \times 3$ SE's are defined and one $15 \times 15$ SE to investigate functionality using a larger SE.}
+    \caption{Overview of the input image $I$ and the Structuring Elements (SE's), $Bcross$, $Bsquare$ and $Bbigsquare$ used to test the morphological functions that follow. Two $3 \times 3$ symmetrical SE's are defined and one non-symmetrical $15 \times 15$ SE to investigate functionality using a larger and non-symmetric SE.}
     \label{fig:structuring-elements-overview}
 \end{figure}
 
-\subsubsection*{Dilation} In this first assignment, we apply the morphological \textbf{dilation} transformation. 
+Let us now first investigate running the dilation operation on the \texttt{wirebondmask.tif} image.
+
+\subsubsection*{Dilation}
+Dilation was tested on the three different SE's, which can be seen in Figure~\ref{fig:wirebondmask_dilated}. It can be observed that given an SE with more foreground pixels or of a larger size, the image is dilated to increasingly larger sizes, i.e. more foreground pixels are added to the resulting image.
+
 \begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
@@ -251,6 +269,8 @@ Next up is morphological \textbf{erosion}. Erosion shrinks or thins objects in a
     \caption{Dilation transformations on $I$ (Figure~\ref{fig:wirebondmask-image}) using the \textsc{IPdilate} function and the Structuring Elements like defined in Figure~\ref{fig:structuring-elements-overview}.}
     \label{fig:wirebondmask_dilated}
 \end{figure}
+
+Next, we also wanted to confirm our dilation function was operating like it should, by comparing it against a built-in Matlab function, \textsc{imdilate}. This is defined in the morphological operations section in Matlab, as part of the image processing toolbox. It can be conveniently used to confirm the correct functionality of our own function. We used the $Bbigsquare$ SE and dilated by both our and Matlab's function and also included a difference-image to see the two differ at all. The result can be seen in Figure~\ref{fig:wirebondmask_dilate_diff}.
 
 \begin{figure}[H]
      \centering
@@ -279,7 +299,10 @@ Next up is morphological \textbf{erosion}. Erosion shrinks or thins objects in a
     \label{fig:wirebondmask_dilate_diff}
 \end{figure}
 
-\subsubsection*{Erosion} In this second assignment, we apply the morphological \textbf{erosion} transformation. 
+In Figure~\ref{fig:wirebondmask_dilate_diff} it can easily be observed that the two functions return an exactly identical result, i.e. our function operates as it should.
+
+\subsubsection*{Erosion}
+Next, we test our erosion function. Again, we perform erosion on our three SE's and the \texttt{wirebondmask.tif} image. See Figure~\ref{fig:wirebondmask_eroded}.
 
 \begin{figure}[H]
      \centering
@@ -308,6 +331,10 @@ Next up is morphological \textbf{erosion}. Erosion shrinks or thins objects in a
     \label{fig:wirebondmask_eroded}
 \end{figure}
 
+In Figure~\ref{fig:wirebondmask_eroded} it can be observed that the erosion removes some of the diagonal lines that can be seen in the image. And it does so more using larger SE's, which is like expected: at some point, the SE won't "fit" in the lines anymore, therefore removing the line.
+
+Also for erosion, we create a comparison with a built-in Matlab function: this time \textsc{imerode}. The result can be seen in Figure~\ref{fig:wirebondmask_erode_diff}.
+
 \begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
@@ -335,7 +362,11 @@ Next up is morphological \textbf{erosion}. Erosion shrinks or thins objects in a
     \label{fig:wirebondmask_erode_diff}
 \end{figure}
 
+Like before, Figure~\ref{fig:wirebondmask_erode_diff} shows that there is zero difference between our function and the built-in Matlab function, indicating the correctness of our function.
+
 \subsection*{Recreating Figure 9.5 from the book}
+Finally, to conclude the testing of our functions, we thought it'd be interesting to re-create Figure 9.5 from the book \citep{gonzalez2008digital}. We indeed managed to do this, see Figure~\ref{fig:book9.5figure}.
+
 \begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
@@ -363,9 +394,11 @@ Next up is morphological \textbf{erosion}. Erosion shrinks or thins objects in a
     \label{fig:book9.5figure}
 \end{figure}
 
-
+The plot (Figure~\ref{fig:book9.5figure}) shows, that given square SE's of increasing size, the input image is increasingly eroded until only the center-piece remains. It can be observed that the result is indeed equal to the example in the book, which can be found in Chapter 9, Figure 9.5.
+ 
+\newpage
 \section*{Exercise 3}
-In this exercise we are tasked with creating an implementation of the morphological skeleton decomposition and reconstruction. Skeleton decomposition can be used as a controlled erosion process that allows for quick and accurate processing of images that would otherwise require computationally and memory expensive operations.
+In this exercise, we are tasked with creating an implementation of the morphological skeleton decomposition and reconstruction. Skeleton decomposition can be used as a controlled erosion process that allows for quick and accurate processing of images that would otherwise require computationally and memory expensive operations.
 
 \begin{figure}[H]
     \centering
@@ -375,7 +408,7 @@ In this exercise we are tasked with creating an implementation of the morphologi
 \end{figure}
 
 \subsection*{(a)}
-The first part of the exercise is the skeleton decomposition. The function will require a binary input image and a structuring element (SE). The structuring element for will be a 3 by 3 matrix for the purpose of this exercise. We will also assume (like in the previous exercise) that the structuring element contains the origin. The decomposition follows 4 steps that have to be done \textit{K} times each. K is the determined by how many times erosion can be applied to the input image before the image is empty (step 1 applies the erosion). The steps are as follows:
+The first part of the exercise is the skeleton decomposition. The function will require a binary input image and a structuring element (SE). The structuring element will be a 3 by 3 matrix for the purpose of this exercise. We will also assume (like in the previous exercise) that the structuring element contains the origin. The decomposition follows 4 steps that have to be done \textit{K} times each. K is the determined by how many times erosion can be applied to the input image before the image is empty (Eq~\ref{eq:skeleton_step1} applies the erosion). The process can be described in four (1-4) steps:
 
 \begin{equation}\label{eq:skeleton_step1}
     A \ominus k B
@@ -392,15 +425,15 @@ The first part of the exercise is the skeleton decomposition. The function will 
 
 Where: A = input image, B = structuring element, and $S_k$ = skeleton for iteration k.
 
-The first 4 columns of Figure \ref{fig:skeleton_book} demonstrate how these four steps work for a simple binary image. The first step is applying corrosion to the input image \textit{k} times, which follows Equation \ref{eq:skeleton_step1}. In the example from the book the image would be completely empty if a corrosion was applied 3 times, so \textit{K=2}. The second step is an opening applied to the result of step 1, which follows Equation \ref{eq:skeleton_step2}. Step 3 is the skeleton for a specific \textit{k}. This is done by subtracting the result of step 2 from the result of step 1. It follows Equation \ref{eq:skeleton_step3}, which is Eq. 9-29 in the book. The fourth and final step of the decomposition is taking the union of the different skeletons $S_k$. Important to note is that for Equation \ref{eq:skeleton_step1} the erosion is applied \textit{k} times, each time taking the result of the previous iteration. This can also be written as Equation \ref{eq:erosion_k_times}, which is Eq. 9-30 in the book. Using all these steps the final skeleton is generated by taking the result of the highest \textit{k} for step 4.
+The first 4 columns of Figure \ref{fig:skeleton_book} demonstrate how these four steps work for a simple binary image. The first step is applying erosion to the input image \textit{k} times, which follows Equation \ref{eq:skeleton_step1}. In the example from the book the image would be completely empty if erosion was applied 3 times, so $K=2$. The second step is an opening applied to the result of step 1, which follows Equation \ref{eq:skeleton_step2}. Step 3 is the skeleton for a specific \textit{k}. This is done by subtracting the result of step 2 from the result of step 1. It follows Equation \ref{eq:skeleton_step3}, which is Eq. 9-29 in the book. The fourth and final step of the decomposition is taking the union of the different skeletons $S_k$. Important to note is that for Equation \ref{eq:skeleton_step1} the erosion is applied \textit{k} times, each time taking the result of the previous iteration. This can also be written as Equation \ref{eq:erosion_k_times}, which is Eq. 9-30 in the book. Using all these steps the final skeleton is generated by taking the result of the highest \textit{k} for step 4.
 
 \begin{equation}\label{eq:erosion_k_times}
     A \ominus k B = ((\dots((A \ominus B) \ominus B) \ominus \dots) \ominus B)
 \end{equation}
 
-The assignment requires us to implement the skeleton decomposition using a recursive function. So each level of \textit{k} should be done by a recursion and not a loop. We implemented it as such by adding the result of the current level ($S_k$) and the result of the next level together, by calling the same function again. For this we use the base case where applying erosion to the input image would result in an empty image. If this is the case the result of the current level is returned without calling the function again.
+The assignment requires us to implement the skeleton decomposition using a recursive function. So each level of \textit{k} should be done by recursion and not a loop. We implemented it as such by adding the result of the current level ($S_k$) and the result of the next level together, by calling the same function again. For this, we use the base case where applying erosion to the input image would result in an empty image. If this is the case the result of the current level is returned without calling the function again.
 
-Because the result of the function would simply give the final skeleton and the different levels of the skeleton ($S_k$) could not be retrieved anymore, we need to encode the resulting images in such a way they can be retrieved. This needs to be done according to Equation \ref{eq:skeleton_encoding}, where we encode all the skeleton sets $S_k(A)$ by introducing a skeleton function \textit{skf(A)}. This basically boils down to the skeleton of each level being added to the result with a different number, namely (\textit{k+1}). Which allows us to understand the different levels of the skeleton in the reconstruction step.
+Because the result of the function would simply give the final skeleton and the different levels of the skeleton ($S_k$) could not be retrieved anymore, we need to encode the resulting images in such a way they can be retrieved. This needs to be done according to Equation \ref{eq:skeleton_encoding}, where we encode all the skeleton sets $S_k(A)$ by introducing a skeleton function \textit{skf(A)}. This basically boils down to the skeleton of each level being added to the result with a different number, namely (\textit{k+1}). This allows us to understand the different levels of the skeleton in the reconstruction step.
 
 \begin{equation}\label{eq:skeleton_encoding}
 [\operatorname{skf}(A)](i, j)=\left\{\begin{array}{ll}
@@ -409,7 +442,7 @@ k+1, & (i, j) \in S_{k}(A) \\
 \end{array}\right.
 \end{equation}
 
-The results of this function are presented in part (c) of the exercise and in Figure \ref{fig:skeleton_results}. The implementation of the function can be found in \ding{118} Listing \ref{code:IPskeletondecomp}.
+The results of this function are presented in part (c) of the exercise and in Figure \ref{fig:skeletondecomp}. The implementation of the function can be found in \ding{118} Listing \ref{code:IPskeletondecomp}.
 
 \subsection*{(b)}
 The next part will be the reconstruction of the skeleton we created in part (a). To reconstruct the image two steps have to be executed. Each step has to be executed \textit{k} times.
@@ -421,47 +454,63 @@ The next part will be the reconstruction of the skeleton we created in part (a).
     \bigcup_{k=0}^{K}S_k(A) \oplus k B
 \end{equation}
 
-The first step, Equation \ref{eq:skeleton_step5}, is the dilation of the skeleton for that level. The second step is the union of the results from the first step and follows Equation \ref{eq:skeleton_step6} (Eq. 9-32 in the book). The different levels of the skeleton can be distinguished as such due to the number written. The assignment requires the reconstruction to also make use of recursion instead of loops. For our implementation we extract the pixel coordinates that contain the value 1 which is the result of the first step for each \textit{k}. Afterwards we decrease all non-zero values in the remaining skeleton and apply the dilation for each number. In case certain coordinates would have multiple numbers due to the different dilations overlapping the highest number is kept. This means that the intermediate result is not correct in these cases, but the final result is correct. In the fifth column of Figure \ref{fig:skeleton_book} the entry for \textit{k=1} would not have the bottom 3 pixels, because those would be claimed by the ongoing erosion of \textit{k=2}. These intermediate levels can be correctly extracted, which we show on lines 33 to 35 in \ding{118} Listing \ref{code:IPskeletonrecon}, but are not passed to the next iteration of the recursion. We use recursion in the same way as we did for the skeleton decomposition, so we add the result of the current step and the result of a call to the same function together. The base case this time is an empty skeleton set, which means that all the skeleton sets have been processed.
+The first step, Equation \ref{eq:skeleton_step5}, is the dilation of the skeleton for that level. The second step is the union of the results from the first step and follows Equation \ref{eq:skeleton_step6} (Eq. 9-32 in the book). The different levels of the skeleton can be distinguished as such due to the number written. The assignment requires the reconstruction to also make use of recursion instead of loops. For our implementation, we extract the pixel coordinates that contain the value 1 which is the result of the first step for each $k$. Afterward, we decrease all non-zero values in the remaining skeleton and apply the dilation for each number. In case certain coordinates would have multiple numbers due to the different dilations overlapping the highest number is kept. This means that the intermediate result is not correct in these cases, but the final result is correct. In the fifth column of Figure \ref{fig:skeleton_book} the entry for $k=1$ would not have the bottom 3 pixels, because those would be claimed by the ongoing erosion of $k=2$. These intermediate levels can be correctly extracted, which we show on lines 33 to 35 in \ding{118} Listing \ref{code:IPskeletonrecon}, but are not passed to the next iteration of the recursion. We use recursion in the same way as we did for the skeleton decomposition, so we add the result of the current step and the result of a call to the same function together. The base case this time is an empty skeleton set, which means that all the skeleton sets have been processed.
 
-The results of this function are presented in part (c) of the exercise and in Figure \ref{fig:skeleton_results}. The implementation of the function can be found in \ding{118} Listing \ref{code:IPskeletonrecon}.
+The results of this function are presented in part (c) of the exercise and in Figure \ref{fig:skeletonrecon}. The implementation of the function can be found in \ding{118} Listing \ref{code:IPskeletonrecon}.
 
 \subsection*{(c)}
-The last part of the assignment requires us to show the results of our implementation of the skeleton decomposition and reconstruction using the input image \textit{nutsbolts.tif}. In Figure \ref{fig:skeleton_results} the input image, the reconstructed image, the skeleton, and the difference between the input image and reconstructed image are shown. The difference image is completely back, meaning that the reconstruction is a perfect match for the input image. This is also verified by taking the absolute difference of the two images in the code.
-
-To demonstrate our implementations we created a test file that generates the skeleton and reconstruction images, this can be found in \ding{118} Listing \ref{code:IPskeleton_test}.
+The last part of the assignment requires us to show the results of our implementation of the skeleton decomposition and reconstruction using the input image \texttt{nutsbolts.tif}. We can first of all show both the input image and the skeleton decomposition. See Figure~\ref{fig:skeletondecomp}.
 
 \begin{figure}[H]
      \centering
-     \begin{subfigure}[t]{0.4\textwidth}
+     \begin{subfigure}[t]{0.45\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/skeleton_input.svg}
-         \caption{The \textit{nutsbolts.tif} input image (saved as an svg)}
-         \label{fig:skeleton_input}
+         \caption{Input image, \texttt{nutsbolts.tif}}
+         \label{fig:skeletondecomp_input}
      \end{subfigure}
      \hfill
-     \begin{subfigure}[t]{0.4\textwidth}
-         \centering
-         \includesvg[width=\textwidth]{Assignment_4/output_plots/skeleton_reconstruction.svg}
-         \caption{The reconstruction of the image. This is the produced by passing the result of \textit{IPskeletondecomp} to the \textit{IPskeletonrecon} function.}
-         \label{fig:skeleton_reconstruction}
-     \end{subfigure}
-     \newline
-     \begin{subfigure}[t]{0.4\textwidth}
+     \begin{subfigure}[t]{0.45\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/skeleton_skeleton.svg}
-         \caption{The complete skeleton image. This is produced by passing the binary input image \ref{fig:skeleton_input} to the \textit{IPskeletondecomp} function.}
-         \label{fig:skeleton_skeleton}
+         \caption{The complete skeleton image. This is produced by passing the binary input image \ref{fig:skeletondecomp_input} to the \textsc{IPskeletondecomp} function.}
+         \label{fig:skeletondecomp_skeleton}
+     \end{subfigure}
+    \caption{The results from applying our implementation of skeleton decomposition and reconstruction to the input image \texttt{nutsbolts.tif}.}
+    \label{fig:skeletondecomp}
+\end{figure}
+
+In the plot (Figure~\ref{fig:skeletondecomp}), the original image can be seen on the left-hand side, whilst the decomposition is shown on the right side. Indeed the pixels are placed at locations that make sense for the skeleton - pixels which, if they were used for dilated in the right way, could lead to a reconstruction of the input image. Let's see whether worked out using the \textsc{IPskeletonrecon} function. See Figure~\ref{fig:skeletonrecon}.
+
+\begin{figure}[H]
+     \begin{subfigure}[t]{0.3\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/skeleton_input.svg}
+         \caption{Input image, \texttt{nutsbolts.tif}}
+         \label{fig:skeletonrecon_input}
      \end{subfigure}
      \hfill
-     \begin{subfigure}[t]{0.4\textwidth}
+     \begin{subfigure}[t]{0.3\textwidth}
+         \centering
+         \includesvg[width=\textwidth]{Assignment_4/output_plots/skeleton_reconstruction.svg}
+         \caption{The reconstruction of the image. This is the produced by passing the result of \textsc{IPskeletondecomp} to the \textsc{IPskeletonrecon} function.}
+         \label{fig:skeleton_reconstruction}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[t]{0.3\textwidth}
          \centering
          \includesvg[width=\textwidth]{Assignment_4/output_plots/skeleton_difference.svg}
          \caption{The difference image of the input image and the reconstructed image. The absolute difference is 0 here (this is verified in the code, see \ding{118} Listing \ref{code:IPskeleton_test}), meaning the images are exactly the same and this image is completely black.}
          \label{fig:skeleton_difference}
      \end{subfigure}
-    \caption{The results from applying our implementation of skeleton decomposition and reconstruction to the input image \textit{nutsbolts.tif}.}
-    \label{fig:skeleton_results}
+    \caption{The results from applying our implementation of skeleton decomposition and reconstruction to the input image \texttt{nutsbolts.tif}.}
+    \label{fig:skeletonrecon}
 \end{figure}
+
+In the plot (Figure~\ref{fig:skeletonrecon}) the input image, the reconstructed image and the difference between the input image and reconstructed image are shown. The difference image is completely back, meaning that the reconstruction is a perfect match for the input image. This is also verified by taking the absolute difference between the two images in the code.
+
+To demonstrate our implementations we created a test file that generates the skeleton and reconstruction images, this can be found in \ding{118} Listing \ref{code:IPskeleton_test}.
+
 
 \section*{Individual contributions}
 \begin{itemize}
