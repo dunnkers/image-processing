@@ -2,26 +2,13 @@ clc;                                  % clear the command window
 close all;                            % close open figure windows    
 clear;                                % clear workspace
 
+%% Compute skeleton- and reconstruction of nutsbolts image
 imname = 'nutsbolts';
 inputfile = ['input_images/', imname, '.tif'];          
 f = imread(inputfile);                  % read input image
 
+% Compute skeleton and the reconstruction
 B_square = logical([1 1 1; 1 1 1; 1 1 1]);
-
-% % Example from the slides (with borders added)
-% f = logical([   0 0 0 0 0 0 0;
-%                 0 1 0 0 0 0 0;
-%                 0 0 1 1 0 0 0;
-%                 0 0 1 1 0 0 0;
-%                 0 0 1 1 1 0 0;
-%                 0 0 1 1 1 0 0;
-%                 0 1 1 1 1 1 0;
-%                 0 1 1 1 1 1 0;
-%                 0 1 1 1 1 1 0;
-%                 0 1 1 1 1 1 0;
-%                 0 1 1 1 1 1 0;
-%                 0 0 0 0 0 0 0;]);
-
 skeleton = IPskeletondecomp(f, B_square);
 reconstruction = IPskeletonrecon(skeleton, B_square);
 
@@ -40,7 +27,7 @@ subplot(223);
 imshow(skeleton)
 title("IPskeletondecomp");
 subplot(224);
-imshow(f-reconstruction)
+imshow(f - reconstruction)
 title("difference=" + difference);
 
 % Save current plot
@@ -58,8 +45,38 @@ figure('visible', 'off');
 imshow(skeleton)
 saveas(gcf, 'output_plots/skeleton_skeleton.svg');
 figure('visible', 'off');
-imshow(f-reconstruction)
+imshow(f - reconstruction)
 saveas(gcf, 'output_plots/skeleton_difference.svg');
 
 
+%% Example from the slides (with borders added).
+f = logical([   0 0 0 0 0 0 0;
+                0 1 0 0 0 0 0;
+                0 0 1 1 0 0 0;
+                0 0 1 1 0 0 0;
+                0 0 1 1 1 0 0;
+                0 0 1 1 1 0 0;
+                0 1 1 1 1 1 0;
+                0 1 1 1 1 1 0;
+                0 1 1 1 1 1 0;
+                0 1 1 1 1 1 0;
+                0 1 1 1 1 1 0;
+                0 0 0 0 0 0 0;]);
 
+skeleton = IPskeletondecomp(f, B_square);
+reconstruction = IPskeletonrecon(skeleton, B_square);
+
+% Show input, skeleton, result and difference
+figure;
+subplot(221);
+imshow(f)
+title("input image");
+subplot(222);
+imshow(reconstruction)
+title("reconstruction");
+subplot(223);
+imshow(skeleton)
+title("IPskeletondecomp");
+subplot(224);
+imshow(f - reconstruction)
+title("difference=" + difference);
